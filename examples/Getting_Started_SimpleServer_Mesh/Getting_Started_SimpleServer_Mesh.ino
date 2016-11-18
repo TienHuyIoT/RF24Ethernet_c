@@ -84,15 +84,15 @@
 
 #include <RF24Network.h>
 #include <RF24.h>
-#include <SPI.h>
+//#include <SPI.h>
 //#include <printf.h>
 #include <RF24Ethernet.h>
 #include "RF24Mesh.h"
 
 /** Configure the radio CE & CS pins **/
-RF24 radio(7,8);
-RF24Network network(radio);
-RF24Mesh mesh(radio,network);
+RF24 radio;
+RF24Network network;
+RF24Mesh mesh;
 RF24EthernetClass RF24Ethernet(radio,network,mesh);
 
 
@@ -100,6 +100,9 @@ RF24EthernetClass RF24Ethernet(radio,network,mesh);
 EthernetServer server = EthernetServer(1000);
 
 void setup() {
+RF24_init(&radio,7,8);
+RF24N_init(&network,&radio);
+RF24M_init(&mesh,&radio,&network);
   // Set up the speed of our serial link.
   Serial.begin(115200);
   //printf_begin();
@@ -109,7 +112,7 @@ void setup() {
   // to the designated mesh nodeID
   IPAddress myIP(10,10,2,4);
   Ethernet.begin(myIP);
-  mesh.begin();
+  RF24M_begin(&mesh);
   
   // If you'll be making outgoing connections from the Arduino to the rest of
   // the world, you'll need a gateway set up.
@@ -129,10 +132,10 @@ void loop() {
   // enable address renewal
   if(millis()-mesh_timer > 30000){ //Every 30 seconds, test mesh connectivity
     mesh_timer = millis();
-    if( ! mesh.checkConnection() ){
+    if( ! RF24M_checkConnection(&mesh) ){
         Serial.println("*** RENEW ***");
         //refresh the network address        
-        mesh.renewAddress();
+        RF24M_renewAddress(&mesh);
         
      }else{
 

@@ -98,8 +98,8 @@ typedef struct {
 
 
 
-class RF24;
-class RF24Network;
+//class RF24;
+//class RF24Network;
 
 
 class RF24EthernetClass {//: public Print {

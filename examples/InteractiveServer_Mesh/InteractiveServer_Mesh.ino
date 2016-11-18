@@ -29,9 +29,9 @@
 #include "RF24Mesh.h"
 
 /*** Configure the radio CE & CS pins ***/
-RF24 radio(7, 8);
-RF24Network network(radio);
-RF24Mesh mesh(radio,network);
+RF24 radio;
+RF24Network network;
+RF24Mesh mesh;
 RF24EthernetClass RF24Ethernet(radio, network,mesh);
 
 #if defined (ARDUINO_ARCH_ESP8266)
@@ -47,6 +47,9 @@ EthernetServer server = EthernetServer(1000);
 static unsigned short generate_tcp_stats();
 
 void setup() {
+  RF24_init(&radio,7,8);
+  RF24N_init(&network,&radio);
+  RF24M_init(&mesh,&radio,&network);
 
   Serial.begin(115200);
   //printf_begin();
@@ -55,7 +58,7 @@ void setup() {
   
   IPAddress myIP(10, 10, 2, 4);
   Ethernet.begin(myIP);
-  mesh.begin();
+  RF24M_begin(&mesh);
 
   //Set IP of the RPi (gateway)
   IPAddress gwIP(10, 10, 2, 2);
@@ -76,9 +79,9 @@ void loop() {
   // enable address renewal
   if(millis()-mesh_timer > 30000){ //Every 30 seconds, test mesh connectivity
     mesh_timer = millis();
-    if( ! mesh.checkConnection() ){
+    if( ! RF24M_checkConnection(&mesh) ){
         //refresh the network address        
-        mesh.renewAddress();
+        RF24M_renewAddress(&mesh);
      }
   }
 

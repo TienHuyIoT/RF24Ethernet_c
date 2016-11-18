@@ -60,7 +60,7 @@ void RF24EthernetClass::use_device()
 void RF24EthernetClass::setMac(uint16_t address){
 	
 	if(!network.multicastRelay){ // Radio has not been started yet
-	  radio.begin();
+	  RF24_begin(&radio);
 	}	
 	
 	const uint8_t mac[6] = {0x52,0x46,0x32,0x34,address,address>>8};
@@ -71,7 +71,7 @@ void RF24EthernetClass::setMac(uint16_t address){
    	  network.multicastRelay = 1;
 	#endif
 	RF24_Channel = RF24_Channel ? RF24_Channel : 97;
-	network.begin(RF24_Channel, address);
+	RF24N_begin_d(&network,RF24_Channel, address);
 }
 
 /*******************************************************/
@@ -80,7 +80,7 @@ void RF24EthernetClass::setChannel(uint8_t channel){
 	
 	RF24_Channel = channel;
 	if(network.multicastRelay){ // Radio has not been started yet
-	  radio.setChannel(RF24_Channel);
+	  RF24_setChannel(&radio,RF24_Channel);
 	}
 }
 
@@ -117,7 +117,7 @@ configure(ip,dns,gateway,subnet);
 void RF24EthernetClass::configure(IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet) {
 
   #if !defined (RF24_TAP) // Using RF24Mesh
-    mesh.setNodeID(ip[3]);
+    RF24M_setNodeID(&mesh,ip[3]);
   #endif
   
 uip_buf = (uint8_t*)&network.frag_ptr->message_buffer[0];
@@ -201,7 +201,7 @@ void RF24EthernetClass::tick() {
     #if defined (ARDUINO_ARCH_ESP8266)
       yield();
     #endif
-	if(RF24Ethernet.network.update() == EXTERNAL_DATA_TYPE){
+	if(RF24N_update(&RF24Ethernet.network) == EXTERNAL_DATA_TYPE){
 		uip_len = RF24Ethernet.network.frag_ptr->message_size;
 	}
 
@@ -287,10 +287,11 @@ void RF24EthernetClass::tick() {
 
 boolean RF24EthernetClass::network_send()
 {
-		RF24NetworkHeader headerOut(00,EXTERNAL_DATA_TYPE);
+		RF24NetworkHeader headerOut;
+		RF24NH_init(&headerOut,00,EXTERNAL_DATA_TYPE);
 		//while(millis() - RF24Ethernet.lastRadio < 1){}
 
-		  bool ok = RF24Ethernet.network.write(headerOut,uip_buf,uip_len);
+		  bool ok = RF24N_write_m(&RF24Ethernet.network,&headerOut,uip_buf,uip_len);
 		//#endif
 		
 		#if defined ETH_DEBUG_L1 || defined ETH_DEBUG_L2
