@@ -112,7 +112,7 @@ RF24M_init(&mesh,&radio,&network);
   // to the designated mesh nodeID
   IPAddress myIP(10,10,2,4);
   Ethernet.begin(myIP);
-  RF24M_begin(&mesh);
+  RF24M_begin(&mesh,MESH_DEFAULT_CHANNEL, RF24_1MBPS, MESH_RENEWAL_TIMEOUT);
   
   // If you'll be making outgoing connections from the Arduino to the rest of
   // the world, you'll need a gateway set up.
@@ -135,7 +135,7 @@ void loop() {
     if( ! RF24M_checkConnection(&mesh) ){
         Serial.println("*** RENEW ***");
         //refresh the network address        
-        RF24M_renewAddress(&mesh);
+        RF24M_renewAddress(&mesh,MESH_RENEWAL_TIMEOUT);
         
      }else{
 

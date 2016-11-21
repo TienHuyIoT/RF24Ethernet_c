@@ -19,14 +19,12 @@
  * 
  */
 
-
-#include <SPI.h>
 #include <RF24.h>
 #include <RF24Network.h>
 //#include <printf.h>
 #include <RF24Ethernet.h>
 #include "HTML.h"
-#include "RF24Mesh.h"
+#include <RF24Mesh.h>
 
 /*** Configure the radio CE & CS pins ***/
 RF24 radio;
@@ -58,7 +56,7 @@ void setup() {
   
   IPAddress myIP(10, 10, 2, 4);
   Ethernet.begin(myIP);
-  RF24M_begin(&mesh);
+  RF24M_begin(&mesh, MESH_DEFAULT_CHANNEL, RF24_1MBPS, MESH_RENEWAL_TIMEOUT);
 
   //Set IP of the RPi (gateway)
   IPAddress gwIP(10, 10, 2, 2);
@@ -81,7 +79,7 @@ void loop() {
     mesh_timer = millis();
     if( ! RF24M_checkConnection(&mesh) ){
         //refresh the network address        
-        RF24M_renewAddress(&mesh);
+        RF24M_renewAddress(&mesh, MESH_RENEWAL_TIMEOUT);
      }
   }
 
