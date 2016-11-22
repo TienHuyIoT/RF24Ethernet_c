@@ -46,13 +46,13 @@
 
 #include <inttypes.h>
 
-#include "RF24Network_config.h"
+#include "RF24Network_c_config.h"
 /************* TMRh20: User Configuration *******************/
 /**
 @defgroup UipConfiguration
 
 User Configuration Options
-/* @{ */
+/ * @{ */
 
 /** Maximum number of TCP connections. */
 #define UIP_CONF_MAX_CONNECTIONS 1

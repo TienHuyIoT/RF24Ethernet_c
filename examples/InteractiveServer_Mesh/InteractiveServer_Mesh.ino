@@ -19,18 +19,18 @@
  * 
  */
 
-#include <RF24.h>
-#include <RF24Network.h>
+#include <RF24_c.h>
+#include <RF24Network_c.h>
 //#include <printf.h>
-#include <RF24Ethernet.h>
+#include <RF24Ethernet_c.h>
 #include "HTML.h"
-#include <RF24Mesh.h>
+#include <RF24Mesh_c.h>
 
 /*** Configure the radio CE & CS pins ***/
 RF24 radio;
 RF24Network network;
 RF24Mesh mesh;
-RF24EthernetClass RF24Ethernet(radio, network,mesh);
+RF24EthernetClass RF24Ethernet;
 
 #if defined (ARDUINO_ARCH_ESP8266)
   #define LED_PIN BUILTIN_LED
@@ -48,6 +48,7 @@ void setup() {
   RF24_init(&radio,7,8);
   RF24N_init(&network,&radio);
   RF24M_init(&mesh,&radio,&network);
+  RF24E_init(&RF24Ethernet, &radio, &network,&mesh);
 
   Serial.begin(115200);
   //printf_begin();
@@ -55,12 +56,12 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
   
   IPAddress myIP(10, 10, 2, 4);
-  Ethernet.begin(myIP);
+  RF24E_begin(&RF24Ethernet,myIP);
   RF24M_begin(&mesh, MESH_DEFAULT_CHANNEL, RF24_1MBPS, MESH_RENEWAL_TIMEOUT);
 
   //Set IP of the RPi (gateway)
   IPAddress gwIP(10, 10, 2, 2);
-  Ethernet.set_gateway(gwIP);
+  RF24E_set_gateway(&RF24Ethernet,gwIP);
 
   server.begin();
 

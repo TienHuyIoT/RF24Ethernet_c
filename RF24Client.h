@@ -20,7 +20,7 @@
 #define RF24CLIENT_H
 
 #include "Print.h"
-#import "Client.h"
+#include "Client.h"
 
 //#define UIP_SOCKET_DATALEN UIP_TCP_MSS
 //#define UIP_SOCKET_NUMPACKETS UIP_RECEIVE_WINDOW/UIP_TCP_MSS+1
@@ -185,7 +185,7 @@ private:
 	static uip_userdata_t* _allocateData();
 	static size_t _write(uip_userdata_t *,const uint8_t *buf, size_t size);
 	
-	friend class RF24EthernetClass;
+	//friend class RF24EthernetClass;
 	friend class RF24Server;
 	
 	friend void serialip_appcall(void);

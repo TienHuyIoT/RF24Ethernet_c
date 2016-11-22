@@ -17,7 +17,7 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
   */
-#include "RF24Ethernet.h"
+#include "RF24Ethernet_c.h"
 #include "RF24Server.h"
 
 extern "C" {
@@ -34,7 +34,7 @@ RF24Server::RF24Server(uint16_t port) : _port(htons(port))
 
 RF24Client RF24Server::available()
 {
-  Ethernet.tick();
+  RF24E_tick(&RF24Ethernet);
   for ( uip_userdata_t* data = &RF24Client::all_data[0]; data < &RF24Client::all_data[UIP_CONNS]; data++ )
     {
         if (data->packets_in != 0 && (((data->state & UIP_CLIENT_CONNECTED) && uip_conns[data->state & UIP_CLIENT_SOCKETS].lport ==_port)
@@ -50,7 +50,7 @@ RF24Client RF24Server::available()
 void RF24Server::begin()
 {  
   uip_listen(_port);
-  RF24Ethernet.tick();  
+  RF24E_tick(&RF24Ethernet);
 }
 
 /*************************************************************/

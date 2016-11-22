@@ -32,17 +32,17 @@
  #include <Arduino.h>
 
 extern "C" {
-  #import "uip-conf.h"
-  #import "utility/uip.h"
+  #include "uip-conf.h"
+  #include "utility/uip.h"
   #include "utility/timer.h"
   #include "utility/uip_arp.h"
 
 }
-#include "RF24Ethernet_config.h"
-#include <RF24.h>
-#include <RF24Network.h>
+#include "RF24Ethernet_c_config.h"
+#include <RF24_c.h>
+#include <RF24Network_c.h>
 #if !defined (RF24_TAP) // Using RF24Mesh
-#include <RF24Mesh.h>
+#include <RF24Mesh_c.h>
 #endif
 
 #include "ethernet_comp.h"
@@ -102,55 +102,74 @@ typedef struct {
 //class RF24Network;
 
 
-class RF24EthernetClass {//: public Print {
-	public:
+//RF24EthernetClass
+typedef struct{ 
 	
+	RF24* radio;
+	RF24Network* network;
+#if !defined (RF24_TAP) // Using RF24Mesh
+        RF24Mesh* mesh;
+#endif
+        
+	IPAddress _dnsServerAddress;
+		
+	uint8_t RF24_Channel;
+
+	struct timer periodic_timer;
+	#if defined RF24_TAP
+	struct timer arp_timer;
+	#endif
+}RF24EthernetClass;
+
+
+extern RF24EthernetClass RF24Ethernet;
+
 		/**
 		* Constructor to set up the Ethernet layer. Requires the radio and network to be configured by the user
 		* this allows users to set custom settings at the radio or network level
 		*/
         #if !defined (RF24_TAP) // Using RF24Mesh
-		RF24EthernetClass(RF24& _radio,RF24Network& _network, RF24Mesh& _mesh);
-		#else
-        RF24EthernetClass(RF24& _radio,RF24Network& _network);
+	void RF24E_init(RF24EthernetClass * ec, RF24* _radio,RF24Network* _network, RF24Mesh* _mesh);
+	#else
+        void RF24E_init(RF24EthernetClass * ec, RF24* _radio,RF24Network* _network);
         #endif
 		/**
 		* Basic constructor
 		*/
-		RF24EthernetClass();
+		//RF24EthernetClass();
 		
 		/**
 		* @note Deprecated, maintained for backwards compatibility with old examples  
 		*  
 		* This function is no longer needed, and does nothing  
 		*/
-		void use_device();
+		void RF24E_use_device(RF24EthernetClass * ec);
 		
 		/**
 		* Configure the IP address and subnet mask of the node. This is independent of the RF24Network layer, so the IP 
 		* and subnet only have to conform to standard IP routing rules within your network
 		*/
-		void begin(IP_ADDR myIP, IP_ADDR subnet);
+		void RF24E_begin(RF24EthernetClass * ec, IP_ADDR myIP, IP_ADDR subnet);
 		
 		/**
 		* Configure the IP address and subnet mask of the node. This is independent of the RF24Network layer, so the IP 
 		* and subnet only have to conform to standard IP routing rules within your network
 		*/
-		void begin(IPAddress ip);
-		void begin(IPAddress ip, IPAddress dns);
-		void begin(IPAddress ip, IPAddress dns, IPAddress gateway);
-		void begin(IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet);		
+		void RF24E_begin(RF24EthernetClass * ec, IPAddress ip);
+		void RF24E_begin(RF24EthernetClass * ec, IPAddress ip, IPAddress dns);
+		void RF24E_begin(RF24EthernetClass * ec, IPAddress ip, IPAddress dns, IPAddress gateway);
+		void RF24E_begin(RF24EthernetClass * ec, IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet);		
 		
 		
 		/**
 		* Configure the gateway IP address. This is generally going to be your master node with RF24Network address 00.
 		*/
-		void set_gateway(IPAddress gwIP);
+		void RF24E_set_gateway(RF24EthernetClass * ec, IPAddress gwIP);
 		
 		/**
 		* Listen to a specified port - This will likely be changed to closer match the Arduino Ethernet API with server.begin();
 		*/
-		void listen(uint16_t port);
+		void RF24E_listen(RF24EthernetClass * ec, uint16_t port);
 
 		/* *
 		* Sets the MAC address of the RF24 module, which is an RF24Network address
@@ -159,63 +178,42 @@ class RF24EthernetClass {//: public Print {
 		* Please reference the RF24Network documentation for information on setting up a static network
 		* RF24Mesh will be integrated to provide this automatically
 		*/
-		void setMac(uint16_t address);
+		void RF24E_setMac(RF24EthernetClass * ec, uint16_t address);
 		
 		/** Sets the Radio channel/frequency to use (0-127)
 		*/
-		void setChannel(uint8_t channel);
+		void RF24E_setChannel(RF24EthernetClass * ec, uint8_t channel);
 		
 
 	/** Indicates whether data is available.
 	*/
-	int available();
+	int RF24E_available(RF24EthernetClass * ec);
 	
 	/** Returns the local IP address
 	*/
-	IPAddress localIP();
+	IPAddress RF24E_localIP(RF24EthernetClass * ec);
 	/** Returns the subnet mask
 	*/
-	IPAddress subnetMask();
+	IPAddress RF24E_subnetMask(RF24EthernetClass * ec);
 	/** Returns the gateway IP address
 	*/
-	IPAddress gatewayIP();
+	IPAddress RF24E_gatewayIP(RF24EthernetClass * ec);
 	/** Returns the DNS server IP address
 	*/
-	IPAddress dnsServerIP();
+	IPAddress RF24E_dnsServerIP(RF24EthernetClass * ec);
 
 	/** Keeps the TCP/IP stack running & processing incoming data
 	*/
-	void update();
+	void RF24E_update(RF24EthernetClass * ec);
     //uint8_t *key;
+
+	void RF24E_configure(RF24EthernetClass * ec, IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet);
+	// tick() must be called at regular intervals to process the incoming serial
+	// data and issue IP events to the sketch.  It does not return until all IP
+	// events have been processed.
+	void RF24E_tick(RF24EthernetClass * ec);
+	boolean RF24E_network_send(RF24EthernetClass * ec);		
 	
-	private:
-		RF24& radio;
-		RF24Network& network;
-        #if !defined (RF24_TAP) // Using RF24Mesh
-        RF24Mesh& mesh;
-		#endif
-        
-		static IPAddress _dnsServerAddress;
-		void configure(IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet);
-		// tick() must be called at regular intervals to process the incoming serial
-		// data and issue IP events to the sketch.  It does not return until all IP
-		// events have been processed.
-		static void tick();
-		static boolean network_send();		
-		
-		uint8_t RF24_Channel;
-
-		struct timer periodic_timer;
-		#if defined RF24_TAP
-		struct timer arp_timer;
-		#endif
-		friend class RF24Server;
-		friend class RF24Client;
-		friend class RF24UDP;
-};
-
-extern RF24EthernetClass RF24Ethernet;
-
 
 #endif
 

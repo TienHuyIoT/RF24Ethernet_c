@@ -14,7 +14,7 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
   */
-#include "RF24Ethernet.h"
+#include "RF24Ethernet_c.h"
 
 #define UIP_TCP_PHYH_LEN UIP_LLH_LEN+UIP_IPTCPH_LEN
 
@@ -43,7 +43,7 @@ int RF24Client::connect(IPAddress ip, uint16_t port) {
 
 #if UIP_ACTIVE_OPEN > 0
  
-  uint32_t timer = millis();
+  //uint32_t timer = millis();
 
 //do{
 
@@ -60,7 +60,7 @@ int RF24Client::connect(IPAddress ip, uint16_t port) {
     #endif
 
     while((conn->tcpstateflags & UIP_TS_MASK) != UIP_CLOSED) {
-      RF24EthernetClass::tick();
+      RF24E_tick(&RF24Ethernet);
 	
 	  if ((conn->tcpstateflags & UIP_TS_MASK) == UIP_ESTABLISHED) {
 	    data = (uip_userdata_t*) conn->appstate;
@@ -99,13 +99,13 @@ int RF24Client::connect(const char *host, uint16_t port) {
   ret = dns.getHostByName(host, remote_addr);
   
   if (ret == 1) {
-    #if defined (ETH_DEBUG_L1) || #defined (RF24ETHERNET_DEBUG_DNS)
+    #if defined (ETH_DEBUG_L1) || defined (RF24ETHERNET_DEBUG_DNS)
 	  Serial.println(F("*UIP Got DNS*"));
 	#endif
     return connect(remote_addr, port);
   }
   #endif
-  #if defined (ETH_DEBUG_L1) || #defined (RF24ETHERNET_DEBUG_DNS)
+  #if defined (ETH_DEBUG_L1) || defined (RF24ETHERNET_DEBUG_DNS)
     Serial.println(F("*UIP DNS fail*"));
   #endif
 
@@ -136,7 +136,7 @@ void RF24Client::stop() {
   }
 	
   data = NULL;
-  RF24Ethernet.tick();
+  RF24E_tick(&RF24Ethernet);
 }
 
 /*************************************************************/
@@ -150,7 +150,7 @@ bool RF24Client::operator==(const RF24Client& rhs) {
 /*************************************************************/
 
 RF24Client::operator bool() {
-  Ethernet.tick();
+  RF24E_tick(&RF24Ethernet);
   return data && (!(data->state & UIP_CLIENT_REMOTECLOSED) || data->packets_in != 0);
 }
 
@@ -174,11 +174,11 @@ size_t RF24Client::_write(uip_userdata_t* u, const uint8_t *buf, size_t size) {
   size_t payloadSize = rf24_min(size,UIP_TCP_MSS);
   //Serial.println("W1");
 
-  uint32_t testTimeout=millis();
+  //uint32_t testTimeout=millis();
   
 test2:    
 
-  RF24EthernetClass::tick(); 	
+  RF24E_tick(&RF24Ethernet);
   if (u && !(u->state & (UIP_CLIENT_CLOSE | UIP_CLIENT_REMOTECLOSED ) ) && u->state & (UIP_CLIENT_CONNECTED) ) {
 
     if( u->out_pos + payloadSize > UIP_TCP_MSS || u->hold){
@@ -241,7 +241,10 @@ void serialip_appcall(void) {
       IF_RF24ETHERNET_DEBUG_CLIENT( Serial.println(); Serial.print(millis()); Serial.print(F(" UIPClient uip_newdata, uip_len:")); Serial.println(uip_len); );
       
       if(u->sent){
-          u->hold = u->out_pos = u->windowOpened = u->packets_out = false;
+          u->hold =false;
+	  u->out_pos=false;
+	  u->windowOpened=false;
+	  u->packets_out= false;
       }
 	  if (uip_len && !(u->state & (UIP_CLIENT_CLOSE | UIP_CLIENT_REMOTECLOSED))){
 		  
@@ -284,7 +287,10 @@ void serialip_appcall(void) {
   if (uip_acked()) {
     IF_RF24ETHERNET_DEBUG_CLIENT( Serial.println(); Serial.print(millis()); Serial.println(F(" UIPClient uip_acked")); );
 	u->state &= ~UIP_CLIENT_RESTART;
-	u->hold = u->out_pos = u->windowOpened = u->packets_out = false;
+	u->hold=false;
+       	u->out_pos=false; 
+	u->windowOpened=false;
+       	u->packets_out=false;
 	u->connAbortTime = u->restartTime = millis();	
   }
 	
@@ -351,6 +357,7 @@ void serialip_appcall(void) {
     }
   }			
 finish:;
+ /*
 finish_newdata:
   if (u->state & UIP_CLIENT_RESTART && !u->windowOpened) {
     if( !(u->state & (UIP_CLIENT_CLOSE | UIP_CLIENT_REMOTECLOSED))){	  
@@ -364,6 +371,7 @@ finish_newdata:
 	  u->restartTime = u->connAbortTime = millis();
 	}
   }
+  */
   }
   
 
@@ -397,7 +405,7 @@ int RF24Client::waitAvailable(uint32_t timeout){
 		if(millis()-start > timeout){
 		  return 0; 
 		}
-		RF24Ethernet.tick();
+                RF24E_tick(&RF24Ethernet);
 	}
 	return available();
 }
@@ -406,7 +414,7 @@ int RF24Client::waitAvailable(uint32_t timeout){
 
 int RF24Client::available() {
   
-  RF24Ethernet.tick();    
+  RF24E_tick(&RF24Ethernet);
   if (*this){	
 	return _available(data);
   }

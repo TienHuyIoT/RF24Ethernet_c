@@ -2,7 +2,7 @@
 // (c) Copyright 2009-2010 MCQN Ltd.
 // Released under Apache License, version 2.0
 
-#include "RF24Ethernet.h"
+#include "RF24Ethernet_c.h"
 
 
 #if UIP_CONF_UDP > 0
