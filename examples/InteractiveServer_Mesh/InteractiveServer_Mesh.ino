@@ -39,7 +39,7 @@ RF24EthernetClass RF24Ethernet;
 #endif
 
 // Configure the server to listen on port 1000
-EthernetServer server = EthernetServer(1000);
+EthernetServer server;
 
 /**********************************************************/
 static unsigned short generate_tcp_stats();
@@ -49,21 +49,32 @@ void setup() {
   RF24N_init(&network,&radio);
   RF24M_init(&mesh,&radio,&network);
   RF24E_init(&RF24Ethernet, &radio, &network,&mesh);
+  RF24ES_init(&server,1000); 
 
   Serial.begin(115200);
   //printf_begin();
   Serial.println("start");
   pinMode(LED_PIN, OUTPUT);
   
-  IPAddress myIP(10, 10, 2, 4);
-  RF24E_begin(&RF24Ethernet,myIP);
+  IPAddress myIP;
+  myIP.bytes[0]=10;
+  myIP.bytes[1]=10;
+  myIP.bytes[2]=2;
+  myIP.bytes[3]=4;
+  
+  RF24E_begin_i(&RF24Ethernet,myIP);
   RF24M_begin(&mesh, MESH_DEFAULT_CHANNEL, RF24_1MBPS, MESH_RENEWAL_TIMEOUT);
 
   //Set IP of the RPi (gateway)
-  IPAddress gwIP(10, 10, 2, 2);
+  IPAddress gwIP;
+  gwIP.bytes[0]=10;
+  gwIP.bytes[1]=10;
+  gwIP.bytes[2]=2;
+  gwIP.bytes[3]=2;
+  
   RF24E_set_gateway(&RF24Ethernet,gwIP);
 
-  server.begin();
+  RF24ES_begin(&server);
 
 }
 
@@ -86,19 +97,20 @@ void loop() {
 
   size_t size;
 
-  if (EthernetClient client = server.available())
+  EthernetClient client = RF24ES_available(&server);
+  if (RF24EC_valid(&client)) 
   {
     uint8_t pageReq = 0;
     generate_tcp_stats();
-    while ((size = client.available()) > 0)
+    while ((size = RF24EC_available(&client)) > 0)
     {
       // If a request is received with enough characters, search for the / character
       if (size >= 7) {
-        client.findUntil("/", "/");
+        RF24EC_findUntil(&client,"/", "/");
         char buf[3] = {"  "};
-        if(client.available() >= 2){
-        buf[0] = client.read();  // Read in the first two characters from the request
-        buf[1] = client.read();
+        if(RF24EC_available(&client) >= 2){
+        buf[0] = RF24EC_read(&client);  // Read in the first two characters from the request
+        buf[1] = RF24EC_read(&client);
 
         if (strcmp(buf, "ON") == 0) { // If the user requested http://ip-of-node:1000/ON
           led_state = 1;
@@ -123,7 +135,7 @@ void loop() {
       }
       // Empty the rest of the data from the client
       //while (client.waitAvailable()) {
-        client.flush();
+        RF24EC_flush(&client);
       //}
     }
     
@@ -139,7 +151,7 @@ void loop() {
        default: break; 
     }    
 
-    client.stop();
+    RF24EC_stop(&client);
     Serial.println(F("********"));
 
   }

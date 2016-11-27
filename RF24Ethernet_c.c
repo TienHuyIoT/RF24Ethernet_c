@@ -1,5 +1,6 @@
 /*
  RF24Ethernet.cpp - Arduino implementation of a uIP wrapper class.
+ Copyright (c) 2016 Luis Claudio Gamboa Lopes <lcgamboa@yahoo.com>
  Copyright (c) 2014 tmrh20@gmail.com, github.com/TMRh20 
  Copyright (c) 2013 Norbert Truchsess <norbert.truchsess@t-online.de>
  All rights reserved.
@@ -48,7 +49,7 @@ void RF24E_update(RF24EthernetClass * ec) {
 
 /*************************************************************/
 #if defined ARDUINO_ARCH_AVR
-void yield(RF24EthernetClass * ec) {
+void RF24E_yield(RF24EthernetClass * ec) {
   RF24E_update(ec);
 }
 #endif
@@ -91,27 +92,31 @@ void RF24E_setChannel(RF24EthernetClass * ec,uint8_t channel){
 
 /*******************************************************/
 
-void RF24E_begin(RF24EthernetClass * ec,IPAddress ip)
+void RF24E_begin_i(RF24EthernetClass * ec,IPAddress ip)
 {
 IPAddress dns = ip;
-dns[3] = 1;
-RF24E_begin(ec,ip, dns);
+dns.bytes[3] = 1;
+RF24E_begin_id(ec,ip, dns);
 }
 
-void RF24E_begin(RF24EthernetClass * ec,IPAddress ip, IPAddress dns)
+void RF24E_begin_id(RF24EthernetClass * ec,IPAddress ip, IPAddress dns)
 {
 IPAddress gateway = ip;
-gateway[3] = 1;
-RF24E_begin(ec, ip, dns, gateway);
+gateway.bytes[3] = 1;
+RF24E_begin_idg(ec, ip, dns, gateway);
 }
 
-void RF24E_begin(RF24EthernetClass * ec,IPAddress ip, IPAddress dns, IPAddress gateway)
+void RF24E_begin_idg(RF24EthernetClass * ec,IPAddress ip, IPAddress dns, IPAddress gateway)
 {
-IPAddress subnet(255, 255, 255, 0);
-RF24E_begin(ec,ip, dns, gateway, subnet);
+IPAddress subnet;
+subnet.bytes[0]=255;
+subnet.bytes[1]=255;
+subnet.bytes[2]=255;
+subnet.bytes[3]=0;
+RF24E_begin_idgs(ec,ip, dns, gateway, subnet);
 }
 
-void RF24E_begin(RF24EthernetClass * ec,IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet)
+void RF24E_begin_idgs(RF24EthernetClass * ec,IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet)
 {
 //init(mac);
 RF24E_configure(ec,ip,dns,gateway,subnet);
@@ -122,7 +127,7 @@ RF24E_configure(ec,ip,dns,gateway,subnet);
 void RF24E_configure(RF24EthernetClass * ec,IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet) {
 
   #if !defined (RF24_TAP) // Using RF24Mesh
-    RF24M_setNodeID(ec->mesh,ip[3]);
+    RF24M_setNodeID(ec->mesh,ip.bytes[3]);
   #endif
   
 uip_buf = (uint8_t*) &ec->network->frag_ptr->message_buffer[0];
@@ -167,13 +172,20 @@ void RF24E_listen(RF24EthernetClass * ec,uint16_t port)
   uip_listen(HTONS(port));
 }
 
+
 /*******************************************************/
  
 IPAddress RF24E_localIP(RF24EthernetClass * ec) {
 IPAddress ret;
 uip_ipaddr_t a;
 uip_gethostaddr(a);
-return ip_addr_uip(a);
+
+ret.bytes[0]=a[0] & 0xFF;
+ret.bytes[1]=a[0] >> 8 ;
+ret.bytes[2]=a[1] & 0xFF;
+ret.bytes[3]=a[1] >> 8;
+
+return ret;
 }
 
 /*******************************************************/
@@ -182,7 +194,11 @@ IPAddress RF24E_subnetMask(RF24EthernetClass * ec) {
 IPAddress ret;
 uip_ipaddr_t a;
 uip_getnetmask(a);
-return ip_addr_uip(a);
+ret.bytes[0]=a[0] & 0xFF;
+ret.bytes[1]=a[0] >> 8 ;
+ret.bytes[2]=a[1] & 0xFF;
+ret.bytes[3]=a[1] >> 8;
+return ret;
 }
 
 /*******************************************************/
@@ -191,7 +207,11 @@ IPAddress RF24E_gatewayIP(RF24EthernetClass * ec) {
 IPAddress ret;
 uip_ipaddr_t a;
 uip_getdraddr(a);
-return ip_addr_uip(a);
+ret.bytes[0]=a[0] & 0xFF;
+ret.bytes[1]=a[0] >> 8 ;
+ret.bytes[2]=a[1] & 0xFF;
+ret.bytes[3]=a[1] >> 8;
+return ret;
 }
 
 /*******************************************************/
@@ -203,6 +223,7 @@ return ec->_dnsServerAddress;
 /*******************************************************/
 
 void RF24E_tick(RF24EthernetClass * ec) {
+    int i;	
     #if defined (ARDUINO_ARCH_ESP8266)
       RF24E_yield(ec);
     #endif
@@ -218,7 +239,7 @@ void RF24E_tick(RF24EthernetClass * ec) {
 	  }
 	} else if(timer_expired(&Ethernet.periodic_timer)) {
       timer_reset(&Ethernet.periodic_timer);
-      for(int i = 0; i < UIP_CONNS; i++) {
+      for(i = 0; i < UIP_CONNS; i++) {
 	    uip_periodic(i);
 	    /* If the above function invocation resulted in data that
 	    should be sent out on the network, the global variable

@@ -1,5 +1,6 @@
 /*
  RF24UDP.cpp - Arduino implementation of a uIP wrapper class.
+ Copyright (c) 2016 Luis Claudio Gamboa Lopes <lcgamboa@yahoo.com>
  Copyright (c) 2014 tmrh20@gmail.com, github.com/TMRh20 
  Copyright (c) 2013 Norbert Truchsess <norbert.truchsess@t-online.de>
  All rights reserved.

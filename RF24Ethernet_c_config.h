@@ -1,5 +1,6 @@
 /*
  RF24Server.cpp - Arduino implementation of a uIP wrapper class.
+ Copyright (c) 2016 Luis Claudio Gamboa Lopes <lcgamboa@yahoo.com>
  Copyright (c) 2014 tmrh20@gmail.com, github.com/TMRh20 
  All rights reserved.
 

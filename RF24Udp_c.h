@@ -1,5 +1,6 @@
 /*
  RF24Udp.h - Arduino implementation of a uIP wrapper class.
+ Copyright (c) 2016 Luis Claudio Gamboa Lopes <lcgamboa@yahoo.com> 
  Copyright (c) 2014 tmrh20@gmail.com, github.com/TMRh20 
  Copyright (c) 2013 Norbert Truchsess <norbert.truchsess@t-online.de>
  All rights reserved.
@@ -22,6 +23,10 @@
 
 #ifndef UIPUDP_H
 #define UIPUDP_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include "RF24Ethernet.h"
 
@@ -128,6 +133,9 @@ private:
   static void _send(uip_udp_userdata_t *data);
 
 };
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

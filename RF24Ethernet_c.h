@@ -4,6 +4,7 @@
   https://github.com/TMRh20
 
  RF24Ethernet.h - Arduino implementation of a uIP wrapper class.
+ Copyright (c) 2016 Luis Claudio Gamboa Lopes <lcgamboa@yahoo.com>
  Copyright (c) 2014 tmrh20@gmail.com, github.com/TMRh20 
  Copyright (c) 2013 Norbert Truchsess <norbert.truchsess@t-online.de>
  All rights reserved.
@@ -23,21 +24,24 @@
 #ifndef RF24Ethernet_h
 #define RF24Ethernet_h
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @file RF24Ethernet.h
  *
  * Class declaration for RF24Ethernet
  */
 
- #include <Arduino.h>
+#include <Arduino.h>
 
-extern "C" {
-  #include "uip-conf.h"
-  #include "utility/uip.h"
-  #include "utility/timer.h"
-  #include "utility/uip_arp.h"
+#include "uip-conf.h"
+#include "utility/uip.h"
+#include "utility/timer.h"
+#include "utility/uip_arp.h"
 
-}
+
 #include "RF24Ethernet_c_config.h"
 #include <RF24_c.h>
 #include <RF24Network_c.h>
@@ -45,16 +49,20 @@ extern "C" {
 #include <RF24Mesh_c.h>
 #endif
 
+
+typedef union {
+	uint8_t bytes[4];  // IPv4 address
+	uint32_t dword;
+} IPAddress;
+
 #include "ethernet_comp.h"
-#include "IPAddress.h"
-#include "RF24Client.h"
-#include "RF24Server.h"
+#include "RF24Client_c.h"
+#include "RF24Server_c.h"
 
 #if UIP_CONF_UDP > 0
-#include "RF24Udp.h"
-#include "Dns.h"
+#include "RF24Udp_c.h"
+#include "Dns_c.h"
 #endif
-
 
 
 #define UIPETHERNET_FREEPACKET 1
@@ -75,11 +83,11 @@ extern "C" {
                               uip_ethaddr.addr[4] = eaddr[4];\
                               uip_ethaddr.addr[5] = eaddr[5];} while(0)
 #define uip_ip_addr(addr, ip) do { \
-                     ((u16_t *)(addr))[0] = HTONS(((ip[0]) << 8) | (ip[1])); \
-                     ((u16_t *)(addr))[1] = HTONS(((ip[2]) << 8) | (ip[3])); \
+                     ((u16_t *)(addr))[0] = HTONS(((ip.bytes[0]) << 8) | (ip.bytes[1])); \
+                     ((u16_t *)(addr))[1] = HTONS(((ip.bytes[2]) << 8) | (ip.bytes[3])); \
                   } while(0)
 
-#define ip_addr_uip(a) IPAddress(a[0] & 0xFF, a[0] >> 8 , a[1] & 0xFF, a[1] >> 8) //TODO this is not IPV6 capable
+//#define ip_addr_uip(a) IPAddress(a[0] & 0xFF, a[0] >> 8 , a[1] & 0xFF, a[1] >> 8) //TODO this is not IPV6 capable
 
 #define uip_seteth_addr(eaddr) do {uip_ethaddr.addr[0] = eaddr[0]; \
                               uip_ethaddr.addr[1] = eaddr[1];\
@@ -155,10 +163,10 @@ extern RF24EthernetClass RF24Ethernet;
 		* Configure the IP address and subnet mask of the node. This is independent of the RF24Network layer, so the IP 
 		* and subnet only have to conform to standard IP routing rules within your network
 		*/
-		void RF24E_begin(RF24EthernetClass * ec, IPAddress ip);
-		void RF24E_begin(RF24EthernetClass * ec, IPAddress ip, IPAddress dns);
-		void RF24E_begin(RF24EthernetClass * ec, IPAddress ip, IPAddress dns, IPAddress gateway);
-		void RF24E_begin(RF24EthernetClass * ec, IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet);		
+		void RF24E_begin_i(RF24EthernetClass * ec, IPAddress ip);
+		void RF24E_begin_id(RF24EthernetClass * ec, IPAddress ip, IPAddress dns);
+		void RF24E_begin_idg(RF24EthernetClass * ec, IPAddress ip, IPAddress dns, IPAddress gateway);
+		void RF24E_begin_idgs(RF24EthernetClass * ec, IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet);		
 		
 		
 		/**
@@ -214,6 +222,9 @@ extern RF24EthernetClass RF24Ethernet;
 	void RF24E_tick(RF24EthernetClass * ec);
 	boolean RF24E_network_send(RF24EthernetClass * ec);		
 	
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

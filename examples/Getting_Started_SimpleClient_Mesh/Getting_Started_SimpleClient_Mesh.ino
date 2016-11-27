@@ -86,11 +86,11 @@
 
 
 
-#include <RF24.h>
-#include <RF24Mesh.h>
-#include <RF24Network.h>
+#include <RF24_c.h>
+#include <RF24Mesh_c.h>
+#include <RF24Network_c.h>
 //#include <printf.h>
-#include <RF24Ethernet.h>
+#include <RF24Ethernet_c.h>
 #if !defined __arm__ && !defined __ARDUINO_X86__
   #include <EEPROM.h>
 #endif
@@ -99,7 +99,7 @@
 RF24 radio;
 RF24Network network;
 RF24Mesh mesh;
-RF24EthernetClass RF24Ethernet(radio,network,mesh);
+RF24EthernetClass RF24Ethernet;
 
 
 EthernetClient client;
@@ -108,20 +108,31 @@ void setup() {
   RF24_init(&radio,7,8);
   RF24N_init(&network,&radio);
   RF24M_init(&mesh,&radio,&network);
-
+  RF24E_init(&RF24Ethernet, &radio, &network,&mesh);
+  
   Serial.begin(115200);
  // printf_begin();
   Serial.println("Start");
   
   // Set the IP address we'll be using. The last octet mast match the nodeID (9)
-  IPAddress myIP(10,10,2,4);
-  Ethernet.begin(myIP);
+  IPAddress myIP;
+  myIP.bytes[0]=10;
+  myIP.bytes[1]=10;
+  myIP.bytes[2]=2;
+  myIP.bytes[3]=4;
+   
+  RF24E_begin_i(&RF24Ethernet,myIP);
   RF24M_begin(&mesh,MESH_DEFAULT_CHANNEL, RF24_1MBPS, MESH_RENEWAL_TIMEOUT);
   
   // If you'll be making outgoing connections from the Arduino to the rest of
   // the world, you'll need a gateway set up.
-  IPAddress gwIP(10,10,2,2);
-  Ethernet.set_gateway(gwIP);  
+  IPAddress gwIP;
+  gwIP.bytes[0]=10;
+  gwIP.bytes[1]=10;
+  gwIP.bytes[2]=2;
+  gwIP.bytes[3]=2;
+  
+  RF24E_set_gateway(&RF24Ethernet,gwIP);  
 }
 
 uint32_t counter = 0;
@@ -143,8 +154,8 @@ void loop() {
 
 size_t size;
 
-if(size = client.available() > 0){
-    char c = client.read();
+if(size = RF24EC_available(&client) > 0){
+    char c = RF24EC_read(&client);
     Serial.print(c);
     // Sends a line-break every 150 characters, comment out if not connecting to google
     //if(counter > 150){ Serial.println(""); counter=0;}
@@ -152,14 +163,14 @@ if(size = client.available() > 0){
 }
 
   // if the server's disconnected, stop the client:
-  if (!client.connected()) {
+  if (!RF24EC_connected(&client)) {
     Serial.println();
     Serial.println(F("Disconnect. Waiting for disconnect timeout"));
-    client.stop();
+    RF24EC_stop(&client);
   
     // Wait 5 seconds between requests
     reqTimer = millis();
-    while(millis() - reqTimer < 5000 && !client.available() ){ }    
+    while(millis() - reqTimer < 5000 && ! RF24EC_available(&client) ){ }    
     connect();
   
   }
@@ -169,19 +180,29 @@ if(size = client.available() > 0){
 
 void connect(){
     Serial.println(F("connecting"));
-    IPAddress goog(74,125,224,87);
-    IPAddress pizza(94,199,58,243);
-    if (client.connect(pizza, 80)) {
+    IPAddress goog;
+    goog.bytes[0]=74;
+    goog.bytes[1]=125;
+    goog.bytes[2]=224;
+    goog.bytes[3]=87;
+    
+    IPAddress pizza;;
+    pizza.bytes[0]=94;
+    pizza.bytes[1]=199;
+    pizza.bytes[2]=58;
+    pizza.bytes[3]=243;
+
+    if (RF24EC_connect(&client,pizza, 80)) {
       Serial.println(F("connected"));
       
       // Make an HTTP request:
-      client.write("GET /asciiart/pizza.txt HTTP/1.1\n");
+      RF24EC_write_s(&client,"GET /asciiart/pizza.txt HTTP/1.1\n");
       //client.write("GET / HTTP/1.1\n");
       
-      client.write("Host: fiikus.net\n");
+      RF24EC_write_s(&client,"Host: fiikus.net\n");
       //client.write("Host: www.google.ca\n");
       
-      client.write("Connection: close\n\n");   
+      RF24EC_write_s(&client,"Connection: close\n\n");   
     
     }else{
       // if you didn't get a connection to the server:

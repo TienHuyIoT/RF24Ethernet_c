@@ -1,5 +1,6 @@
 /*
  RF24Server.h - Arduino implementation of a uIP wrapper class.
+ Copyright (c) 2016 Luis Claudio Gamboa Lopes <lcgamboa@yahoo.com>
  Copyright (c) 2014 tmrh20@gmail.com, github.com/TMRh20 
  Copyright (c) 2013 Norbert Truchsess <norbert.truchsess@t-online.de>
  All rights reserved.
@@ -18,23 +19,27 @@
 #ifndef RF24SERVER_H
 #define RF24SERVER_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#include "Server.h"
-#include "RF24Client.h"
+//#include "Server.h"
+#include "RF24Client_c.h"
 #include "ethernet_comp.h"
 
-class RF24Server : public Server {
-
-public:
-  RF24Server(uint16_t);
-  RF24Client available();
-  void begin();
-  size_t write(uint8_t);
-  size_t write(const uint8_t *buf, size_t size);
-  using Print::write;
-
-private:
+typedef struct{
   uint16_t _port;
-};
+}RF24Server;
+
+  void RF24ES_init(RF24Server *srv,uint16_t);
+  RF24Client RF24ES_available(RF24Server *srv);
+  void RF24ES_begin(RF24Server *srv);
+  size_t RF24ES_write_b(RF24Server *srv,uint8_t);
+  size_t RF24ES_write(RF24Server *srv,const uint8_t *buf, size_t size);
+  size_t RF24ES_write_s(RF24Server *srv,const char *str);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
