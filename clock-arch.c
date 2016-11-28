@@ -18,7 +18,11 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#ifndef __XC8
 #include <Arduino.h>
+#else
+#include"xc8_config.h"
+#endif
 #include "clock-arch.h"
 
 clock_time_t clock_time(void)

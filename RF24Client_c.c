@@ -274,10 +274,11 @@ void serialip_appcall() {
 		  
 		uip_stop();
 		u->state &= ~UIP_CLIENT_RESTART;
-		u->windowOpened = false;			
-		u->connAbortTime = u->restartTime = millis();
+		u->windowOpened = false;	
+        u->restartTime = millis();		
+		u->connAbortTime = u->restartTime;
 	    memcpy(&u->myDataIn[u->dataPos+u->dataCnt], uip_appdata, uip_datalen());
-	    u->dataCnt += uip_datalen();
+	    u->dataCnt = u->dataCnt+uip_datalen();
 		
 	    u->packets_in = 1;
 		  
@@ -315,7 +316,8 @@ void serialip_appcall() {
        	u->out_pos=false; 
 	u->windowOpened=false;
        	u->packets_out=false;
-	u->connAbortTime = u->restartTime = millis();	
+    u->restartTime = millis();    
+	u->connAbortTime = u->restartTime;	
   }
 	
   /*******Polling**********/
@@ -353,7 +355,7 @@ void serialip_appcall() {
 		#if defined RF24ETHERNET_DEBUG_CLIENT || defined ETH_DEBUG_L1
 		  Serial.println(); Serial.print(millis()); Serial.print(F(" UIPClient Re-Open TCP Window, time remaining before abort: ")); Serial.println((UIP_CONNECTION_TIMEOUT - (millis() - u->connAbortTime)) / 1000.00);
 		#endif
-		  u->restartInterval+=500;
+		  u->restartInterval=u->restartInterval+500;
 		  u->restartInterval=rf24_min(u->restartInterval,7000);
 		  uip_restart();
 		#if defined UIP_CONNECTION_TIMEOUT
@@ -538,10 +540,19 @@ bool RF24EC_find(RF24Client* cli, char * target)
 bool RF24EC_findUntil_f(RF24Client* cli, char *target, size_t targetLen, char *terminator, size_t termLen)
 {
   if (terminator == NULL) {
-    MultiTarget t[1] = {{target, targetLen, 0}};
+    MultiTarget t[1];
+    t[0].str=target;
+    t[0].len=targetLen;
+    t[0].index=0;
     return RF24EC_findMulti(cli,t, 1) == 0 ? true : false;
   } else {
-    MultiTarget t[2] = {{target, targetLen, 0}, {terminator, termLen, 0}};
+    MultiTarget t[2];
+    t[0].str=target;
+    t[0].len=targetLen;
+    t[0].index=0;
+    t[1].str=terminator;
+    t[1].len=termLen;
+    t[1].index=0;
     return RF24EC_findMulti(cli,t, 2) == 0 ? true : false;
   }
 }
@@ -588,7 +599,6 @@ int RF24EC_findMulti(RF24Client* cli, MultiTarget *targets, int tCount) {
     if (c < 0)
       return -1;
 
-    MultiTarget *t;
     for (t = targets; t < targets+tCount; ++t) {
       // the simple case is if we match, deal with that first.
       if (c == t->str[t->index]) {
@@ -667,6 +677,7 @@ int RF24EC_peekNextDigit(RF24Client* cli, LookaheadMode_ lookahead, bool detectD
     }
     RF24EC_read(cli);  // discard non-numeric
   }
+  return -1;
 }
 
 // private method to read stream with timeout

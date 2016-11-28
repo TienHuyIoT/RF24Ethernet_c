@@ -44,7 +44,9 @@
 #ifndef __UIP_CONF_H__
 #define __UIP_CONF_H__
 
+#ifndef __XC8
 #include <inttypes.h>
+#endif
 
 #include "RF24Network_c_config.h"
 /************* TMRh20: User Configuration *******************/

@@ -1,4 +1,10 @@
+
+
+#ifdef __XC8
+#define DEBUG_PRINTF(x)
+#else
 #define DEBUG_PRINTF(...) /*printf(__VA_ARGS__)*/
+#endif
 
 /**
  * \defgroup uip The uIP TCP/IP stack

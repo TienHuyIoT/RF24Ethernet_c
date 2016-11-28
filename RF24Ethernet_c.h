@@ -34,8 +34,9 @@ extern "C" {
  * Class declaration for RF24Ethernet
  */
 
+#ifndef __XC8
 #include <Arduino.h>
-
+#endif
 #include "uip-conf.h"
 #include "utility/uip.h"
 #include "utility/timer.h"
@@ -220,7 +221,7 @@ extern RF24EthernetClass RF24Ethernet;
 	// data and issue IP events to the sketch.  It does not return until all IP
 	// events have been processed.
 	void RF24E_tick(RF24EthernetClass * ec);
-	boolean RF24E_network_send(RF24EthernetClass * ec);		
+	int RF24E_network_send(RF24EthernetClass * ec);		
 	
 #ifdef __cplusplus
 }

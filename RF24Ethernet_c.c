@@ -311,7 +311,7 @@ void RF24E_tick(RF24EthernetClass * ec) {
 }
 
 
-boolean RF24E_network_send(RF24EthernetClass * ec)
+int RF24E_network_send(RF24EthernetClass * ec)
 {
 		RF24NetworkHeader headerOut;
 		RF24NH_init(&headerOut,00,EXTERNAL_DATA_TYPE);

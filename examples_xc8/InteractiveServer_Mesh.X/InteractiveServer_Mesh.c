@@ -25,6 +25,8 @@
 #include <RF24Ethernet_c.h>
 #include "HTML.h"
 #include <RF24Mesh_c.h>
+#include"serial.h"
+
 
 /*** Configure the radio CE & CS pins ***/
 RF24 radio;
@@ -35,7 +37,7 @@ RF24EthernetClass RF24Ethernet;
 #if defined (ARDUINO_ARCH_ESP8266)
   #define LED_PIN BUILTIN_LED
 #else
-  #define LED_PIN A3 //Analog pin A3
+  #define LED_PIN 33 
 #endif
 
 // Configure the server to listen on port 1000
@@ -45,25 +47,26 @@ EthernetServer server;
 static unsigned short generate_tcp_stats();
 
 void setup() {
-  RF24_init(&radio,7,8);
+  RF24_init(&radio,36,35);
   RF24N_init(&network,&radio);
   RF24M_init(&mesh,&radio,&network);
   RF24E_init(&RF24Ethernet, &radio, &network,&mesh);
   RF24ES_init(&server,1000); 
 
-  Serial.begin(115200);
+  Serial_begin(115200);
   //printf_begin();
-  Serial.println("start");
+  Serial_println("start");
   pinMode(LED_PIN, OUTPUT);
   
-  IPAddress myIP= {10,10,2,4};
-
+  IPAddress myIP={10,10,2,4};
+  
   RF24E_begin_i(&RF24Ethernet,myIP);
   RF24M_begin(&mesh, MESH_DEFAULT_CHANNEL, RF24_1MBPS, MESH_RENEWAL_TIMEOUT);
 
   //Set IP of the RPi (gateway)
   IPAddress gwIP={10,10,2,2};
-
+ 
+  
   RF24E_set_gateway(&RF24Ethernet,gwIP);
 
   RF24ES_begin(&server);
@@ -136,15 +139,15 @@ void loop() {
     * see HTML.h
     */
     switch(pageReq){
-       case 2: stats_page(client); break;
-       case 3: credits_page(client); break;
-       case 4: main_page(client); break;
-       case 1: main_page(client); break;
+       case 2: stats_page(&client); break;
+       case 3: credits_page(&client); break;
+       case 4: main_page(&client); break;
+       case 1: main_page(&client); break;
        default: break; 
     }    
 
     RF24EC_stop(&client);
-    Serial.println(F("********"));
+    Serial_println(F("********"));
 
   }
 
@@ -167,24 +170,25 @@ static unsigned short generate_tcp_stats()
 
     // If the application state is active for an available connection, print the info
     if (conn->appstate) {
-      Serial.print(F("Connection no "));
-      Serial.println(i);
-      Serial.print(F("Local Port "));
-      Serial.println(htons(conn->lport));
-      Serial.print(F("Remote IP/Port "));
-      Serial.print(htons(conn->ripaddr[0]) >> 8);
-      Serial.print(F("."));
-      Serial.print(htons(conn->ripaddr[0]) & 0xff);
-      Serial.print(F("."));
-      Serial.print(htons(conn->ripaddr[1]) >> 8);
-      Serial.print(F("."));
-      Serial.print(htons(conn->ripaddr[1]) & 0xff);
-      Serial.print(F(":"));
-      Serial.println(htons(conn->rport));
-      Serial.print(F("Outstanding "));
-      Serial.println((uip_outstanding(conn)) ? '*' : ' ');
+      Serial_print(F("Connection no "));
+      Serial_println(i);
+      Serial_print(F("Local Port "));
+      Serial_println(itoa_(htons(conn->lport)));
+      Serial_print(F("Remote IP/Port "));
+      Serial_print(itoa_(htons(conn->ripaddr[0]) >> 8));
+      Serial_print(F("."));
+      Serial_print(itoa_(htons(conn->ripaddr[0]) & 0xff));
+      Serial_print(F("."));
+      Serial_print(itoa_(htons(conn->ripaddr[1]) >> 8));
+      Serial_print(F("."));
+      Serial_print(itoa_(htons(conn->ripaddr[1]) & 0xff));
+      Serial_print(F(":"));
+      Serial_println(itoa_(htons(conn->rport)));
+      Serial_print(F("Outstanding "));
+      Serial_println((uip_outstanding(conn)) ? '*' : ' ');
 
     }
   }
+  return 1;
 }
 

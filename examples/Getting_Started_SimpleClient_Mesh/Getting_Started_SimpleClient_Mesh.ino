@@ -115,22 +115,14 @@ void setup() {
   Serial.println("Start");
   
   // Set the IP address we'll be using. The last octet mast match the nodeID (9)
-  IPAddress myIP;
-  myIP.bytes[0]=10;
-  myIP.bytes[1]=10;
-  myIP.bytes[2]=2;
-  myIP.bytes[3]=4;
+  IPAddress myIP={10,10,2,4};
    
   RF24E_begin_i(&RF24Ethernet,myIP);
   RF24M_begin(&mesh,MESH_DEFAULT_CHANNEL, RF24_1MBPS, MESH_RENEWAL_TIMEOUT);
   
   // If you'll be making outgoing connections from the Arduino to the rest of
   // the world, you'll need a gateway set up.
-  IPAddress gwIP;
-  gwIP.bytes[0]=10;
-  gwIP.bytes[1]=10;
-  gwIP.bytes[2]=2;
-  gwIP.bytes[3]=2;
+  IPAddress gwIP={10,10,2,2};
   
   RF24E_set_gateway(&RF24Ethernet,gwIP);  
 }
@@ -180,18 +172,10 @@ if(size = RF24EC_available(&client) > 0){
 
 void connect(){
     Serial.println(F("connecting"));
-    IPAddress goog;
-    goog.bytes[0]=74;
-    goog.bytes[1]=125;
-    goog.bytes[2]=224;
-    goog.bytes[3]=87;
+    IPAddress goog={74,125,224,87};
     
-    IPAddress pizza;;
-    pizza.bytes[0]=94;
-    pizza.bytes[1]=199;
-    pizza.bytes[2]=58;
-    pizza.bytes[3]=243;
-
+    IPAddress pizza={94,199,58,243};
+    
     if (RF24EC_connect(&client,pizza, 80)) {
       Serial.println(F("connected"));
       
