@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <executable name="dist/xc8/production/InteractiveServer_Mesh.X.production.hex">
+    <memory name="program">
+      <units>bytes</units>
+      <length>65536</length>
+      <used>43781</used>
+      <free>21755</free>
+    </memory>
+    <memory name="data">
+      <units>bytes</units>
+      <length>3968</length>
+      <used>1920</used>
+      <free>2048</free>
+    </memory>
+  </executable>
+</project>

@@ -28,8 +28,6 @@
 extern "C" {
 #endif
 
-//#include "Print.h"
-//#include "Client.h"
 #define NO_IGNORE_CHAR  '\x01'
 
 //#define UIP_SOCKET_DATALEN UIP_TCP_MSS
@@ -62,13 +60,13 @@ typedef struct {
  */
 typedef struct {
   uint8_t state;
-  bool packets_in;
-  bool packets_out;
+  uint8_t packets_in;
+  uint8_t packets_out;
   uint16_t out_pos;
 #if UIP_CLIENT_TIMER >= 0
   unsigned long timer;
 #endif
- bool windowOpened;
+ uint8_t windowOpened;
  uint32_t restartTime;
  uint32_t restartInterval;
  uint32_t connAbortTime;
@@ -76,8 +74,8 @@ typedef struct {
  uint8_t myDataIn[OUTPUT_BUFFER_SIZE]; 
  uint16_t dataPos;
  uint16_t dataCnt;
- bool hold;
- bool sent;
+ uint8_t hold;
+ uint8_t sent;
 } uip_userdata_t;
 
 typedef enum{
@@ -102,18 +100,20 @@ typedef struct{
 }RF24Client;
 
 
+//extern RF24Client cli;
+
 	/**
 	* Basic constructor
 	*/	
-	void RF24EC_init(RF24Client* cli);
-	void RF24EC_init_d(RF24Client* cli, uip_userdata_t* conn_data);
-        void RF24EC_init_c(RF24Client* cli, struct uip_conn *_conn);
+	void RF24EC_init(void);
+	void RF24EC_init_d( uip_userdata_t* conn_data);
+        void RF24EC_init_c(struct uip_conn *_conn);
 
 
 	/**
 	* Establish a connection to a specified IP address and port
 	*/
-	int RF24EC_connect(RF24Client* cli, IPAddress ip, uint16_t port);
+	int RF24EC_connect( IPAddress * ip, uint16_t port);
     
 	/**
 	* Establish a connection to a given hostname and port
@@ -123,7 +123,7 @@ typedef struct{
 	* Lookups will generally return responses with a single A record if using hostnames like
 	* "www.google.com" instead of "google.com" which works well with the default buffer size
 	*/
-	int RF24EC_connect_h(RF24Client* cli, const char *host, uint16_t port);
+	int RF24EC_connect_h( const char *host, uint16_t port);
     
 	/**
 	* Read available data into a buffer
@@ -132,7 +132,7 @@ typedef struct{
     * client.read(buf,size);
 	* @endcode
 	*/
-	int RF24EC_read_b(RF24Client* cli, uint8_t *buf, size_t size);
+	int RF24EC_read_b( uint8_t *buf, size_t size);
 	
 	/**
 	* Read data one byte at a time
@@ -140,31 +140,31 @@ typedef struct{
 	* char c = client.read();
 	* @endcode
 	*/
-	int RF24EC_read(RF24Client* cli);
+	int RF24EC_read(void);
 	
 	/**
 	* Disconnects from the current active connection
 	*/
-        void RF24EC_stop(RF24Client* cli);  
+        void RF24EC_stop(void);  
   
 	/**
 	* Indicates whether the client is connected or not
 	*/
-	uint8_t RF24EC_connected(RF24Client* cli);
+	uint8_t RF24EC_connected(void);
 	
 	/**
 	* Write a single byte of data to the stream
 	* @note This will write an entire TCP payload with only 1 byte in it
 	*/
-    size_t RF24EC_write_b(RF24Client* cli, uint8_t);
+    size_t RF24EC_write_b( uint8_t);
 	
 	/**
 	* Write a buffer of data, to be sent in a single TCP packet
 	*/
-    size_t RF24EC_write(RF24Client* cli, const uint8_t *buf, size_t size);
+    size_t RF24EC_write( const uint8_t *buf, size_t size);
    
     
-    size_t RF24EC_write_s(RF24Client* cli, const char *str);
+    size_t RF24EC_write_s( const char *str);
     
 
 	/**
@@ -173,7 +173,7 @@ typedef struct{
 	* @note Calling client or server available() keeps the IP stack and RF24Network layer running, so needs to be called regularly,  
     * even when disconnected or delaying for extended periods.  
 	*/
-	int RF24EC_available(RF24Client* cli);
+	int RF24EC_available(void);
     
 	/**
 	* Wait Available
@@ -187,29 +187,29 @@ typedef struct{
 	*/
 	
 	//int RF24EC_waitAvailable(RF24Client* cli, uint32_t timeout=750);
-	int RF24EC_waitAvailable(RF24Client* cli, uint32_t timeout);
+	int RF24EC_waitAvailable( uint32_t timeout);
     
 	/**
 	* Read a byte from the incoming buffer without advancing the point of reading
 	*/
-	int RF24EC_peek(RF24Client* cli);
+	int RF24EC_peek(void);
 	
 	/**
 	* Flush all incoming client data from the current connection/buffer
 	*/
-    void RF24EC_flush(RF24Client* cli);
+    void RF24EC_flush(void);
    
 
    
-    bool RF24EC_findUntil(RF24Client* cli, char * target,char * terminator);
-    bool RF24EC_findUntil_f(RF24Client* cli, char *target, size_t targetLen, char *terminate, size_t termLen);  
+    uint8_t RF24EC_findUntil(const char * target,const char * terminator);
+    uint8_t RF24EC_findUntil_f(const char *target, size_t targetLen, const char *terminate, size_t termLen);  
  
        
-    bool RF24EC_find(RF24Client* cli, char * target);
+    uint8_t RF24EC_find(const char * target);
 
-    int RF24EC_peekNextDigit(RF24Client* cli, LookaheadMode_ lookahead, bool detectDecimal); // returns the next numeric digit in the stream or -1 if timeout
+    int RF24EC_peekNextDigit(LookaheadMode_ lookahead, uint8_t detectDecimal); // returns the next numeric digit in the stream or -1 if timeout
     //long RF24EC_parseInt(RF24Client* cli, LookaheadMode lookahead = SKIP_ALL, char ignore = NO_IGNORE_CHAR);
-    long RF24EC_parseInt(RF24Client* cli, LookaheadMode_ lookahead, char ignore );
+    long RF24EC_parseInt(LookaheadMode_ lookahead, char ignore );
 
   typedef struct{
     const char *str;  // string you're searching for
@@ -217,24 +217,24 @@ typedef struct{
     size_t index;     // index used by the search routine.
   }MultiTarget;
 
-    int RF24EC_findMulti(RF24Client* cli,MultiTarget *targets, int tCount);
+    int RF24EC_findMulti(MultiTarget *targets, int tCount);
 
 		
 //    operator bool();
 //    virtual bool operator==(const EthernetClient&);
 //    virtual bool operator!=(const EthernetClient& rhs) { return !this->operator==(rhs); };
 
-    int RF24EC_valid(RF24Client *cli);   
+    int RF24EC_valid(void);   
 
 
-    size_t RF24EC__write(RF24Client* cli, uip_userdata_t *,const uint8_t *buf, size_t size);
+    size_t RF24EC__write(uip_userdata_t *,const uint8_t *buf, size_t size);
 
 
-    int RF24EC_timedRead(RF24Client* cli);    // private method to read stream with timeout
-    int RF24EC_timedPeek(RF24Client* cli);    // private method to peek stream with timeout
+    int RF24EC_timedRead(void);    // private method to read stream with timeout
+    int RF24EC_timedPeek(void);    // private method to peek stream with timeout
 
  
-    int RF24EC__available(RF24Client* cli, uip_userdata_t *);	
+    int RF24EC__available(uip_userdata_t *);	
     uip_userdata_t* RF24EC__allocateData(void);
 
 #ifdef __cplusplus

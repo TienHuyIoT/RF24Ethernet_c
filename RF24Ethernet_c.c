@@ -24,38 +24,28 @@
 IPAddress RF24E__dnsServerAddress;
 //DhcpClass* RF24E__dhcp(NULL);
 
+
+static RF24EthernetClass  ec;
+
 /*************************************************************/
-#if defined (RF24_TAP) 
-void RF24E_init(RF24EthernetClass * ec,RF24* _radio, RF24Network* _network)
-	//fn_uip_cb(NULL)
+void RF24E_init(void)
 {
-  ec->radio=_radio;
-  ec->network=_network;
 }
-#else // Using RF24Mesh
-void RF24E_init(RF24EthernetClass * ec,RF24* _radio, RF24Network* _network, RF24Mesh* _mesh)
-	//fn_uip_cb(NULL)
-{
-  ec->radio=_radio;
-  ec->network=_network;
-  ec->mesh=_mesh;
-}
-#endif
 /*************************************************************/
 
-void RF24E_update(RF24EthernetClass * ec) {
-  RF24E_tick(ec);
+void RF24E_update(void) {
+  RF24E_tick();
 }
 
 /*************************************************************/
 #if defined ARDUINO_ARCH_AVR
-void RF24E_yield(RF24EthernetClass * ec) {
-  RF24E_update(ec);
+void RF24E_yield(void) {
+  RF24E_update();
 }
 #endif
 /*************************************************************/
 
-void RF24E_use_device(RF24EthernetClass * ec)
+void RF24E_use_device(void)
 {
 // Kept for backwards compatibility only
 }
@@ -63,10 +53,10 @@ void RF24E_use_device(RF24EthernetClass * ec)
 /*******************************************************/
 
 /*******************************************************/
-void RF24E_setMac(RF24EthernetClass * ec,uint16_t address){
+void RF24E_setMac(uint16_t address){
 	
-	if(!ec->network->multicastRelay){ // Radio has not been started yet
-	  RF24_begin(ec->radio);
+	if(!ec.network->multicastRelay){ // Radio has not been started yet
+	  RF24_begin();
 	}	
 	
 	#if defined (RF24_TAP)
@@ -76,61 +66,67 @@ void RF24E_setMac(RF24EthernetClass * ec,uint16_t address){
 	  uip_seteth_addr(mac);
    	  network.multicastRelay = 1;
 	#endif
-	ec->RF24_Channel = ec->RF24_Channel ? ec->RF24_Channel : 97;
-	RF24N_begin_d(ec->network,ec->RF24_Channel, address);
+	ec.RF24_Channel = ec.RF24_Channel ? ec.RF24_Channel : 97;
+	RF24N_begin_d(ec.RF24_Channel, address);
 }
 
 /*******************************************************/
 
-void RF24E_setChannel(RF24EthernetClass * ec,uint8_t channel){
+void RF24E_setChannel(uint8_t channel){
 	
-	ec->RF24_Channel = channel;
-	if(ec->network->multicastRelay){ // Radio has not been started yet
-	  RF24_setChannel(ec->radio,ec->RF24_Channel);
+	ec.RF24_Channel = channel;
+	if(ec.network->multicastRelay){ // Radio has not been started yet
+	  RF24_setChannel(ec.RF24_Channel);
 	}
 }
 
 /*******************************************************/
 
-void RF24E_begin_i(RF24EthernetClass * ec,IPAddress ip)
+void RF24E_begin_i(IPAddress *ip)
 {
-IPAddress dns = ip;
-dns.bytes[3] = 1;
-RF24E_begin_id(ec,ip, dns);
+IPAddress dns[4]; 
+dns[0]=ip[0];
+dns[1]=ip[1];
+dns[2]=ip[2];
+dns[3] = 1;
+RF24E_begin_id(ip, dns);
 }
 
-void RF24E_begin_id(RF24EthernetClass * ec,IPAddress ip, IPAddress dns)
+void RF24E_begin_id(IPAddress *ip, IPAddress* dns)
 {
-IPAddress gateway = ip;
-gateway.bytes[3] = 1;
-RF24E_begin_idg(ec, ip, dns, gateway);
+IPAddress gateway[4];
+gateway[0]= ip[0];
+gateway[1]= ip[1];
+gateway[2]= ip[2];
+gateway[3] = 1;
+RF24E_begin_idg(ip, dns, gateway);
 }
 
-void RF24E_begin_idg(RF24EthernetClass * ec,IPAddress ip, IPAddress dns, IPAddress gateway)
+void RF24E_begin_idg(IPAddress *ip, IPAddress *dns, IPAddress* gateway)
 {
-IPAddress subnet;
-subnet.bytes[0]=255;
-subnet.bytes[1]=255;
-subnet.bytes[2]=255;
-subnet.bytes[3]=0;
-RF24E_begin_idgs(ec,ip, dns, gateway, subnet);
+IPAddress subnet[4];
+subnet[0]=255;
+subnet[1]=255;
+subnet[2]=255;
+subnet[3]=0;
+RF24E_begin_idgs(ip, dns, gateway, subnet);
 }
 
-void RF24E_begin_idgs(RF24EthernetClass * ec,IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet)
+void RF24E_begin_idgs(IPAddress *ip, IPAddress *dns, IPAddress *gateway, IPAddress *subnet)
 {
 //init(mac);
-RF24E_configure(ec,ip,dns,gateway,subnet);
+RF24E_configure(ip,dns,gateway,subnet);
 }
 
 /*******************************************************/
 
-void RF24E_configure(RF24EthernetClass * ec,IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet) {
+void RF24E_configure(IPAddress *ip, IPAddress *dns, IPAddress *gateway, IPAddress *subnet) {
 
   #if !defined (RF24_TAP) // Using RF24Mesh
-    RF24M_setNodeID(ec->mesh,ip.bytes[3]);
+    RF24M_setNodeID(ip[3]);
   #endif
   
-uip_buf = (uint8_t*) &ec->network->frag_ptr->message_buffer[0];
+uip_buf = (uint8_t*) &RF24N_getFrag_ptr()->message_buffer[0];
 
 uip_ipaddr_t ipaddr;
 uip_ip_addr(ipaddr, ip);
@@ -139,14 +135,17 @@ uip_ip_addr(ipaddr, gateway);
 uip_setdraddr(ipaddr);
 uip_ip_addr(ipaddr, subnet);
 uip_setnetmask(ipaddr);
-ec->_dnsServerAddress = dns;
+ec._dnsServerAddress[0] = dns[0];
+ec._dnsServerAddress[1] = dns[1];
+ec._dnsServerAddress[2] = dns[2];
+ec._dnsServerAddress[3] = dns[3];
 
-	timer_set(&ec->periodic_timer, CLOCK_SECOND / UIP_TIMER_DIVISOR);
+	timer_set(&ec.periodic_timer, CLOCK_SECOND / UIP_TIMER_DIVISOR);
 	//timer_set(&this->periodic_timer, CLOCK_SECOND / 4);
 	
 	#if defined (RF24_TAP)
 //	timer_set(&this->arp_timer, CLOCK_SECOND * 10);
-	timer_set(&ec->arp_timer, CLOCK_SECOND * 2);
+	timer_set(&ec.arp_timer, CLOCK_SECOND * 2);
 	#endif
 	
 	uip_init();
@@ -158,7 +157,7 @@ ec->_dnsServerAddress = dns;
 
 /*******************************************************/
 
-void RF24E_set_gateway(RF24EthernetClass * ec,IPAddress gwIP)
+void RF24E_set_gateway(IPAddress * gwIP)
 {
   uip_ipaddr_t ipaddr;
   uip_ip_addr(ipaddr, gwIP);
@@ -167,7 +166,7 @@ void RF24E_set_gateway(RF24EthernetClass * ec,IPAddress gwIP)
 
 /*******************************************************/
 
-void RF24E_listen(RF24EthernetClass * ec,uint16_t port)
+void RF24E_listen(uint16_t port)
 {
   uip_listen(HTONS(port));
 }
@@ -175,77 +174,77 @@ void RF24E_listen(RF24EthernetClass * ec,uint16_t port)
 
 /*******************************************************/
  
-IPAddress RF24E_localIP(RF24EthernetClass * ec) {
-IPAddress ret;
+IPAddress * RF24E_localIP(void) {
+static IPAddress ret[4];
 uip_ipaddr_t a;
 uip_gethostaddr(a);
 
-ret.bytes[0]=a[0] & 0xFF;
-ret.bytes[1]=a[0] >> 8 ;
-ret.bytes[2]=a[1] & 0xFF;
-ret.bytes[3]=a[1] >> 8;
+ret[0]=a[0] & 0xFF;
+ret[1]=a[0] >> 8 ;
+ret[2]=a[1] & 0xFF;
+ret[3]=a[1] >> 8;
 
 return ret;
 }
 
 /*******************************************************/
 
-IPAddress RF24E_subnetMask(RF24EthernetClass * ec) {
-IPAddress ret;
+IPAddress * RF24E_subnetMask(void) {
+static IPAddress ret[4];
 uip_ipaddr_t a;
 uip_getnetmask(a);
-ret.bytes[0]=a[0] & 0xFF;
-ret.bytes[1]=a[0] >> 8 ;
-ret.bytes[2]=a[1] & 0xFF;
-ret.bytes[3]=a[1] >> 8;
+ret[0]=a[0] & 0xFF;
+ret[1]=a[0] >> 8 ;
+ret[2]=a[1] & 0xFF;
+ret[3]=a[1] >> 8;
 return ret;
 }
 
 /*******************************************************/
 
-IPAddress RF24E_gatewayIP(RF24EthernetClass * ec) {
-IPAddress ret;
+IPAddress * RF24E_gatewayIP(void) {
+static IPAddress ret[4];
 uip_ipaddr_t a;
 uip_getdraddr(a);
-ret.bytes[0]=a[0] & 0xFF;
-ret.bytes[1]=a[0] >> 8 ;
-ret.bytes[2]=a[1] & 0xFF;
-ret.bytes[3]=a[1] >> 8;
+ret[0]=a[0] & 0xFF;
+ret[1]=a[0] >> 8 ;
+ret[2]=a[1] & 0xFF;
+ret[3]=a[1] >> 8;
 return ret;
 }
 
 /*******************************************************/
 
-IPAddress RF24E_dnsServerIP(RF24EthernetClass * ec) {
-return ec->_dnsServerAddress;
+IPAddress * RF24E_dnsServerIP(void) {
+return ec._dnsServerAddress;
 }
 
 /*******************************************************/
 
-void RF24E_tick(RF24EthernetClass * ec) {
+void RF24E_tick(void) {
     int i;	
     #if defined (ARDUINO_ARCH_ESP8266)
       RF24E_yield(ec);
     #endif
-	if(RF24N_update(ec->network) == EXTERNAL_DATA_TYPE){
-		uip_len = ec->network->frag_ptr->message_size;
+	if(RF24N_update() == EXTERNAL_DATA_TYPE){
+		uip_len = RF24N_getFrag_ptr()->message_size;
 	}
 
     #if !defined (RF24_TAP)
 	if(uip_len > 0) {
 	  uip_input();
 	  if(uip_len > 0) {
-	    RF24E_network_send(ec);	
+	    RF24E_network_send();	
 	  }
-	} else if(timer_expired(&Ethernet.periodic_timer)) {
-      timer_reset(&Ethernet.periodic_timer);
+	} else if(timer_expired(&ec.periodic_timer)) {
+      timer_reset(&ec.periodic_timer);
       for(i = 0; i < UIP_CONNS; i++) {
 	    uip_periodic(i);
 	    /* If the above function invocation resulted in data that
 	    should be sent out on the network, the global variable
 	    uip_len is set to a value > 0. */
 	    if(uip_len > 0) {
-	      RF24E_network_send(ec);
+	      RF24E_network_send();
 	    }
       }
 	}
@@ -311,13 +310,13 @@ void RF24E_tick(RF24EthernetClass * ec) {
 }
 
 
-int RF24E_network_send(RF24EthernetClass * ec)
+int RF24E_network_send(void)
 {
 		RF24NetworkHeader headerOut;
 		RF24NH_init(&headerOut,00,EXTERNAL_DATA_TYPE);
 		//while(millis() - RF24Ethernet.lastRadio < 1){}
 
-		  bool ok = RF24N_write_m(ec->network,&headerOut,uip_buf,uip_len);
+		  bool ok = RF24N_write_m(&headerOut,uip_buf,uip_len);
 		//#endif
 		
 		#if defined ETH_DEBUG_L1 || defined ETH_DEBUG_L2

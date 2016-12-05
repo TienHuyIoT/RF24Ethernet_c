@@ -31,12 +31,14 @@ typedef struct{
   uint16_t _port;
 }RF24Server;
 
-  void RF24ES_init(RF24Server *srv,uint16_t);
-  RF24Client RF24ES_available(RF24Server *srv);
-  void RF24ES_begin(RF24Server *srv);
-  size_t RF24ES_write_b(RF24Server *srv,uint8_t);
-  size_t RF24ES_write(RF24Server *srv,const uint8_t *buf, size_t size);
-  size_t RF24ES_write_s(RF24Server *srv,const char *str);
+//extern RF24Server *srv;
+
+  void RF24ES_init(uint16_t);
+  void RF24ES_available(void);
+  void RF24ES_begin(void);
+  size_t RF24ES_write_b(uint8_t);
+  size_t RF24ES_write(const uint8_t *buf, size_t size);
+  size_t RF24ES_write_s(const char *str);
 
 #ifdef __cplusplus
 }

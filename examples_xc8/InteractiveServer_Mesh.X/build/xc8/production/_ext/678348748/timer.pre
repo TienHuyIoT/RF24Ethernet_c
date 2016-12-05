@@ -1,0 +1,52 @@
+
+# 1 "../../utility/timer.c"
+
+# 24 "../../clock-arch.h"
+typedef unsigned long clock_time_t;
+
+# 64 "../../utility/clock.h"
+void clock_init(void);
+
+# 73
+clock_time_t clock_time(void);
+
+# 74 "../../utility/timer.h"
+struct timer {
+clock_time_t start;
+clock_time_t interval;
+};
+
+void timer_set(struct timer *t, clock_time_t interval);
+void timer_reset(struct timer *t);
+void timer_restart(struct timer *t);
+int timer_expired(struct timer *t);
+
+# 63 "../../utility/timer.c"
+void
+timer_set(struct timer *t, clock_time_t interval)
+{
+t->interval = interval;
+t->start = clock_time();
+}
+
+# 83
+void
+timer_reset(struct timer *t)
+{
+t->start += t->interval;
+}
+
+# 103
+void
+timer_restart(struct timer *t)
+{
+t->start = clock_time();
+}
+
+# 120
+int
+timer_expired(struct timer *t)
+{
+return (clock_time_t)(clock_time() - t->start) >= (clock_time_t)t->interval;
+}
+

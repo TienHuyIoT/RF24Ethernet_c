@@ -1,0 +1,25 @@
+ build/xc8/production/InteractiveServer_Mesh.d  \
+ build/xc8/production/InteractiveServer_Mesh.p1:  \
+ InteractiveServer_Mesh.c  \
+../../../RF24Mesh_c/RF24Mesh_c_config.h  \
+../../uip-conf.h  \
+../../RF24Ethernet_cg.h  \
+../../utility/timer.h  \
+../../utility/uip.h  \
+../../../RF24_c/RF24_c_config.h  \
+../../clock-arch.h  \
+../../ethernet_comp.h  \
+../../utility/uip_arp.h  \
+../../../RF24_c/RF24_cg.h  \
+../../RF24Ethernet_c_config.h  \
+../../../RF24Network_c/RF24Network_c_config.h  \
+../../../RF24_c/utility/XC8/xc8_config.h  \
+HTML.h  \
+../../RF24Client_cg.h  \
+../../utility/uipopt.h  \
+../../utility/clock.h  \
+../../../RF24Mesh_c/RF24Mesh_cg.h  \
+serial.h  \
+../../../RF24_c/utility/XC8/spi.h  \
+../../../RF24Network_c/RF24Network_cg.h  \
+../../RF24Server_cg.h 

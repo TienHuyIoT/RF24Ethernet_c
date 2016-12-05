@@ -25,30 +25,31 @@
 
 uip_userdata_t all_data[UIP_CONNS];
 
+static RF24Client cli;
 
 /*************************************************************/
 
-void RF24EC_init(RF24Client* cli){
- cli->data=NULL;	
- cli->_timeout=1000;
+void RF24EC_init(void){
+ cli.data=NULL;	
+ cli._timeout=1000;
 }
 
 /*************************************************************/
 
-void RF24EC_init_d(RF24Client* cli, uip_userdata_t* conn_data){
- cli->data=conn_data;
- cli->_timeout=1000;
+void RF24EC_init_d(uip_userdata_t* conn_data){
+ cli.data=conn_data;
+ cli._timeout=1000;
 }
 
 /*************************************************************/
 
-uint8_t RF24EC_connected(RF24Client* cli){
-  return (cli->data && (cli->data->packets_in != 0 || (cli->data->state & UIP_CLIENT_CONNECTED))) ? 1 : 0;
+uint8_t RF24EC_connected(void){
+  return (cli.data && (cli.data->packets_in != 0 || (cli.data->state & UIP_CLIENT_CONNECTED))) ? 1 : 0;
 }
 
 /*************************************************************/
 
-int RF24EC_connect(RF24Client* cli, IPAddress ip, uint16_t port) {
+int RF24EC_connect(IPAddress * ip, uint16_t port) {
 
 #if UIP_ACTIVE_OPEN > 0
  
@@ -56,7 +57,7 @@ int RF24EC_connect(RF24Client* cli, IPAddress ip, uint16_t port) {
 
 //do{
 
-  RF24EC_stop(cli);
+  RF24EC_stop();
   uip_ipaddr_t ipaddr;
   uip_ip_addr(ipaddr, ip);
 
@@ -69,10 +70,10 @@ int RF24EC_connect(RF24Client* cli, IPAddress ip, uint16_t port) {
     #endif
 
     while((conn->tcpstateflags & UIP_TS_MASK) != UIP_CLOSED) {
-      RF24E_tick(&RF24Ethernet);
+      RF24E_tick();
 	
 	  if ((conn->tcpstateflags & UIP_TS_MASK) == UIP_ESTABLISHED) {
-	    cli->data = (uip_userdata_t*) conn->appstate;
+	    cli.data = (uip_userdata_t*) conn->appstate;
 	    IF_RF24ETHERNET_DEBUG_CLIENT( Serial.print(millis()); Serial.print(F(" connected, state: ")); Serial.print(data->state); Serial.print(F(", first packet in: ")); Serial.println(data->packets_in);  );
 	    return 1;
 	  }	  
@@ -96,7 +97,7 @@ return 0;
 
 /*************************************************************/
 
-int RF24EC_connect_h(RF24Client* cli, const char *host, uint16_t port) {
+int RF24EC_connect_h(const char *host, uint16_t port) {
   // Look up the host first
   int ret = 0;
 
@@ -123,19 +124,19 @@ int RF24EC_connect_h(RF24Client* cli, const char *host, uint16_t port) {
 
 /*************************************************************/
 
-void RF24EC_stop(RF24Client* cli) {
+void RF24EC_stop(void) {
 
-  if (cli->data && cli->data->state) {
+  if (cli.data && cli.data->state) {
       
 	IF_RF24ETHERNET_DEBUG_CLIENT( Serial.print(millis()); Serial.println(F(" before stop(), with data")); );
       
-	cli->data->packets_in = 0;
-	cli->data->dataCnt = 0;
+	cli.data->packets_in = 0;
+	cli.data->dataCnt = 0;
 	  
-    if (cli->data->state & UIP_CLIENT_REMOTECLOSED){
-      cli->data->state = 0;
+    if (cli.data->state & UIP_CLIENT_REMOTECLOSED){
+      cli.data->state = 0;
     }else{
-      cli->data->state |= UIP_CLIENT_CLOSE;
+      cli.data->state |= UIP_CLIENT_CLOSE;
     }
 	  
 	IF_RF24ETHERNET_DEBUG_CLIENT( Serial.println(F("after stop()")); );
@@ -144,8 +145,8 @@ void RF24EC_stop(RF24Client* cli) {
     IF_RF24ETHERNET_DEBUG_CLIENT( Serial.print(millis()); Serial.println(F(" stop(), data: NULL")); );
   }
 	
-  cli->data = NULL;
-  RF24E_tick(&RF24Ethernet);
+  cli.data = NULL;
+  RF24E_tick();
 }
 
 /*************************************************************/
@@ -164,34 +165,34 @@ void RF24EC_stop(RF24Client* cli) {
 //}
     
 
-int RF24EC_valid(RF24Client *cli)
+int RF24EC_valid(void)
 {
-   RF24E_tick(&RF24Ethernet);
-  return cli->data && (!(cli->data->state & UIP_CLIENT_REMOTECLOSED) || cli->data->packets_in != 0);
+   RF24E_tick();
+  return cli.data && (!(cli.data->state & UIP_CLIENT_REMOTECLOSED) || cli.data->packets_in != 0);
 }  
 
 /*************************************************************/
 
-size_t RF24EC_write_b(RF24Client* cli, uint8_t c) {
-  return RF24EC__write(cli,cli->data, &c, 1);
+size_t RF24EC_write_b( uint8_t c) {
+  return RF24EC__write(cli.data, &c, 1);
 }
 
 /*************************************************************/
 
-size_t RF24EC_write(RF24Client* cli, const uint8_t *buf, size_t size) {
-  return RF24EC__write(cli,cli->data, buf, size);
+size_t RF24EC_write( const uint8_t *buf, size_t size) {
+  return RF24EC__write(cli.data, buf, size);
 }
 
 /*************************************************************/
-size_t RF24EC_write_s(RF24Client* cli, const char *str) {
+size_t RF24EC_write_s(const char *str) {
       if (str == NULL) return 0;
-      return RF24EC_write(cli,(const uint8_t *)str, strlen(str));
+      return RF24EC_write((const uint8_t *)str, strlen(str));
 }
     
 
 /*************************************************************/
 
-size_t RF24EC__write(RF24Client* cli, uip_userdata_t* u, const uint8_t *buf, size_t size) {
+size_t RF24EC__write( uip_userdata_t* u, const uint8_t *buf, size_t size) {
 
   size_t total_written = 0;
   size_t payloadSize = rf24_min(size,UIP_TCP_MSS);
@@ -201,7 +202,7 @@ size_t RF24EC__write(RF24Client* cli, uip_userdata_t* u, const uint8_t *buf, siz
   
 test2:    
 
-  RF24E_tick(&RF24Ethernet);
+  RF24E_tick();
   if (u && !(u->state & (UIP_CLIENT_CLOSE | UIP_CLIENT_REMOTECLOSED ) ) && u->state & (UIP_CLIENT_CONNECTED) ) {
 
     if( u->out_pos + payloadSize > UIP_TCP_MSS || u->hold){
@@ -212,9 +213,9 @@ test2:
 	
 	memcpy(u->myData+u->out_pos,buf+total_written,payloadSize);	
 	u->packets_out = 1;
-	u->out_pos+=payloadSize;
+	u->out_pos=u->out_pos+payloadSize;
 
-	total_written += payloadSize;
+	total_written =total_written+ payloadSize;
 	
 	if( total_written < size ){	
 		size_t remain = size-total_written;
@@ -231,7 +232,7 @@ test2:
 
 /*************************************************************/
 
-void uip_log(RF24Client* cli, char* msg ){
+void uip_log( char* msg ){
 	//Serial.println();
 	//Serial.println("** UIP LOG **");
 	//Serial.println(msg);
@@ -407,7 +408,7 @@ finish_newdata:
 /*******************************************************/
 
 
-uip_userdata_t *RF24EC__allocateData() {
+uip_userdata_t *RF24EC__allocateData(void) {
   uint8_t sock;	
   for ( sock = 0; sock < UIP_CONNS; sock++ ) {
 	uip_userdata_t* data = &all_data[sock];
@@ -425,58 +426,59 @@ uip_userdata_t *RF24EC__allocateData() {
   return NULL;
 }
 
-int RF24EC_waitAvailable(RF24Client* cli, uint32_t timeout){
+int RF24EC_waitAvailable( uint32_t timeout){
 
 	uint32_t start = millis();
-    while(RF24EC_available(cli) < 1){	
+    while(RF24EC_available() < 1){	
 		if(millis()-start > timeout){
 		  return 0; 
 		}
-                RF24E_tick(&RF24Ethernet);
+                RF24E_tick();
 	}
-	return RF24EC_available(cli);
+	return RF24EC_available();
 }
 
 /*************************************************************/
 
-int RF24EC_available(RF24Client* cli) {
+int RF24EC_available(void) {
   
-  RF24E_tick(&RF24Ethernet);
-  if (cli){	
-	return RF24EC__available(cli,cli->data);
-  }
-  return 0;
+  RF24E_tick();
+  //if (cli){	
+	return RF24EC__available(cli.data);
+  //}
+  //return 0;
 }
 
 /*************************************************************/
 
-int RF24EC__available(RF24Client* cli, uip_userdata_t *u) {
+int RF24EC__available(uip_userdata_t *u) {
   if(u->packets_in){
 	return u->dataCnt;
   }
   return 0;
 }
 
-int RF24EC_read_b(RF24Client* cli, uint8_t *buf, size_t size) {
+int RF24EC_read_b( uint8_t *buf, size_t size) {
 
-  if (cli) {
+  //if (cli) 
+  {
 
-    if (!cli->data->packets_in) { return -1; }
+    if (!cli.data->packets_in) { return -1; }
 
-    size = rf24_min(cli->data->dataCnt,size);
-	memcpy(buf,&cli->data->myDataIn[cli->data->dataPos],size);
-	cli->data->dataCnt -= size;
+    size = rf24_min(cli.data->dataCnt,size);
+	memcpy(buf,&cli.data->myDataIn[cli.data->dataPos],size);
+	cli.data->dataCnt = cli.data->dataCnt - size;
 	
-	cli->data->dataPos+=size;
+	cli.data->dataPos=cli.data->dataPos+size;
 	
-	if(!cli->data->dataCnt) {
+	if(!cli.data->dataCnt) {
       
-	  cli->data->packets_in = 0;
-	  cli->data->dataPos = 0;
+	  cli.data->packets_in = 0;
+	  cli.data->dataPos = 0;
 	  
-      if (uip_stopped(&uip_conns[cli->data->state & UIP_CLIENT_SOCKETS]) && !(cli->data->state & (UIP_CLIENT_CLOSE | UIP_CLIENT_REMOTECLOSED))){
-        cli->data->state |= UIP_CLIENT_RESTART;
-		cli->data->restartTime = 0;
+      if (uip_stopped(&uip_conns[cli.data->state & UIP_CLIENT_SOCKETS]) && !(cli.data->state & (UIP_CLIENT_CLOSE | UIP_CLIENT_REMOTECLOSED))){
+        cli.data->state |= UIP_CLIENT_RESTART;
+		cli.data->restartTime = 0;
 		
 		IF_ETH_DEBUG_L2( Serial.print(F("UIPClient set restart ")); Serial.println(data->state & UIP_CLIENT_SOCKETS); Serial.println(F("**")); Serial.println(data->state,BIN); Serial.println(F("**")); Serial.println(UIP_CLIENT_SOCKETS,BIN); Serial.println(F("**"));  );
 	  }else{
@@ -484,67 +486,67 @@ int RF24EC_read_b(RF24Client* cli, uint8_t *buf, size_t size) {
 			  
 	  }
 	  
-      if (cli->data->packets_in == 0) {
-        if (cli->data->state & UIP_CLIENT_REMOTECLOSED) {
-          cli->data->state = 0;
-          cli->data = NULL;
+      if (cli.data->packets_in == 0) {
+        if (cli.data->state & UIP_CLIENT_REMOTECLOSED) {
+          cli.data->state = 0;
+          cli.data = NULL;
         }        
       }
     }
     return size;
   }
   
-  return -1;
+  //return -1;
 }
 
 /*************************************************************/
 
-int RF24EC_read(RF24Client* cli) {
+int RF24EC_read(void) {
   uint8_t c;
-  if (RF24EC_read_b(cli,&c,1) < 0)
+  if (RF24EC_read_b(&c,1) < 0)
     return -1;
   return c;
 }
 
 /*************************************************************/
 
-int RF24EC_peek(RF24Client* cli) {
-	if(RF24EC_available(cli)){
-	  return cli->data->myDataIn[cli->data->dataPos];
+int RF24EC_peek(void) {
+	if(RF24EC_available()){
+	  return cli.data->myDataIn[cli.data->dataPos];
 	}
   return -1;
 }
 
 /*************************************************************/
 
-void RF24EC_flush(RF24Client* cli) {
-  if (cli) {
-	cli->data->packets_in = 0;
-	cli->data->dataCnt = 0;
-  }
+void RF24EC_flush(void) {
+  //if (cli) {
+	cli.data->packets_in = 0;
+	cli.data->dataCnt = 0;
+  //}
 }
 
 /*************************************************************/
-bool RF24EC_findUntil(RF24Client* cli, char * target,char * terminator)
+uint8_t RF24EC_findUntil(const char * target, const char * terminator)
 {
-return RF24EC_findUntil_f(cli, target, strlen(target), terminator, strlen(terminator));
+return RF24EC_findUntil_f( target, strlen(target), terminator, strlen(terminator));
 }
        
 /*************************************************************/
-bool RF24EC_find(RF24Client* cli, char * target)
+uint8_t RF24EC_find(const char * target)
 {
-  return RF24EC_findUntil_f(cli, target, strlen(target), NULL, 0);
+  return RF24EC_findUntil_f(target, strlen(target), NULL, 0);
 }
 /*************************************************************/
 
-bool RF24EC_findUntil_f(RF24Client* cli, char *target, size_t targetLen, char *terminator, size_t termLen)
+uint8_t RF24EC_findUntil_f(const char *target, size_t targetLen,const char *terminator, size_t termLen)
 {
   if (terminator == NULL) {
     MultiTarget t[1];
     t[0].str=target;
     t[0].len=targetLen;
     t[0].index=0;
-    return RF24EC_findMulti(cli,t, 1) == 0 ? true : false;
+    return RF24EC_findMulti(t, 1) == 0 ? true : false;
   } else {
     MultiTarget t[2];
     t[0].str=target;
@@ -553,17 +555,17 @@ bool RF24EC_findUntil_f(RF24Client* cli, char *target, size_t targetLen, char *t
     t[1].str=terminator;
     t[1].len=termLen;
     t[1].index=0;
-    return RF24EC_findMulti(cli,t, 2) == 0 ? true : false;
+    return RF24EC_findMulti(t, 2) == 0 ? true : false;
   }
 }
 /*************************************************************/
-long RF24EC_parseInt(RF24Client* cli, LookaheadMode_ lookahead, char ignore)
+long RF24EC_parseInt( LookaheadMode_ lookahead, char ignore)
 {
   bool isNegative = false;
   long value = 0;
   int c;
 
-  c = RF24EC_peekNextDigit(cli,lookahead, false);
+  c = RF24EC_peekNextDigit(lookahead, false);
   // ignore non numeric leading characters
   if(c < 0)
     return 0; // zero returned if timeout
@@ -575,8 +577,8 @@ long RF24EC_parseInt(RF24Client* cli, LookaheadMode_ lookahead, char ignore)
       isNegative = true;
     else if(c >= '0' && c <= '9')        // is c a digit?
       value = value * 10 + c - '0';
-    RF24EC_read(cli);  // consume the character we got with peek
-    c = RF24EC_timedPeek(cli);
+    RF24EC_read();  // consume the character we got with peek
+    c = RF24EC_timedPeek();
   }
   while( (c >= '0' && c <= '9') || c == ignore );
 
@@ -585,7 +587,7 @@ long RF24EC_parseInt(RF24Client* cli, LookaheadMode_ lookahead, char ignore)
   return value;
 }
 /*************************************************************/
-int RF24EC_findMulti(RF24Client* cli, MultiTarget *targets, int tCount) {
+int RF24EC_findMulti( MultiTarget *targets, int tCount) {
   // any zero length target string automatically matches and would make
   // a mess of the rest of the algorithm.
   MultiTarget *t;
@@ -595,7 +597,7 @@ int RF24EC_findMulti(RF24Client* cli, MultiTarget *targets, int tCount) {
   }
 
   while (1) {
-    int c = RF24EC_timedRead(cli);
+    int c = RF24EC_timedRead();
     if (c < 0)
       return -1;
 
@@ -651,11 +653,11 @@ int RF24EC_findMulti(RF24Client* cli, MultiTarget *targets, int tCount) {
   return -1;
 }
 
-int RF24EC_peekNextDigit(RF24Client* cli, LookaheadMode_ lookahead, bool detectDecimal)
+int RF24EC_peekNextDigit( LookaheadMode_ lookahead, uint8_t detectDecimal)
 {
   int c;
   while (1) {
-    c = RF24EC_timedPeek(cli);
+    c = RF24EC_timedPeek();
 
     if( c < 0 ||
         c == '-' ||
@@ -675,31 +677,31 @@ int RF24EC_peekNextDigit(RF24Client* cli, LookaheadMode_ lookahead, bool detectD
         case SKIP_ALL_:
             break;
     }
-    RF24EC_read(cli);  // discard non-numeric
+    RF24EC_read();  // discard non-numeric
   }
   return -1;
 }
 
 // private method to read stream with timeout
-int RF24EC_timedRead(RF24Client* cli)
+int RF24EC_timedRead(void)
 {
   int c;
-  cli->_startMillis = millis();
+  cli._startMillis = millis();
   do {
-    c = RF24EC_read(cli);
+    c = RF24EC_read();
     if (c >= 0) return c;
-  } while(millis() - cli->_startMillis < cli->_timeout);
+  } while(millis() - cli._startMillis < cli._timeout);
   return -1;     // -1 indicates timeout
 }
 
 
-int RF24EC_timedPeek(RF24Client* cli)
+int RF24EC_timedPeek(void)
 {
   int c;
-  cli->_startMillis = millis();
+  cli._startMillis = millis();
   do {
-    c = RF24EC_peek(cli);
+    c = RF24EC_peek();
     if (c >= 0) return c;
-  } while(millis() - cli->_startMillis < cli->_timeout);
+  } while(millis() - cli._startMillis < cli._timeout);
   return -1;     // -1 indicates timeout
 }

@@ -19,18 +19,15 @@
  * 
  */
 
-#include <RF24_c.h>
-#include <RF24Network_c.h>
+#include <RF24_cg.h>
+#include <RF24Network_cg.h>
 //#include <printf.h>
-#include <RF24Ethernet_c.h>
+#include <RF24Ethernet_cg.h>
 #include "HTML.h"
-#include <RF24Mesh_c.h>
+#include <RF24Mesh_cg.h>
 
 /*** Configure the radio CE & CS pins ***/
-RF24 radio;
-RF24Network network;
-RF24Mesh mesh;
-RF24EthernetClass RF24Ethernet;
+
 
 #if defined (ARDUINO_ARCH_ESP8266)
   #define LED_PIN BUILTIN_LED
@@ -38,35 +35,33 @@ RF24EthernetClass RF24Ethernet;
   #define LED_PIN A3 //Analog pin A3
 #endif
 
-// Configure the server to listen on port 1000
-EthernetServer server;
 
 /**********************************************************/
 static unsigned short generate_tcp_stats();
 
 void setup() {
-  RF24_init(&radio,7,8);
-  RF24N_init(&network,&radio);
-  RF24M_init(&mesh,&radio,&network);
-  RF24E_init(&RF24Ethernet, &radio, &network,&mesh);
-  RF24ES_init(&server,1000); 
+  RF24_init(7,8);
+  RF24N_init();
+  RF24M_init();
+  RF24E_init();
+  RF24ES_init(1000); 
 
   Serial.begin(115200);
   //printf_begin();
   Serial.println("start");
   pinMode(LED_PIN, OUTPUT);
   
-  IPAddress myIP= {10,10,2,4};
+  IPAddress myIP[4]= {10,10,2,4};
 
-  RF24E_begin_i(&RF24Ethernet,myIP);
-  RF24M_begin(&mesh, MESH_DEFAULT_CHANNEL, RF24_1MBPS, MESH_RENEWAL_TIMEOUT);
+  RF24E_begin_i(myIP);
+  RF24M_begin( MESH_DEFAULT_CHANNEL, RF24_1MBPS, MESH_RENEWAL_TIMEOUT);
 
   //Set IP of the RPi (gateway)
-  IPAddress gwIP={10,10,2,2};
+  IPAddress gwIP[4]={10,10,2,2};
 
-  RF24E_set_gateway(&RF24Ethernet,gwIP);
+  RF24E_set_gateway(gwIP);
 
-  RF24ES_begin(&server);
+  RF24ES_begin();
 
 }
 
@@ -81,28 +76,28 @@ void loop() {
   // enable address renewal
   if(millis()-mesh_timer > 30000){ //Every 30 seconds, test mesh connectivity
     mesh_timer = millis();
-    if( ! RF24M_checkConnection(&mesh) ){
+    if( ! RF24M_checkConnection() ){
         //refresh the network address        
-        RF24M_renewAddress(&mesh, MESH_RENEWAL_TIMEOUT);
+        RF24M_renewAddress(MESH_RENEWAL_TIMEOUT);
      }
   }
 
   size_t size;
 
-  EthernetClient client = RF24ES_available(&server);
-  if (RF24EC_valid(&client)) 
+  RF24ES_available();
+  if (RF24EC_valid()) 
   {
     uint8_t pageReq = 0;
     generate_tcp_stats();
-    while ((size = RF24EC_available(&client)) > 0)
+    while ((size = RF24EC_available()) > 0)
     {
       // If a request is received with enough characters, search for the / character
       if (size >= 7) {
-        RF24EC_findUntil(&client,"/", "/");
+        RF24EC_findUntil("/", "/");
         char buf[3] = {"  "};
-        if(RF24EC_available(&client) >= 2){
-        buf[0] = RF24EC_read(&client);  // Read in the first two characters from the request
-        buf[1] = RF24EC_read(&client);
+        if(RF24EC_available() >= 2){
+        buf[0] = RF24EC_read();  // Read in the first two characters from the request
+        buf[1] = RF24EC_read();
 
         if (strcmp(buf, "ON") == 0) { // If the user requested http://ip-of-node:1000/ON
           led_state = 1;
@@ -127,7 +122,7 @@ void loop() {
       }
       // Empty the rest of the data from the client
       //while (client.waitAvailable()) {
-        RF24EC_flush(&client);
+        RF24EC_flush();
       //}
     }
     
@@ -136,14 +131,14 @@ void loop() {
     * see HTML.h
     */
     switch(pageReq){
-       case 2: stats_page(client); break;
-       case 3: credits_page(client); break;
-       case 4: main_page(client); break;
-       case 1: main_page(client); break;
+       case 2: stats_page(); break;
+       case 3: credits_page(); break;
+       case 4: main_page(); break;
+       case 1: main_page(); break;
        default: break; 
     }    
 
-    RF24EC_stop(&client);
+    RF24EC_stop();
     Serial.println(F("********"));
 
   }

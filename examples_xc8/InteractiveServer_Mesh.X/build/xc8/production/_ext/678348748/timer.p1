@@ -1,0 +1,98 @@
+Version 3.2 HI-TECH Software Intermediate Code
+"74 ../../utility/timer.h
+[s S1 `ul 1 `ul 1 ]
+[n S1 timer start interval ]
+"73 ../../utility/clock.h
+[v _clock_time `(ul ~T0 @X0 0 ef ]
+[; ;clock-arch.h: 24: typedef unsigned long clock_time_t;
+[; ;clock.h: 64: void clock_init(void);
+[; ;clock.h: 73: clock_time_t clock_time(void);
+[; ;timer.h: 74: struct timer {
+[; ;timer.h: 75: clock_time_t start;
+[; ;timer.h: 76: clock_time_t interval;
+[; ;timer.h: 77: };
+[; ;timer.h: 79: void timer_set(struct timer *t, clock_time_t interval);
+[; ;timer.h: 80: void timer_reset(struct timer *t);
+[; ;timer.h: 81: void timer_restart(struct timer *t);
+[; ;timer.h: 82: int timer_expired(struct timer *t);
+"64 ../../utility/timer.c
+[v _timer_set `(v ~T0 @X0 1 ef2`*S1`ul ]
+"65
+{
+[; ;timer.c: 63: void
+[; ;timer.c: 64: timer_set(struct timer *t, clock_time_t interval)
+[; ;timer.c: 65: {
+[e :U _timer_set ]
+"64
+[v _t `*S1 ~T0 @X0 1 r1 ]
+[v _interval `ul ~T0 @X0 1 r2 ]
+"65
+[f ]
+[; ;timer.c: 66: t->interval = interval;
+"66
+[e = . *U _t 1 _interval ]
+[; ;timer.c: 67: t->start = clock_time();
+"67
+[e = . *U _t 0 ( _clock_time ..  ]
+[; ;timer.c: 68: }
+"68
+[e :UE 2 ]
+}
+"84
+[v _timer_reset `(v ~T0 @X0 1 ef1`*S1 ]
+"85
+{
+[; ;timer.c: 83: void
+[; ;timer.c: 84: timer_reset(struct timer *t)
+[; ;timer.c: 85: {
+[e :U _timer_reset ]
+"84
+[v _t `*S1 ~T0 @X0 1 r1 ]
+"85
+[f ]
+[; ;timer.c: 86: t->start += t->interval;
+"86
+[e =+ . *U _t 0 . *U _t 1 ]
+[; ;timer.c: 87: }
+"87
+[e :UE 3 ]
+}
+"104
+[v _timer_restart `(v ~T0 @X0 1 ef1`*S1 ]
+"105
+{
+[; ;timer.c: 103: void
+[; ;timer.c: 104: timer_restart(struct timer *t)
+[; ;timer.c: 105: {
+[e :U _timer_restart ]
+"104
+[v _t `*S1 ~T0 @X0 1 r1 ]
+"105
+[f ]
+[; ;timer.c: 106: t->start = clock_time();
+"106
+[e = . *U _t 0 ( _clock_time ..  ]
+[; ;timer.c: 107: }
+"107
+[e :UE 4 ]
+}
+"121
+[v _timer_expired `(i ~T0 @X0 1 ef1`*S1 ]
+"122
+{
+[; ;timer.c: 120: int
+[; ;timer.c: 121: timer_expired(struct timer *t)
+[; ;timer.c: 122: {
+[e :U _timer_expired ]
+"121
+[v _t `*S1 ~T0 @X0 1 r1 ]
+"122
+[f ]
+[; ;timer.c: 123: return (clock_time_t)(clock_time() - t->start) >= (clock_time_t)t->interval;
+"123
+[e ) -> >= - ( _clock_time ..  . *U _t 0 . *U _t 1 `i ]
+[e $UE 5  ]
+[; ;timer.c: 124: }
+"124
+[e :UE 5 ]
+}

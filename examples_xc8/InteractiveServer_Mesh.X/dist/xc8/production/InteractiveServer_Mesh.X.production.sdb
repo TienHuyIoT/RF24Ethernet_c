@@ -1,0 +1,43 @@
+[p LITE_MODE AUTOSTATIC LFSROK EMI_WORD ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 18F4620 ]
+[d frameptr 4065 ]
+"64 /home/gamboa/Arduino/rf24libs/RF24Ethernet_c/examples_xc8/InteractiveServer_Mesh.X/InteractiveServer_Mesh.c
+[e E3388 . `uc
+RF24_1MBPS 0
+RF24_2MBPS 1
+RF24_250KBPS 2
+]
+"563 /home/gamboa/Arduino/rf24libs/RF24Ethernet_c/RF24Client_cg.c
+[e E4007 . `uc
+SKIP_ALL_ 0
+SKIP_NONE_ 1
+SKIP_WHITESPACE_ 2
+]
+"36 /home/gamboa/Arduino/rf24libs/RF24Mesh_c/RF24Mesh_cg.c
+[e E3388 . `uc
+RF24_1MBPS 0
+RF24_2MBPS 1
+RF24_250KBPS 2
+]
+"676 /home/gamboa/Arduino/rf24libs/RF24_c/RF24_cg.c
+[e E3388 . `uc
+RF24_1MBPS 0
+RF24_2MBPS 1
+RF24_250KBPS 2
+]
+"1434
+[e E3381 . `uc
+RF24_PA_MIN 0
+RF24_PA_LOW 1
+RF24_PA_HIGH 2
+RF24_PA_MAX 3
+RF24_PA_ERROR 4
+]
+"1531
+[e E3393 . `uc
+RF24_CRC_DISABLED 0
+RF24_CRC_8 1
+RF24_CRC_16 2
+]

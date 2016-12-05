@@ -23,70 +23,67 @@
 
 //#include "uip-conf.h"
 
+static RF24Server srv;
 /*************************************************************/
 
-void RF24ES_init(RF24Server *srv, uint16_t port) 
+void RF24ES_init(uint16_t port) 
 {
- srv->_port=htons(port);
+ srv._port=htons(port);
 }
 
 /*************************************************************/
 
-RF24Client RF24ES_available(RF24Server *srv)
+void RF24ES_available(void)
 {
-  RF24Client cli;
-  RF24E_tick(&RF24Ethernet);
+  RF24E_tick();
   uip_userdata_t* data;
   for ( data = &all_data[0]; data < &all_data[UIP_CONNS]; data++ )
     {
-        if (data->packets_in != 0 && (((data->state & UIP_CLIENT_CONNECTED) && uip_conns[data->state & UIP_CLIENT_SOCKETS].lport ==srv->_port)
-              || ((data->state & UIP_CLIENT_REMOTECLOSED) && ((uip_userdata_closed_t *)data)->lport == srv->_port))){
-		RF24EC_init_d(&cli,data);
-		return cli;
+        if (data->packets_in != 0 && (((data->state & UIP_CLIENT_CONNECTED) && uip_conns[data->state & UIP_CLIENT_SOCKETS].lport ==srv._port)
+              || ((data->state & UIP_CLIENT_REMOTECLOSED) && ((uip_userdata_closed_t *)data)->lport == srv._port))){
+		RF24EC_init_d(data);
 		}
     }	
-  RF24EC_init(&cli);
-  return cli;
+  RF24EC_init();
 }
 
 /*************************************************************/
 
-void RF24ES_begin(RF24Server *srv)
+void RF24ES_begin(void)
 {  
-  uip_listen(srv->_port);
-  RF24E_tick(&RF24Ethernet);
+  uip_listen(srv._port);
+  RF24E_tick();
 }
 
 /*************************************************************/
 
-size_t RF24ES_write_b(RF24Server *srv, uint8_t c)
+size_t RF24ES_write_b(uint8_t c)
 {
-  return RF24ES_write(srv,&c,1);
+  return RF24ES_write(&c,1);
 }
 
 /*************************************************************/
 
-size_t RF24ES_write(RF24Server *srv,const uint8_t *buf, size_t size)
+size_t RF24ES_write(const uint8_t *buf, size_t size)
 {
   size_t ret = 0;
   uip_userdata_t* data;
   for (data = &all_data[0]; data < &all_data[UIP_CONNS]; data++ )
     {
-      if ((data->state & UIP_CLIENT_CONNECTED) && uip_conns[data->state & UIP_CLIENT_SOCKETS].lport ==srv->_port)
+      if ((data->state & UIP_CLIENT_CONNECTED) && uip_conns[data->state & UIP_CLIENT_SOCKETS].lport ==srv._port)
       {
-	RF24Client cli;
-        RF24EC_init(&cli);	
-        ret += RF24EC__write(&cli,data,buf,size);
+        RF24EC_init();	
+        ret += RF24EC__write(data,buf,size);
       }
     }
   return ret;
 }
 
 /*************************************************************/
- size_t RF24ES_write_s(RF24Server *srv,const char *str)
+ size_t RF24ES_write_s(const char *str)
  {
       if (str == NULL) return 0;
-      return RF24ES_write(srv,(const uint8_t *)str, strlen(str));
+      return RF24ES_write((const uint8_t *)str, strlen(str));
  }
 
 

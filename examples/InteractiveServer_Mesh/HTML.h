@@ -89,25 +89,25 @@ static const char main_html_p2[] PROGMEM =
 * in chunks equal to the max output buffer size or less
 * This allows the HTML code to be modified as desired, with no need to change any other code
 */
-void sendPage(EthernetClient& _client, const char* _pointer, size_t size ){
+void sendPage(const char* _pointer, size_t size ){
   for(int i=0; i<size;i++){
-    char c = pgm_read_byte(_pointer++);
-    RF24EC_write(&_client,&c,1);
+    uint8_t c = pgm_read_byte(_pointer++);
+    RF24EC_write(&c,1);
   }
 }
 
 /***************************************************************/
 
 // Function to send the main page
-void main_page(EthernetClient& _client) {
+void main_page() {
   
   // Send the connection info and header
   const char* html_pointer = begin_html;
-  sendPage(_client,html_pointer,sizeof(begin_html));
+  sendPage(html_pointer,sizeof(begin_html));
   
   //Send the first part of the page
   html_pointer = main_html_p1;
-  sendPage(_client,html_pointer,sizeof(main_html_p1));
+  sendPage(html_pointer,sizeof(main_html_p1));
   
   // Include some variables, print them into the page manually
   const char *lState = led_state ? "ON" : "OFF";
@@ -117,37 +117,37 @@ void main_page(EthernetClient& _client) {
   
   if(!led_state){
     sprintf_P(bf,PSTR("<tr><td bgcolor=%s>\n"),lColor);
-    RF24EC_write_s(&_client,bf);
+    RF24EC_write_s(bf);
     sprintf_P(bf,PSTR("LED is %s</td></tr>\n"), lState);
   }else{
     sprintf_P(bf,PSTR("<tr><td> </td><td bgcolor=%s>\n"),lColor);
-    RF24EC_write_s(&_client,bf);
+    RF24EC_write_s(bf);
     sprintf_P(bf,PSTR("LED is %s</td></tr>\n"), lState);  
   }
-  RF24EC_write_s(&_client,bf);
+  RF24EC_write_s(bf);
   
   // Send the 2nd half of the page
   static const char* html_pointer2 = main_html_p2;
-  sendPage(_client,html_pointer2,sizeof(main_html_p2));
+  sendPage(html_pointer2,sizeof(main_html_p2));
   
 }
 
 /***************************************************************/
 
-void credits_page(EthernetClient& _client) {
+void credits_page() {
   //Set the pointer to the HTML connection data + header
   const char* html_pointer = begin_html;
-  sendPage(_client,html_pointer,sizeof(begin_html));
+  sendPage(html_pointer,sizeof(begin_html));
   
   //Set the pointer to the HTML page data and send it
   html_pointer = credits_html;
-  sendPage(_client,html_pointer,sizeof(credits_html));
+  sendPage(html_pointer,sizeof(credits_html));
 }
 
 /***************************************************************/
 
 // The stats page is sent differently, just to demonstrate a different method of handling pages
-void stats_page(EthernetClient& _client) {
+void stats_page() {
   
   uint32_t seconds = millis() / 1000UL;
   uint32_t minutes = seconds / 60UL;  
@@ -160,27 +160,27 @@ void stats_page(EthernetClient& _client) {
   char buffer[45];
   
   strncpy_P(buffer, PSTR("HTTP/1.1 200 OK\nContent-Type: text/html\n"),45);
-  RF24EC_write_s(&_client,buffer);
+  RF24EC_write_s(buffer);
   strncpy_P(buffer, PSTR("Connection: close\n\n<!DOCTYPE HTML>\n<html>\n"),45);
-  RF24EC_write_s(&_client,buffer);
+  RF24EC_write_s(buffer);
   strncpy_P(buffer, PSTR("<head><style>body{background-color:linen;}\n"),45);
-  RF24EC_write_s(&_client,buffer);
+  RF24EC_write_s(buffer);
   strncpy_P(buffer, PSTR("td{border: 1px solid black;}</style></head>\n"),45);
-  RF24EC_write_s(&_client,buffer);
+  RF24EC_write_s(buffer);
   strncpy_P(buffer, PSTR("<body><table><tr><td> Uptime</td><td>\n"),45);
-  RF24EC_write_s(&_client,buffer);
+  RF24EC_write_s(buffer);
   sprintf_P(buffer, PSTR("%u days, %lu hours %lu minutes %lu"),days,hours,minutes,seconds);
-  RF24EC_write_s(&_client,buffer);
+  RF24EC_write_s(buffer);
   strncpy_P(buffer, PSTR("seconds</td></tr><tr><td>UIP Buffer Size"),45);
-  RF24EC_write_s(&_client,buffer);
+  RF24EC_write_s(buffer);
   sprintf_P(buffer, PSTR("</td><td>%u bytes</td></tr><tr><td>User "),UIP_BUFSIZE);
-  RF24EC_write_s(&_client,buffer);
+  RF24EC_write_s(buffer);
   sprintf_P(buffer, PSTR("Output<br>Buffer Size</td><td>%u bytes"),OUTPUT_BUFFER_SIZE);
-  RF24EC_write_s(&_client,buffer);
+  RF24EC_write_s(buffer);
   strncpy_P(buffer, PSTR("</td></tr></table><br><br>"),45);
-  RF24EC_write_s(&_client,buffer);
+  RF24EC_write_s(buffer);
   strncpy_P(buffer, PSTR("<a href='/'>Home</a></body></html>"),45);
-  RF24EC_write_s(&_client,buffer);
+  RF24EC_write_s(buffer);
 }
 
 /***************************************************************/
