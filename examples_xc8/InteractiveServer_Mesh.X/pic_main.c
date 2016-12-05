@@ -1,6 +1,7 @@
-#include<xc.h>
-#include"config_pic.h"
+
 #include "xc8_config.h"
+#include"config_pic.h"
+
 
 void setup(void);
 void loop(void);
@@ -9,7 +10,11 @@ void loop(void);
 #define _T0H  (_T0&0xFF00)>>8 
 #define _T0L  (_T0&0x00FF) 
 
+#ifdef __XC8
 void interrupt isr(void)
+#else
+void isr(void) __shadowregs __interrupt 1
+#endif
 {
     if(INTCONbits.TMR0IF)
     {

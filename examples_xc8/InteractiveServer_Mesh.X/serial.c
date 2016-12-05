@@ -26,6 +26,7 @@
 #include"xc8_config.h"
 
 
+
 void Serial_begin(unsigned long baud)
 {
     TRISCbits.TRISC6=1;
@@ -89,7 +90,7 @@ unsigned char Serial_rx(unsigned int timeout)
 
   while(((to < timeout)||(!timeout))&&(!PIR1bits.RCIF))
   {
-    __delay_ms(20);
+    delay(20);
     to+=20; 
   }
   if(PIR1bits.RCIF)
