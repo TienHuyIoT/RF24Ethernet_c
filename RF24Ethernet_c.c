@@ -20,15 +20,16 @@
   */
 
 #include "RF24Ethernet_c.h"
-				   
+
+
+static RF24EthernetClass ec;
+
 IPAddress RF24E__dnsServerAddress;
 //DhcpClass* RF24E__dhcp(NULL);
 
-
-static RF24EthernetClass  ec;
-
 /*************************************************************/
 void RF24E_init(void)
+	//fn_uip_cb(NULL)
 {
 }
 /*************************************************************/
@@ -55,7 +56,7 @@ void RF24E_use_device(void)
 /*******************************************************/
 void RF24E_setMac(uint16_t address){
 	
-	if(!ec.network->multicastRelay){ // Radio has not been started yet
+	if(! RF24N_getMulticastRelay()){ // Radio has not been started yet
 	  RF24_begin();
 	}	
 	
@@ -75,44 +76,38 @@ void RF24E_setMac(uint16_t address){
 void RF24E_setChannel(uint8_t channel){
 	
 	ec.RF24_Channel = channel;
-	if(ec.network->multicastRelay){ // Radio has not been started yet
+	if( RF24N_getMulticastRelay()){ // Radio has not been started yet
 	  RF24_setChannel(ec.RF24_Channel);
 	}
 }
 
 /*******************************************************/
 
-void RF24E_begin_i(IPAddress *ip)
+void RF24E_begin_i(IPAddress ip)
 {
-IPAddress dns[4]; 
-dns[0]=ip[0];
-dns[1]=ip[1];
-dns[2]=ip[2];
-dns[3] = 1;
+IPAddress dns = ip;
+dns.bytes[3] = 1;
 RF24E_begin_id(ip, dns);
 }
 
-void RF24E_begin_id(IPAddress *ip, IPAddress* dns)
+void RF24E_begin_id(IPAddress ip, IPAddress dns)
 {
-IPAddress gateway[4];
-gateway[0]= ip[0];
-gateway[1]= ip[1];
-gateway[2]= ip[2];
-gateway[3] = 1;
+IPAddress gateway = ip;
+gateway.bytes[3] = 1;
 RF24E_begin_idg(ip, dns, gateway);
 }
 
-void RF24E_begin_idg(IPAddress *ip, IPAddress *dns, IPAddress* gateway)
+void RF24E_begin_idg(IPAddress ip, IPAddress dns, IPAddress gateway)
 {
-IPAddress subnet[4];
-subnet[0]=255;
-subnet[1]=255;
-subnet[2]=255;
-subnet[3]=0;
+IPAddress subnet;
+subnet.bytes[0]=255;
+subnet.bytes[1]=255;
+subnet.bytes[2]=255;
+subnet.bytes[3]=0;
 RF24E_begin_idgs(ip, dns, gateway, subnet);
 }
 
-void RF24E_begin_idgs(IPAddress *ip, IPAddress *dns, IPAddress *gateway, IPAddress *subnet)
+void RF24E_begin_idgs(IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet)
 {
 //init(mac);
 RF24E_configure(ip,dns,gateway,subnet);
@@ -120,10 +115,10 @@ RF24E_configure(ip,dns,gateway,subnet);
 
 /*******************************************************/
 
-void RF24E_configure(IPAddress *ip, IPAddress *dns, IPAddress *gateway, IPAddress *subnet) {
+void RF24E_configure(IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet) {
 
   #if !defined (RF24_TAP) // Using RF24Mesh
-    RF24M_setNodeID(ip[3]);
+    RF24M_setNodeID(ip.bytes[3]);
   #endif
   
 uip_buf = (uint8_t*) &RF24N_getFrag_ptr()->message_buffer[0];
@@ -135,10 +130,7 @@ uip_ip_addr(ipaddr, gateway);
 uip_setdraddr(ipaddr);
 uip_ip_addr(ipaddr, subnet);
 uip_setnetmask(ipaddr);
-ec._dnsServerAddress[0] = dns[0];
-ec._dnsServerAddress[1] = dns[1];
-ec._dnsServerAddress[2] = dns[2];
-ec._dnsServerAddress[3] = dns[3];
+ec._dnsServerAddress = dns;
 
 	timer_set(&ec.periodic_timer, CLOCK_SECOND / UIP_TIMER_DIVISOR);
 	//timer_set(&this->periodic_timer, CLOCK_SECOND / 4);
@@ -157,7 +149,7 @@ ec._dnsServerAddress[3] = dns[3];
 
 /*******************************************************/
 
-void RF24E_set_gateway(IPAddress * gwIP)
+void RF24E_set_gateway(IPAddress gwIP)
 {
   uip_ipaddr_t ipaddr;
   uip_ip_addr(ipaddr, gwIP);
@@ -174,48 +166,48 @@ void RF24E_listen(uint16_t port)
 
 /*******************************************************/
  
-IPAddress * RF24E_localIP(void) {
-static IPAddress ret[4];
+IPAddress RF24E_localIP(void) {
+IPAddress ret;
 uip_ipaddr_t a;
 uip_gethostaddr(a);
 
-ret[0]=a[0] & 0xFF;
-ret[1]=a[0] >> 8 ;
-ret[2]=a[1] & 0xFF;
-ret[3]=a[1] >> 8;
+ret.bytes[0]=a[0] & 0xFF;
+ret.bytes[1]=a[0] >> 8 ;
+ret.bytes[2]=a[1] & 0xFF;
+ret.bytes[3]=a[1] >> 8;
 
 return ret;
 }
 
 /*******************************************************/
 
-IPAddress * RF24E_subnetMask(void) {
-static IPAddress ret[4];
+IPAddress RF24E_subnetMask(void) {
+IPAddress ret;
 uip_ipaddr_t a;
 uip_getnetmask(a);
-ret[0]=a[0] & 0xFF;
-ret[1]=a[0] >> 8 ;
-ret[2]=a[1] & 0xFF;
-ret[3]=a[1] >> 8;
+ret.bytes[0]=a[0] & 0xFF;
+ret.bytes[1]=a[0] >> 8 ;
+ret.bytes[2]=a[1] & 0xFF;
+ret.bytes[3]=a[1] >> 8;
 return ret;
 }
 
 /*******************************************************/
 
-IPAddress * RF24E_gatewayIP(void) {
-static IPAddress ret[4];
+IPAddress RF24E_gatewayIP(void) {
+IPAddress ret;
 uip_ipaddr_t a;
 uip_getdraddr(a);
-ret[0]=a[0] & 0xFF;
-ret[1]=a[0] >> 8 ;
-ret[2]=a[1] & 0xFF;
-ret[3]=a[1] >> 8;
+ret.bytes[0]=a[0] & 0xFF;
+ret.bytes[1]=a[0] >> 8 ;
+ret.bytes[2]=a[1] & 0xFF;
+ret.bytes[3]=a[1] >> 8;
 return ret;
 }
 
 /*******************************************************/
 
-IPAddress * RF24E_dnsServerIP(void) {
+IPAddress RF24E_dnsServerIP(void) {
 return ec._dnsServerAddress;
 }
 

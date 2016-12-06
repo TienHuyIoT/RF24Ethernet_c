@@ -49,7 +49,7 @@ uint8_t RF24EC_connected(void){
 
 /*************************************************************/
 
-int RF24EC_connect(IPAddress * ip, uint16_t port) {
+int RF24EC_connect( IPAddress ip, uint16_t port) {
 
 #if UIP_ACTIVE_OPEN > 0
  
@@ -97,7 +97,7 @@ return 0;
 
 /*************************************************************/
 
-int RF24EC_connect_h(const char *host, uint16_t port) {
+int RF24EC_connect_h( const char *host, uint16_t port) {
   // Look up the host first
   int ret = 0;
 
@@ -173,7 +173,7 @@ int RF24EC_valid(void)
 
 /*************************************************************/
 
-size_t RF24EC_write_b( uint8_t c) {
+size_t RF24EC_write_b(uint8_t c) {
   return RF24EC__write(cli.data, &c, 1);
 }
 
@@ -213,9 +213,9 @@ test2:
 	
 	memcpy(u->myData+u->out_pos,buf+total_written,payloadSize);	
 	u->packets_out = 1;
-	u->out_pos=u->out_pos+payloadSize;
+	u->out_pos+=payloadSize;
 
-	total_written =total_written+ payloadSize;
+	total_written += payloadSize;
 	
 	if( total_written < size ){	
 		size_t remain = size-total_written;
@@ -408,7 +408,7 @@ finish_newdata:
 /*******************************************************/
 
 
-uip_userdata_t *RF24EC__allocateData(void) {
+uip_userdata_t *RF24EC__allocateData() {
   uint8_t sock;	
   for ( sock = 0; sock < UIP_CONNS; sock++ ) {
 	uip_userdata_t* data = &all_data[sock];
@@ -426,7 +426,7 @@ uip_userdata_t *RF24EC__allocateData(void) {
   return NULL;
 }
 
-int RF24EC_waitAvailable( uint32_t timeout){
+int RF24EC_waitAvailable(uint32_t timeout){
 
 	uint32_t start = millis();
     while(RF24EC_available() < 1){	
@@ -446,7 +446,7 @@ int RF24EC_available(void) {
   //if (cli){	
 	return RF24EC__available(cli.data);
   //}
-  //return 0;
+  return 0;
 }
 
 /*************************************************************/
@@ -460,16 +460,15 @@ int RF24EC__available(uip_userdata_t *u) {
 
 int RF24EC_read_b( uint8_t *buf, size_t size) {
 
-  //if (cli) 
-  {
+  //if (cli) {
 
     if (!cli.data->packets_in) { return -1; }
 
     size = rf24_min(cli.data->dataCnt,size);
 	memcpy(buf,&cli.data->myDataIn[cli.data->dataPos],size);
-	cli.data->dataCnt = cli.data->dataCnt - size;
+	cli.data->dataCnt -= size;
 	
-	cli.data->dataPos=cli.data->dataPos+size;
+	cli.data->dataPos+=size;
 	
 	if(!cli.data->dataCnt) {
       
@@ -494,7 +493,7 @@ int RF24EC_read_b( uint8_t *buf, size_t size) {
       }
     }
     return size;
-  }
+  //}
   
   //return -1;
 }
@@ -527,19 +526,19 @@ void RF24EC_flush(void) {
 }
 
 /*************************************************************/
-uint8_t RF24EC_findUntil(const char * target, const char * terminator)
+bool RF24EC_findUntil( char * target,char * terminator)
 {
-return RF24EC_findUntil_f( target, strlen(target), terminator, strlen(terminator));
+return RF24EC_findUntil_f(target, strlen(target), terminator, strlen(terminator));
 }
        
 /*************************************************************/
-uint8_t RF24EC_find(const char * target)
+bool RF24EC_find(char * target)
 {
-  return RF24EC_findUntil_f(target, strlen(target), NULL, 0);
+  return RF24EC_findUntil_f( target, strlen(target), NULL, 0);
 }
 /*************************************************************/
 
-uint8_t RF24EC_findUntil_f(const char *target, size_t targetLen,const char *terminator, size_t termLen)
+bool RF24EC_findUntil_f(char *target, size_t targetLen, char *terminator, size_t termLen)
 {
   if (terminator == NULL) {
     MultiTarget t[1];
@@ -559,7 +558,7 @@ uint8_t RF24EC_findUntil_f(const char *target, size_t targetLen,const char *term
   }
 }
 /*************************************************************/
-long RF24EC_parseInt( LookaheadMode_ lookahead, char ignore)
+long RF24EC_parseInt(LookaheadMode_ lookahead, char ignore)
 {
   bool isNegative = false;
   long value = 0;
@@ -587,7 +586,7 @@ long RF24EC_parseInt( LookaheadMode_ lookahead, char ignore)
   return value;
 }
 /*************************************************************/
-int RF24EC_findMulti( MultiTarget *targets, int tCount) {
+int RF24EC_findMulti(MultiTarget *targets, int tCount) {
   // any zero length target string automatically matches and would make
   // a mess of the rest of the algorithm.
   MultiTarget *t;
@@ -653,7 +652,7 @@ int RF24EC_findMulti( MultiTarget *targets, int tCount) {
   return -1;
 }
 
-int RF24EC_peekNextDigit( LookaheadMode_ lookahead, uint8_t detectDecimal)
+int RF24EC_peekNextDigit( LookaheadMode_ lookahead, bool detectDecimal)
 {
   int c;
   while (1) {

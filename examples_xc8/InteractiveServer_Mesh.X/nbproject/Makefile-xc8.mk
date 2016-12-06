@@ -28,18 +28,18 @@ CP=cp
 CND_CONF=xc8
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
 IMAGE_TYPE=debug
-OUTPUT_SUFFIX=cof
-DEBUGGABLE_SUFFIX=cof
+OUTPUT_SUFFIX=elf
+DEBUGGABLE_SUFFIX=elf
 FINAL_IMAGE=dist/${CND_CONF}/${IMAGE_TYPE}/InteractiveServer_Mesh.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 else
 IMAGE_TYPE=production
 OUTPUT_SUFFIX=hex
-DEBUGGABLE_SUFFIX=cof
+DEBUGGABLE_SUFFIX=elf
 FINAL_IMAGE=dist/${CND_CONF}/${IMAGE_TYPE}/InteractiveServer_Mesh.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 endif
 
 ifeq ($(COMPARE_BUILD), true)
-COMPARISON_BUILD=
+COMPARISON_BUILD=--mafrlcsj
 else
 COMPARISON_BUILD=
 endif
@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=InteractiveServer_Mesh.c pic_main.c serial.c ../../../RF24_c/utility/XC8/spi.c ../../utility/psock.c ../../utility/timer.c ../../utility/uip-fw.c ../../utility/uip-neighbor.c ../../utility/uip-split.c ../../utility/uip_arp.c ../../utility/uiplib.c ../../clock-arch.c umalloc.c ../../utility/uip.c ../../RF24Client_cg.c ../../RF24Ethernet_cg.c ../../RF24Server_cg.c ../../../RF24Mesh_c/RF24Mesh_cg.c ../../../RF24Network_c/RF24Network_cg.c ../../../RF24_c/RF24_cg.c
+SOURCEFILES_QUOTED_IF_SPACED=InteractiveServer_Mesh.c pic_main.c serial.c ../../../RF24_c/utility/XC8/spi.c ../../utility/psock.c ../../utility/timer.c ../../utility/uip-fw.c ../../utility/uip-neighbor.c ../../utility/uip-split.c ../../utility/uip_arp.c ../../utility/uiplib.c ../../clock-arch.c umalloc.c ../../utility/uip.c ../../RF24Client_c.c ../../RF24Ethernet_c.c ../../RF24Server_c.c ../../../RF24Mesh_c/RF24Mesh_c.c ../../../RF24Network_c/RF24Network_c.c ../../../RF24_c/RF24_c.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/InteractiveServer_Mesh.p1 ${OBJECTDIR}/pic_main.p1 ${OBJECTDIR}/serial.p1 ${OBJECTDIR}/_ext/2031907356/spi.p1 ${OBJECTDIR}/_ext/678348748/psock.p1 ${OBJECTDIR}/_ext/678348748/timer.p1 ${OBJECTDIR}/_ext/678348748/uip-fw.p1 ${OBJECTDIR}/_ext/678348748/uip-neighbor.p1 ${OBJECTDIR}/_ext/678348748/uip-split.p1 ${OBJECTDIR}/_ext/678348748/uip_arp.p1 ${OBJECTDIR}/_ext/678348748/uiplib.p1 ${OBJECTDIR}/_ext/43898991/clock-arch.p1 ${OBJECTDIR}/umalloc.p1 ${OBJECTDIR}/_ext/678348748/uip.p1 ${OBJECTDIR}/_ext/43898991/RF24Client_cg.p1 ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.p1 ${OBJECTDIR}/_ext/43898991/RF24Server_cg.p1 ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.p1 ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.p1 ${OBJECTDIR}/_ext/381377385/RF24_cg.p1
-POSSIBLE_DEPFILES=${OBJECTDIR}/InteractiveServer_Mesh.p1.d ${OBJECTDIR}/pic_main.p1.d ${OBJECTDIR}/serial.p1.d ${OBJECTDIR}/_ext/2031907356/spi.p1.d ${OBJECTDIR}/_ext/678348748/psock.p1.d ${OBJECTDIR}/_ext/678348748/timer.p1.d ${OBJECTDIR}/_ext/678348748/uip-fw.p1.d ${OBJECTDIR}/_ext/678348748/uip-neighbor.p1.d ${OBJECTDIR}/_ext/678348748/uip-split.p1.d ${OBJECTDIR}/_ext/678348748/uip_arp.p1.d ${OBJECTDIR}/_ext/678348748/uiplib.p1.d ${OBJECTDIR}/_ext/43898991/clock-arch.p1.d ${OBJECTDIR}/umalloc.p1.d ${OBJECTDIR}/_ext/678348748/uip.p1.d ${OBJECTDIR}/_ext/43898991/RF24Client_cg.p1.d ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.p1.d ${OBJECTDIR}/_ext/43898991/RF24Server_cg.p1.d ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.p1.d ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.p1.d ${OBJECTDIR}/_ext/381377385/RF24_cg.p1.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/InteractiveServer_Mesh.p1 ${OBJECTDIR}/pic_main.p1 ${OBJECTDIR}/serial.p1 ${OBJECTDIR}/_ext/2031907356/spi.p1 ${OBJECTDIR}/_ext/678348748/psock.p1 ${OBJECTDIR}/_ext/678348748/timer.p1 ${OBJECTDIR}/_ext/678348748/uip-fw.p1 ${OBJECTDIR}/_ext/678348748/uip-neighbor.p1 ${OBJECTDIR}/_ext/678348748/uip-split.p1 ${OBJECTDIR}/_ext/678348748/uip_arp.p1 ${OBJECTDIR}/_ext/678348748/uiplib.p1 ${OBJECTDIR}/_ext/43898991/clock-arch.p1 ${OBJECTDIR}/umalloc.p1 ${OBJECTDIR}/_ext/678348748/uip.p1 ${OBJECTDIR}/_ext/43898991/RF24Client_c.p1 ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.p1 ${OBJECTDIR}/_ext/43898991/RF24Server_c.p1 ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.p1 ${OBJECTDIR}/_ext/1478480717/RF24Network_c.p1 ${OBJECTDIR}/_ext/381377385/RF24_c.p1
+POSSIBLE_DEPFILES=${OBJECTDIR}/InteractiveServer_Mesh.p1.d ${OBJECTDIR}/pic_main.p1.d ${OBJECTDIR}/serial.p1.d ${OBJECTDIR}/_ext/2031907356/spi.p1.d ${OBJECTDIR}/_ext/678348748/psock.p1.d ${OBJECTDIR}/_ext/678348748/timer.p1.d ${OBJECTDIR}/_ext/678348748/uip-fw.p1.d ${OBJECTDIR}/_ext/678348748/uip-neighbor.p1.d ${OBJECTDIR}/_ext/678348748/uip-split.p1.d ${OBJECTDIR}/_ext/678348748/uip_arp.p1.d ${OBJECTDIR}/_ext/678348748/uiplib.p1.d ${OBJECTDIR}/_ext/43898991/clock-arch.p1.d ${OBJECTDIR}/umalloc.p1.d ${OBJECTDIR}/_ext/678348748/uip.p1.d ${OBJECTDIR}/_ext/43898991/RF24Client_c.p1.d ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.p1.d ${OBJECTDIR}/_ext/43898991/RF24Server_c.p1.d ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.p1.d ${OBJECTDIR}/_ext/1478480717/RF24Network_c.p1.d ${OBJECTDIR}/_ext/381377385/RF24_c.p1.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/InteractiveServer_Mesh.p1 ${OBJECTDIR}/pic_main.p1 ${OBJECTDIR}/serial.p1 ${OBJECTDIR}/_ext/2031907356/spi.p1 ${OBJECTDIR}/_ext/678348748/psock.p1 ${OBJECTDIR}/_ext/678348748/timer.p1 ${OBJECTDIR}/_ext/678348748/uip-fw.p1 ${OBJECTDIR}/_ext/678348748/uip-neighbor.p1 ${OBJECTDIR}/_ext/678348748/uip-split.p1 ${OBJECTDIR}/_ext/678348748/uip_arp.p1 ${OBJECTDIR}/_ext/678348748/uiplib.p1 ${OBJECTDIR}/_ext/43898991/clock-arch.p1 ${OBJECTDIR}/umalloc.p1 ${OBJECTDIR}/_ext/678348748/uip.p1 ${OBJECTDIR}/_ext/43898991/RF24Client_cg.p1 ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.p1 ${OBJECTDIR}/_ext/43898991/RF24Server_cg.p1 ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.p1 ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.p1 ${OBJECTDIR}/_ext/381377385/RF24_cg.p1
+OBJECTFILES=${OBJECTDIR}/InteractiveServer_Mesh.p1 ${OBJECTDIR}/pic_main.p1 ${OBJECTDIR}/serial.p1 ${OBJECTDIR}/_ext/2031907356/spi.p1 ${OBJECTDIR}/_ext/678348748/psock.p1 ${OBJECTDIR}/_ext/678348748/timer.p1 ${OBJECTDIR}/_ext/678348748/uip-fw.p1 ${OBJECTDIR}/_ext/678348748/uip-neighbor.p1 ${OBJECTDIR}/_ext/678348748/uip-split.p1 ${OBJECTDIR}/_ext/678348748/uip_arp.p1 ${OBJECTDIR}/_ext/678348748/uiplib.p1 ${OBJECTDIR}/_ext/43898991/clock-arch.p1 ${OBJECTDIR}/umalloc.p1 ${OBJECTDIR}/_ext/678348748/uip.p1 ${OBJECTDIR}/_ext/43898991/RF24Client_c.p1 ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.p1 ${OBJECTDIR}/_ext/43898991/RF24Server_c.p1 ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.p1 ${OBJECTDIR}/_ext/1478480717/RF24Network_c.p1 ${OBJECTDIR}/_ext/381377385/RF24_c.p1
 
 # Source Files
-SOURCEFILES=InteractiveServer_Mesh.c pic_main.c serial.c ../../../RF24_c/utility/XC8/spi.c ../../utility/psock.c ../../utility/timer.c ../../utility/uip-fw.c ../../utility/uip-neighbor.c ../../utility/uip-split.c ../../utility/uip_arp.c ../../utility/uiplib.c ../../clock-arch.c umalloc.c ../../utility/uip.c ../../RF24Client_cg.c ../../RF24Ethernet_cg.c ../../RF24Server_cg.c ../../../RF24Mesh_c/RF24Mesh_cg.c ../../../RF24Network_c/RF24Network_cg.c ../../../RF24_c/RF24_cg.c
+SOURCEFILES=InteractiveServer_Mesh.c pic_main.c serial.c ../../../RF24_c/utility/XC8/spi.c ../../utility/psock.c ../../utility/timer.c ../../utility/uip-fw.c ../../utility/uip-neighbor.c ../../utility/uip-split.c ../../utility/uip_arp.c ../../utility/uiplib.c ../../clock-arch.c umalloc.c ../../utility/uip.c ../../RF24Client_c.c ../../RF24Ethernet_c.c ../../RF24Server_c.c ../../../RF24Mesh_c/RF24Mesh_c.c ../../../RF24Network_c/RF24Network_c.c ../../../RF24_c/RF24_c.c
 
 
 CFLAGS=
@@ -199,53 +199,53 @@ ${OBJECTDIR}/_ext/678348748/uip.p1: ../../utility/uip.c  nbproject/Makefile-${CN
 	@-${MV} ${OBJECTDIR}/_ext/678348748/uip.d ${OBJECTDIR}/_ext/678348748/uip.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/_ext/678348748/uip.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/_ext/43898991/RF24Client_cg.p1: ../../RF24Client_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/43898991/RF24Client_c.p1: ../../RF24Client_c.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/43898991" 
-	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Client_cg.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Client_cg.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=none  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/43898991/RF24Client_cg.p1  ../../RF24Client_cg.c 
-	@-${MV} ${OBJECTDIR}/_ext/43898991/RF24Client_cg.d ${OBJECTDIR}/_ext/43898991/RF24Client_cg.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/43898991/RF24Client_cg.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Client_c.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Client_c.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=none  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/43898991/RF24Client_c.p1  ../../RF24Client_c.c 
+	@-${MV} ${OBJECTDIR}/_ext/43898991/RF24Client_c.d ${OBJECTDIR}/_ext/43898991/RF24Client_c.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/43898991/RF24Client_c.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.p1: ../../RF24Ethernet_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.p1: ../../RF24Ethernet_c.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/43898991" 
-	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=none  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.p1  ../../RF24Ethernet_cg.c 
-	@-${MV} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.d ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=none  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.p1  ../../RF24Ethernet_c.c 
+	@-${MV} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.d ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/_ext/43898991/RF24Server_cg.p1: ../../RF24Server_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/43898991/RF24Server_c.p1: ../../RF24Server_c.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/43898991" 
-	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Server_cg.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Server_cg.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=none  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/43898991/RF24Server_cg.p1  ../../RF24Server_cg.c 
-	@-${MV} ${OBJECTDIR}/_ext/43898991/RF24Server_cg.d ${OBJECTDIR}/_ext/43898991/RF24Server_cg.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/43898991/RF24Server_cg.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Server_c.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Server_c.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=none  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/43898991/RF24Server_c.p1  ../../RF24Server_c.c 
+	@-${MV} ${OBJECTDIR}/_ext/43898991/RF24Server_c.d ${OBJECTDIR}/_ext/43898991/RF24Server_c.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/43898991/RF24Server_c.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.p1: ../../../RF24Mesh_c/RF24Mesh_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/720915382/RF24Mesh_c.p1: ../../../RF24Mesh_c/RF24Mesh_c.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/720915382" 
-	@${RM} ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=none  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.p1  ../../../RF24Mesh_c/RF24Mesh_cg.c 
-	@-${MV} ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.d ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=none  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/720915382/RF24Mesh_c.p1  ../../../RF24Mesh_c/RF24Mesh_c.c 
+	@-${MV} ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.d ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/_ext/1478480717/RF24Network_cg.p1: ../../../RF24Network_c/RF24Network_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/1478480717/RF24Network_c.p1: ../../../RF24Network_c/RF24Network_c.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1478480717" 
-	@${RM} ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=none  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/1478480717/RF24Network_cg.p1  ../../../RF24Network_c/RF24Network_cg.c 
-	@-${MV} ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.d ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/_ext/1478480717/RF24Network_c.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/1478480717/RF24Network_c.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=none  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/1478480717/RF24Network_c.p1  ../../../RF24Network_c/RF24Network_c.c 
+	@-${MV} ${OBJECTDIR}/_ext/1478480717/RF24Network_c.d ${OBJECTDIR}/_ext/1478480717/RF24Network_c.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/1478480717/RF24Network_c.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/_ext/381377385/RF24_cg.p1: ../../../RF24_c/RF24_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/381377385/RF24_c.p1: ../../../RF24_c/RF24_c.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/381377385" 
-	@${RM} ${OBJECTDIR}/_ext/381377385/RF24_cg.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/381377385/RF24_cg.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=none  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/381377385/RF24_cg.p1  ../../../RF24_c/RF24_cg.c 
-	@-${MV} ${OBJECTDIR}/_ext/381377385/RF24_cg.d ${OBJECTDIR}/_ext/381377385/RF24_cg.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/381377385/RF24_cg.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/_ext/381377385/RF24_c.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/381377385/RF24_c.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=none  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/381377385/RF24_c.p1  ../../../RF24_c/RF24_c.c 
+	@-${MV} ${OBJECTDIR}/_ext/381377385/RF24_c.d ${OBJECTDIR}/_ext/381377385/RF24_c.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/381377385/RF24_c.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 else
 ${OBJECTDIR}/InteractiveServer_Mesh.p1: InteractiveServer_Mesh.c  nbproject/Makefile-${CND_CONF}.mk
@@ -360,53 +360,53 @@ ${OBJECTDIR}/_ext/678348748/uip.p1: ../../utility/uip.c  nbproject/Makefile-${CN
 	@-${MV} ${OBJECTDIR}/_ext/678348748/uip.d ${OBJECTDIR}/_ext/678348748/uip.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/_ext/678348748/uip.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/_ext/43898991/RF24Client_cg.p1: ../../RF24Client_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/43898991/RF24Client_c.p1: ../../RF24Client_c.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/43898991" 
-	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Client_cg.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Client_cg.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/43898991/RF24Client_cg.p1  ../../RF24Client_cg.c 
-	@-${MV} ${OBJECTDIR}/_ext/43898991/RF24Client_cg.d ${OBJECTDIR}/_ext/43898991/RF24Client_cg.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/43898991/RF24Client_cg.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Client_c.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Client_c.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/43898991/RF24Client_c.p1  ../../RF24Client_c.c 
+	@-${MV} ${OBJECTDIR}/_ext/43898991/RF24Client_c.d ${OBJECTDIR}/_ext/43898991/RF24Client_c.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/43898991/RF24Client_c.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.p1: ../../RF24Ethernet_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.p1: ../../RF24Ethernet_c.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/43898991" 
-	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.p1  ../../RF24Ethernet_cg.c 
-	@-${MV} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.d ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.p1  ../../RF24Ethernet_c.c 
+	@-${MV} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.d ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/_ext/43898991/RF24Server_cg.p1: ../../RF24Server_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/43898991/RF24Server_c.p1: ../../RF24Server_c.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/43898991" 
-	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Server_cg.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Server_cg.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/43898991/RF24Server_cg.p1  ../../RF24Server_cg.c 
-	@-${MV} ${OBJECTDIR}/_ext/43898991/RF24Server_cg.d ${OBJECTDIR}/_ext/43898991/RF24Server_cg.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/43898991/RF24Server_cg.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Server_c.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/43898991/RF24Server_c.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/43898991/RF24Server_c.p1  ../../RF24Server_c.c 
+	@-${MV} ${OBJECTDIR}/_ext/43898991/RF24Server_c.d ${OBJECTDIR}/_ext/43898991/RF24Server_c.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/43898991/RF24Server_c.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.p1: ../../../RF24Mesh_c/RF24Mesh_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/720915382/RF24Mesh_c.p1: ../../../RF24Mesh_c/RF24Mesh_c.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/720915382" 
-	@${RM} ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.p1  ../../../RF24Mesh_c/RF24Mesh_cg.c 
-	@-${MV} ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.d ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/720915382/RF24Mesh_c.p1  ../../../RF24Mesh_c/RF24Mesh_c.c 
+	@-${MV} ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.d ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/_ext/1478480717/RF24Network_cg.p1: ../../../RF24Network_c/RF24Network_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/1478480717/RF24Network_c.p1: ../../../RF24Network_c/RF24Network_c.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1478480717" 
-	@${RM} ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/1478480717/RF24Network_cg.p1  ../../../RF24Network_c/RF24Network_cg.c 
-	@-${MV} ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.d ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/_ext/1478480717/RF24Network_c.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/1478480717/RF24Network_c.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/1478480717/RF24Network_c.p1  ../../../RF24Network_c/RF24Network_c.c 
+	@-${MV} ${OBJECTDIR}/_ext/1478480717/RF24Network_c.d ${OBJECTDIR}/_ext/1478480717/RF24Network_c.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/1478480717/RF24Network_c.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/_ext/381377385/RF24_cg.p1: ../../../RF24_c/RF24_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/381377385/RF24_c.p1: ../../../RF24_c/RF24_c.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/381377385" 
-	@${RM} ${OBJECTDIR}/_ext/381377385/RF24_cg.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/381377385/RF24_cg.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/381377385/RF24_cg.p1  ../../../RF24_c/RF24_cg.c 
-	@-${MV} ${OBJECTDIR}/_ext/381377385/RF24_cg.d ${OBJECTDIR}/_ext/381377385/RF24_cg.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/381377385/RF24_cg.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/_ext/381377385/RF24_c.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/381377385/RF24_c.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/381377385/RF24_c.p1  ../../../RF24_c/RF24_c.c 
+	@-${MV} ${OBJECTDIR}/_ext/381377385/RF24_c.d ${OBJECTDIR}/_ext/381377385/RF24_c.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/381377385/RF24_c.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 endif
 
@@ -421,13 +421,13 @@ endif
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
 dist/${CND_CONF}/${IMAGE_TYPE}/InteractiveServer_Mesh.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk    
 	@${MKDIR} dist/${CND_CONF}/${IMAGE_TYPE} 
-	${MP_CC} $(MP_EXTRA_LD_PRE) --chip=$(MP_PROCESSOR_OPTION) -G -mdist/${CND_CONF}/${IMAGE_TYPE}/InteractiveServer_Mesh.X.${IMAGE_TYPE}.map  -D__DEBUG=1 --debugger=none  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"        $(COMPARISON_BUILD)  -odist/${CND_CONF}/${IMAGE_TYPE}/InteractiveServer_Mesh.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}     
+	${MP_CC} $(MP_EXTRA_LD_PRE) --chip=$(MP_PROCESSOR_OPTION) -G -mdist/${CND_CONF}/${IMAGE_TYPE}/InteractiveServer_Mesh.X.${IMAGE_TYPE}.map  -D__DEBUG=1 --debugger=none  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"        $(COMPARISON_BUILD) --memorysummary dist/${CND_CONF}/${IMAGE_TYPE}/memoryfile.xml -odist/${CND_CONF}/${IMAGE_TYPE}/InteractiveServer_Mesh.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}     
 	@${RM} dist/${CND_CONF}/${IMAGE_TYPE}/InteractiveServer_Mesh.X.${IMAGE_TYPE}.hex 
 	
 else
 dist/${CND_CONF}/${IMAGE_TYPE}/InteractiveServer_Mesh.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk   
 	@${MKDIR} dist/${CND_CONF}/${IMAGE_TYPE} 
-	${MP_CC} $(MP_EXTRA_LD_PRE) --chip=$(MP_PROCESSOR_OPTION) -G -mdist/${CND_CONF}/${IMAGE_TYPE}/InteractiveServer_Mesh.X.${IMAGE_TYPE}.map  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"     $(COMPARISON_BUILD)  -odist/${CND_CONF}/${IMAGE_TYPE}/InteractiveServer_Mesh.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}     
+	${MP_CC} $(MP_EXTRA_LD_PRE) --chip=$(MP_PROCESSOR_OPTION) -G -mdist/${CND_CONF}/${IMAGE_TYPE}/InteractiveServer_Mesh.X.${IMAGE_TYPE}.map  --double=24 --float=24 --emi=wordwrite --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Network_c" -I"../../../RF24Mesh_c" -I"../../" --warn=-3 --asmlist -DXPRJ_xc8=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib --output=-mcof,+elf:multilocs --stack=reentrant:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"     $(COMPARISON_BUILD) --memorysummary dist/${CND_CONF}/${IMAGE_TYPE}/memoryfile.xml -odist/${CND_CONF}/${IMAGE_TYPE}/InteractiveServer_Mesh.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}     
 	
 endif
 

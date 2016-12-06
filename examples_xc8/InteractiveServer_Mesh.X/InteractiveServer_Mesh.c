@@ -19,20 +19,20 @@
  * 
  */
 
-#include <RF24_cg.h>
-#include <RF24Network_cg.h>
+#include <RF24_c.h>
+#include <RF24Network_c.h>
 //#include <printf.h>
-#include <RF24Ethernet_cg.h>
+#include <RF24Ethernet_c.h>
 #include "HTML.h"
-#include <RF24Mesh_cg.h>
+#include <RF24Mesh_c.h>
 #include"serial.h"
 
 
 /*** Configure the radio CE & CS pins ***/
-RF24 radio;
-RF24Network network;
-RF24Mesh mesh;
-RF24EthernetClass RF24Ethernet;
+//RF24 radio;
+//RF24Network network;
+//RF24Mesh mesh;
+//RF24EthernetClass RF24Ethernet;
 
 #if defined (ARDUINO_ARCH_ESP8266)
   #define LED_PIN BUILTIN_LED
@@ -171,7 +171,7 @@ static unsigned short generate_tcp_stats()
     // If the application state is active for an available connection, print the info
     if (conn->appstate) {
       Serial_print(F("Connection no "));
-      Serial_println(i);
+      Serial_println(itoa_(i));
       Serial_print(F("Local Port "));
       Serial_println(itoa_(htons(conn->lport)));
       Serial_print(F("Remote IP/Port "));

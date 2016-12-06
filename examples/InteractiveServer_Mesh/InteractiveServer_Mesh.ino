@@ -19,12 +19,12 @@
  * 
  */
 
-#include <RF24_cg.h>
-#include <RF24Network_cg.h>
+#include <RF24_c.h>
+#include <RF24Network_c.h>
 //#include <printf.h>
-#include <RF24Ethernet_cg.h>
+#include <RF24Ethernet_c.h>
 #include "HTML.h"
-#include <RF24Mesh_cg.h>
+#include <RF24Mesh_c.h>
 
 /*** Configure the radio CE & CS pins ***/
 
@@ -51,13 +51,13 @@ void setup() {
   Serial.println("start");
   pinMode(LED_PIN, OUTPUT);
   
-  IPAddress myIP[4]= {10,10,2,4};
+  IPAddress myIP= {10,10,2,4};
 
   RF24E_begin_i(myIP);
   RF24M_begin( MESH_DEFAULT_CHANNEL, RF24_1MBPS, MESH_RENEWAL_TIMEOUT);
 
   //Set IP of the RPi (gateway)
-  IPAddress gwIP[4]={10,10,2,2};
+  IPAddress gwIP={10,10,2,2};
 
   RF24E_set_gateway(gwIP);
 

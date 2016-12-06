@@ -28,6 +28,8 @@
 extern "C" {
 #endif
 
+//#include "Print.h"
+//#include "Client.h"
 #define NO_IGNORE_CHAR  '\x01'
 
 //#define UIP_SOCKET_DATALEN UIP_TCP_MSS
@@ -60,13 +62,13 @@ typedef struct {
  */
 typedef struct {
   uint8_t state;
-  uint8_t packets_in;
-  uint8_t packets_out;
+  bool packets_in;
+  bool packets_out;
   uint16_t out_pos;
 #if UIP_CLIENT_TIMER >= 0
   unsigned long timer;
 #endif
- uint8_t windowOpened;
+ bool windowOpened;
  uint32_t restartTime;
  uint32_t restartInterval;
  uint32_t connAbortTime;
@@ -74,8 +76,8 @@ typedef struct {
  uint8_t myDataIn[OUTPUT_BUFFER_SIZE]; 
  uint16_t dataPos;
  uint16_t dataCnt;
- uint8_t hold;
- uint8_t sent;
+ bool hold;
+ bool sent;
 } uip_userdata_t;
 
 typedef enum{
@@ -100,20 +102,18 @@ typedef struct{
 }RF24Client;
 
 
-//extern RF24Client cli;
-
 	/**
 	* Basic constructor
 	*/	
 	void RF24EC_init(void);
-	void RF24EC_init_d( uip_userdata_t* conn_data);
+	void RF24EC_init_d(uip_userdata_t* conn_data);
         void RF24EC_init_c(struct uip_conn *_conn);
 
 
 	/**
 	* Establish a connection to a specified IP address and port
 	*/
-	int RF24EC_connect( IPAddress * ip, uint16_t port);
+	int RF24EC_connect(IPAddress ip, uint16_t port);
     
 	/**
 	* Establish a connection to a given hostname and port
@@ -123,7 +123,7 @@ typedef struct{
 	* Lookups will generally return responses with a single A record if using hostnames like
 	* "www.google.com" instead of "google.com" which works well with the default buffer size
 	*/
-	int RF24EC_connect_h( const char *host, uint16_t port);
+	int RF24EC_connect_h(const char *host, uint16_t port);
     
 	/**
 	* Read available data into a buffer
@@ -132,7 +132,7 @@ typedef struct{
     * client.read(buf,size);
 	* @endcode
 	*/
-	int RF24EC_read_b( uint8_t *buf, size_t size);
+	int RF24EC_read_b(uint8_t *buf, size_t size);
 	
 	/**
 	* Read data one byte at a time
@@ -161,10 +161,10 @@ typedef struct{
 	/**
 	* Write a buffer of data, to be sent in a single TCP packet
 	*/
-    size_t RF24EC_write( const uint8_t *buf, size_t size);
+    size_t RF24EC_write(const uint8_t *buf, size_t size);
    
     
-    size_t RF24EC_write_s( const char *str);
+    size_t RF24EC_write_s(const char *str);
     
 
 	/**
@@ -187,7 +187,7 @@ typedef struct{
 	*/
 	
 	//int RF24EC_waitAvailable(RF24Client* cli, uint32_t timeout=750);
-	int RF24EC_waitAvailable( uint32_t timeout);
+	int RF24EC_waitAvailable(uint32_t timeout);
     
 	/**
 	* Read a byte from the incoming buffer without advancing the point of reading
@@ -201,13 +201,13 @@ typedef struct{
    
 
    
-    uint8_t RF24EC_findUntil(const char * target,const char * terminator);
-    uint8_t RF24EC_findUntil_f(const char *target, size_t targetLen, const char *terminate, size_t termLen);  
+    bool RF24EC_findUntil( char * target,char * terminator);
+    bool RF24EC_findUntil_f(char *target, size_t targetLen, char *terminate, size_t termLen);  
  
        
-    uint8_t RF24EC_find(const char * target);
+    bool RF24EC_find(char * target);
 
-    int RF24EC_peekNextDigit(LookaheadMode_ lookahead, uint8_t detectDecimal); // returns the next numeric digit in the stream or -1 if timeout
+    int RF24EC_peekNextDigit(LookaheadMode_ lookahead, bool detectDecimal); // returns the next numeric digit in the stream or -1 if timeout
     //long RF24EC_parseInt(RF24Client* cli, LookaheadMode lookahead = SKIP_ALL, char ignore = NO_IGNORE_CHAR);
     long RF24EC_parseInt(LookaheadMode_ lookahead, char ignore );
 

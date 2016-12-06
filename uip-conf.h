@@ -44,7 +44,7 @@
 #ifndef __UIP_CONF_H__
 #define __UIP_CONF_H__
 
-#if  !defined(__XC8) && !defined(__SDCC_pic16)
+#ifndef __XC8
 #include <inttypes.h>
 #endif
 

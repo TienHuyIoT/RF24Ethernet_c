@@ -4058,7 +4058,7 @@ uint8_t RF24_failureDetected;
 
 }RF24;
 
-# 38 "../../../RF24_c/RF24_cg.h"
+# 38 "../../../RF24_c/RF24_c.h"
 typedef enum { RF24_PA_MIN = 0,RF24_PA_LOW, RF24_PA_HIGH, RF24_PA_MAX, RF24_PA_ERROR } rf24_pa_dbm_e ;
 
 # 45
@@ -4369,7 +4369,7 @@ typedef int16_t intptr_t;
 
 typedef uint16_t uintptr_t;
 
-# 202 "../../../RF24Network_c/RF24Network_cg.h"
+# 202 "../../../RF24Network_c/RF24Network_c.h"
 typedef struct
 {
 uint16_t from_node;
@@ -4545,6 +4545,9 @@ void RF24N_setNetworkFlags(uint8_t);
 uint16_t RF24N_getRouteTimeout(void);
 
 RF24NetworkFrame* RF24N_getFrag_ptr(void);
+
+
+void RF24N_setMulticastRelay(void);
 
 # 242 "../../uip-conf.h"
 typedef uint8_t u8_t;
@@ -4868,7 +4871,7 @@ void uip_arp_out(void);
 # 108
 void uip_arp_timer(void);
 
-# 80 "../../../RF24Mesh_c/RF24Mesh_cg.h"
+# 80 "../../../RF24Mesh_c/RF24Mesh_c.h"
 typedef struct{
 uint8_t nodeID;
 uint16_t address;
@@ -4925,35 +4928,42 @@ uint8_t RF24M_checkConnection(void);
 # 245
 uint16_t RF24M_renewAddress( uint32_t timeout);
 
-# 252
+
+uint16_t RF24M_getCurrentAddress(void);
+
+# 254
 uint8_t RF24M_releaseAddress(void);
 
-# 262
+# 264
 int16_t RF24M_getAddress( uint8_t nodeID);
 
-# 268
+# 270
 uint8_t RF24M_write_n(uint16_t to_node, const void* data, uint8_t msg_type, size_t size );
 
-# 273
+# 275
 void RF24M_setChannel(uint8_t _channel);
 
-# 279
+# 281
 void RF24M_setChild( uint8_t allow);
 
-# 294
+# 296
 void RF24M_setAddress(uint8_t nodeID, uint16_t address);
 
 void RF24M_saveDHCP(void);
 void RF24M_loadDHCP(void);
 
-# 302
+# 304
 void RF24M_setStaticAddress(uint8_t nodeID, uint16_t address);
 
 uint8_t RF24M_findNodes(RF24NetworkHeader* header, uint8_t level, uint16_t *address);
 uint8_t RF24M_requestAddress(uint8_t level);
 uint8_t RF24M_waitForAvailable(uint32_t timeout);
 
-# 50 "../../RF24Client_cg.h"
+
+uint8_t RF24M_getAddrListTop(void);
+addrListStruct * RF24M_getAddrList();
+
+# 50 "../../RF24Client_c.h"
 typedef struct {
 uint8_t state;
 uint8_t packets_in[1];
@@ -5045,11 +5055,11 @@ void RF24EC_flush(void);
 
 
 
-uint8_t RF24EC_findUntil( char * target,char * terminator);
-uint8_t RF24EC_findUntil_f(char *target, size_t targetLen, char *terminate, size_t termLen);
+uint8_t RF24EC_findUntil(const char * target,const char * terminator);
+uint8_t RF24EC_findUntil_f(const char *target, size_t targetLen, const char *terminate, size_t termLen);
 
 
-uint8_t RF24EC_find(char * target);
+uint8_t RF24EC_find(const char * target);
 
 int RF24EC_peekNextDigit(LookaheadMode_ lookahead, uint8_t detectDecimal);
 
@@ -5077,7 +5087,7 @@ int RF24EC_timedPeek(void);
 int RF24EC__available(uip_userdata_t *);
 uip_userdata_t* RF24EC__allocateData(void);
 
-# 30 "../../RF24Server_cg.h"
+# 30 "../../RF24Server_c.h"
 typedef struct{
 uint16_t _port;
 }RF24Server;
@@ -5091,7 +5101,7 @@ size_t RF24ES_write_b(uint8_t);
 size_t RF24ES_write(const uint8_t *buf, size_t size);
 size_t RF24ES_write_s(const char *str);
 
-# 101 "../../RF24Ethernet_cg.h"
+# 101 "../../RF24Ethernet_c.h"
 typedef struct {
 int a, b, c, d;
 } IP_ADDR;
@@ -5356,13 +5366,7 @@ unsigned char Serial_rx(unsigned int timeout);
 
 const char * itoa_(uint32_t val);
 
-# 32 "InteractiveServer_Mesh.c"
-RF24 radio;
-RF24Network network;
-RF24Mesh mesh;
-RF24EthernetClass RF24Ethernet;
-
-# 44
+# 44 "InteractiveServer_Mesh.c"
 RF24Server server;
 
 
@@ -5486,7 +5490,7 @@ conn = &uip_conns[i];
 
 if (conn->appstate) {
 Serial_print("Connection no ");
-Serial_println(i);
+Serial_println(itoa_(i));
 Serial_print("Local Port ");
 Serial_println(itoa_(htons(conn->lport)));
 Serial_print("Remote IP/Port ");

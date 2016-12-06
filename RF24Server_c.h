@@ -31,8 +31,6 @@ typedef struct{
   uint16_t _port;
 }RF24Server;
 
-//extern RF24Server *srv;
-
   void RF24ES_init(uint16_t);
   void RF24ES_available(void);
   void RF24ES_begin(void);

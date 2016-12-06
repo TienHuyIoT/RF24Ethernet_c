@@ -23,7 +23,9 @@
 
 //#include "uip-conf.h"
 
+
 static RF24Server srv;
+
 /*************************************************************/
 
 void RF24ES_init(uint16_t port) 
@@ -33,8 +35,10 @@ void RF24ES_init(uint16_t port)
 
 /*************************************************************/
 
+//RF24Client 
 void RF24ES_available(void)
 {
+  //RF24Client cli;
   RF24E_tick();
   uip_userdata_t* data;
   for ( data = &all_data[0]; data < &all_data[UIP_CONNS]; data++ )
@@ -42,9 +46,11 @@ void RF24ES_available(void)
         if (data->packets_in != 0 && (((data->state & UIP_CLIENT_CONNECTED) && uip_conns[data->state & UIP_CLIENT_SOCKETS].lport ==srv._port)
               || ((data->state & UIP_CLIENT_REMOTECLOSED) && ((uip_userdata_closed_t *)data)->lport == srv._port))){
 		RF24EC_init_d(data);
+		return ;//cli;
 		}
     }	
   RF24EC_init();
+  return ;//cli;
 }
 
 /*************************************************************/
@@ -72,6 +78,7 @@ size_t RF24ES_write(const uint8_t *buf, size_t size)
     {
       if ((data->state & UIP_CLIENT_CONNECTED) && uip_conns[data->state & UIP_CLIENT_SOCKETS].lport ==srv._port)
       {
+	//RF24Client cli;
         RF24EC_init();	
         ret += RF24EC__write(data,buf,size);
       }

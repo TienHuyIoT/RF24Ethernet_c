@@ -34,7 +34,7 @@ extern "C" {
  * Class declaration for RF24Ethernet
  */
 
-#if !defined(__XC8) && !defined(__SDCC_pic16)
+#ifndef __XC8
 #include <Arduino.h>
 #endif
 #include "uip-conf.h"
@@ -51,7 +51,10 @@ extern "C" {
 #endif
 
 
-#define IPAddress uint8_t   // IPv4 address
+typedef union {
+	uint8_t bytes[4];  // IPv4 address
+	uint32_t dword;
+} IPAddress;
 
 #include "ethernet_comp.h"
 #include "RF24Client_c.h"
@@ -81,8 +84,8 @@ extern "C" {
                               uip_ethaddr.addr[4] = eaddr[4];\
                               uip_ethaddr.addr[5] = eaddr[5];} while(0)
 #define uip_ip_addr(addr, ip) do { \
-                     ((u16_t *)(addr))[0] = HTONS(((ip[0]) << 8) | (ip[1])); \
-                     ((u16_t *)(addr))[1] = HTONS(((ip[2]) << 8) | (ip[3])); \
+                     ((u16_t *)(addr))[0] = HTONS(((ip.bytes[0]) << 8) | (ip.bytes[1])); \
+                     ((u16_t *)(addr))[1] = HTONS(((ip.bytes[2]) << 8) | (ip.bytes[3])); \
                   } while(0)
 
 //#define ip_addr_uip(a) IPAddress(a[0] & 0xFF, a[0] >> 8 , a[1] & 0xFF, a[1] >> 8) //TODO this is not IPV6 capable
@@ -111,13 +114,8 @@ typedef struct {
 //RF24EthernetClass
 typedef struct{ 
 	
-	RF24* radio;
-	RF24Network* network;
-#if !defined (RF24_TAP) // Using RF24Mesh
-        RF24Mesh* mesh;
-#endif
         
-	IPAddress _dnsServerAddress[4];
+	IPAddress _dnsServerAddress;
 		
 	uint8_t RF24_Channel;
 
@@ -128,15 +126,12 @@ typedef struct{
 }RF24EthernetClass;
 
 
-//extern RF24EthernetClass RF24Ethernet;
-
-//extern RF24EthernetClass * ec;
 
 		/**
 		* Constructor to set up the Ethernet layer. Requires the radio and network to be configured by the user
 		* this allows users to set custom settings at the radio or network level
 		*/
-	void RF24E_init(void);
+	        void RF24E_init(void);
 		/**
 		* Basic constructor
 		*/
@@ -159,16 +154,16 @@ typedef struct{
 		* Configure the IP address and subnet mask of the node. This is independent of the RF24Network layer, so the IP 
 		* and subnet only have to conform to standard IP routing rules within your network
 		*/
-		void RF24E_begin_i(IPAddress *ip);
-		void RF24E_begin_id(IPAddress *ip, IPAddress *dns);
-		void RF24E_begin_idg(IPAddress *ip, IPAddress* dns, IPAddress *gateway);
-		void RF24E_begin_idgs(IPAddress *ip, IPAddress *dns, IPAddress *gateway, IPAddress *subnet);		
+		void RF24E_begin_i(IPAddress ip);
+		void RF24E_begin_id(IPAddress ip, IPAddress dns);
+		void RF24E_begin_idg(IPAddress ip, IPAddress dns, IPAddress gateway);
+		void RF24E_begin_idgs(IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet);		
 		
 		
 		/**
 		* Configure the gateway IP address. This is generally going to be your master node with RF24Network address 00.
 		*/
-		void RF24E_set_gateway(IPAddress *gwIP);
+		void RF24E_set_gateway(IPAddress gwIP);
 		
 		/**
 		* Listen to a specified port - This will likely be changed to closer match the Arduino Ethernet API with server.begin();
@@ -195,23 +190,23 @@ typedef struct{
 	
 	/** Returns the local IP address
 	*/
-	IPAddress * RF24E_localIP(void);
+	IPAddress RF24E_localIP(void);
 	/** Returns the subnet mask
 	*/
-	IPAddress * RF24E_subnetMask(void);
+	IPAddress RF24E_subnetMask(void);
 	/** Returns the gateway IP address
 	*/
-	IPAddress * RF24E_gatewayIP(void);
+	IPAddress RF24E_gatewayIP(void);
 	/** Returns the DNS server IP address
 	*/
-	IPAddress * RF24E_dnsServerIP(void);
+	IPAddress RF24E_dnsServerIP(void);
 
 	/** Keeps the TCP/IP stack running & processing incoming data
 	*/
 	void RF24E_update(void);
     //uint8_t *key;
 
-	void RF24E_configure(IPAddress *ip, IPAddress *dns, IPAddress *gateway, IPAddress *subnet);
+	void RF24E_configure(IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet);
 	// tick() must be called at regular intervals to process the incoming serial
 	// data and issue IP events to the sketch.  It does not return until all IP
 	// events have been processed.
