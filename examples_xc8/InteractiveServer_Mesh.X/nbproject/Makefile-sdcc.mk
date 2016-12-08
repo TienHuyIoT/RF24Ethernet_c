@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=InteractiveServer_Mesh.c pic_main.c serial.c ../../../RF24_c/utility/XC8/spi.c ../../utility/psock.c ../../utility/timer.c ../../utility/uip-fw.c ../../utility/uip-neighbor.c ../../utility/uip-split.c ../../utility/uip_arp.c ../../utility/uiplib.c umalloc.c ../../utility/uip.c ../../RF24Client_cg.c ../../RF24Ethernet_cg.c ../../RF24Server_cg.c ../../../RF24Mesh_c/RF24Mesh_cg.c ../../../RF24Network_c/RF24Network_cg.c ../../../RF24_c/RF24_cg.c
+SOURCEFILES_QUOTED_IF_SPACED=InteractiveServer_Mesh.c pic_main.c serial.c ../../../RF24_c/utility/XC8/spi.c ../../utility/psock.c ../../utility/timer.c ../../utility/uip-fw.c ../../utility/uip-neighbor.c ../../utility/uip-split.c ../../utility/uip_arp.c ../../utility/uiplib.c umalloc.c ../../utility/uip.c ../../RF24Client_c.c ../../RF24Ethernet_c.c ../../RF24Server_c.c ../../../RF24Mesh_c/RF24Mesh_c.c ../../../RF24Network_c/RF24Network_c.c ../../../RF24_c/RF24_c.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/InteractiveServer_Mesh.o ${OBJECTDIR}/pic_main.o ${OBJECTDIR}/serial.o ${OBJECTDIR}/_ext/2031907356/spi.o ${OBJECTDIR}/_ext/678348748/psock.o ${OBJECTDIR}/_ext/678348748/timer.o ${OBJECTDIR}/_ext/678348748/uip-fw.o ${OBJECTDIR}/_ext/678348748/uip-neighbor.o ${OBJECTDIR}/_ext/678348748/uip-split.o ${OBJECTDIR}/_ext/678348748/uip_arp.o ${OBJECTDIR}/_ext/678348748/uiplib.o ${OBJECTDIR}/umalloc.o ${OBJECTDIR}/_ext/678348748/uip.o ${OBJECTDIR}/_ext/43898991/RF24Client_cg.o ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.o ${OBJECTDIR}/_ext/43898991/RF24Server_cg.o ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.o ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.o ${OBJECTDIR}/_ext/381377385/RF24_cg.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/InteractiveServer_Mesh.o.d ${OBJECTDIR}/pic_main.o.d ${OBJECTDIR}/serial.o.d ${OBJECTDIR}/_ext/2031907356/spi.o.d ${OBJECTDIR}/_ext/678348748/psock.o.d ${OBJECTDIR}/_ext/678348748/timer.o.d ${OBJECTDIR}/_ext/678348748/uip-fw.o.d ${OBJECTDIR}/_ext/678348748/uip-neighbor.o.d ${OBJECTDIR}/_ext/678348748/uip-split.o.d ${OBJECTDIR}/_ext/678348748/uip_arp.o.d ${OBJECTDIR}/_ext/678348748/uiplib.o.d ${OBJECTDIR}/umalloc.o.d ${OBJECTDIR}/_ext/678348748/uip.o.d ${OBJECTDIR}/_ext/43898991/RF24Client_cg.o.d ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.o.d ${OBJECTDIR}/_ext/43898991/RF24Server_cg.o.d ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.o.d ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.o.d ${OBJECTDIR}/_ext/381377385/RF24_cg.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/InteractiveServer_Mesh.o ${OBJECTDIR}/pic_main.o ${OBJECTDIR}/serial.o ${OBJECTDIR}/_ext/2031907356/spi.o ${OBJECTDIR}/_ext/678348748/psock.o ${OBJECTDIR}/_ext/678348748/timer.o ${OBJECTDIR}/_ext/678348748/uip-fw.o ${OBJECTDIR}/_ext/678348748/uip-neighbor.o ${OBJECTDIR}/_ext/678348748/uip-split.o ${OBJECTDIR}/_ext/678348748/uip_arp.o ${OBJECTDIR}/_ext/678348748/uiplib.o ${OBJECTDIR}/umalloc.o ${OBJECTDIR}/_ext/678348748/uip.o ${OBJECTDIR}/_ext/43898991/RF24Client_c.o ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.o ${OBJECTDIR}/_ext/43898991/RF24Server_c.o ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.o ${OBJECTDIR}/_ext/1478480717/RF24Network_c.o ${OBJECTDIR}/_ext/381377385/RF24_c.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/InteractiveServer_Mesh.o.d ${OBJECTDIR}/pic_main.o.d ${OBJECTDIR}/serial.o.d ${OBJECTDIR}/_ext/2031907356/spi.o.d ${OBJECTDIR}/_ext/678348748/psock.o.d ${OBJECTDIR}/_ext/678348748/timer.o.d ${OBJECTDIR}/_ext/678348748/uip-fw.o.d ${OBJECTDIR}/_ext/678348748/uip-neighbor.o.d ${OBJECTDIR}/_ext/678348748/uip-split.o.d ${OBJECTDIR}/_ext/678348748/uip_arp.o.d ${OBJECTDIR}/_ext/678348748/uiplib.o.d ${OBJECTDIR}/umalloc.o.d ${OBJECTDIR}/_ext/678348748/uip.o.d ${OBJECTDIR}/_ext/43898991/RF24Client_c.o.d ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.o.d ${OBJECTDIR}/_ext/43898991/RF24Server_c.o.d ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.o.d ${OBJECTDIR}/_ext/1478480717/RF24Network_c.o.d ${OBJECTDIR}/_ext/381377385/RF24_c.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/InteractiveServer_Mesh.o ${OBJECTDIR}/pic_main.o ${OBJECTDIR}/serial.o ${OBJECTDIR}/_ext/2031907356/spi.o ${OBJECTDIR}/_ext/678348748/psock.o ${OBJECTDIR}/_ext/678348748/timer.o ${OBJECTDIR}/_ext/678348748/uip-fw.o ${OBJECTDIR}/_ext/678348748/uip-neighbor.o ${OBJECTDIR}/_ext/678348748/uip-split.o ${OBJECTDIR}/_ext/678348748/uip_arp.o ${OBJECTDIR}/_ext/678348748/uiplib.o ${OBJECTDIR}/umalloc.o ${OBJECTDIR}/_ext/678348748/uip.o ${OBJECTDIR}/_ext/43898991/RF24Client_cg.o ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.o ${OBJECTDIR}/_ext/43898991/RF24Server_cg.o ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.o ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.o ${OBJECTDIR}/_ext/381377385/RF24_cg.o
+OBJECTFILES=${OBJECTDIR}/InteractiveServer_Mesh.o ${OBJECTDIR}/pic_main.o ${OBJECTDIR}/serial.o ${OBJECTDIR}/_ext/2031907356/spi.o ${OBJECTDIR}/_ext/678348748/psock.o ${OBJECTDIR}/_ext/678348748/timer.o ${OBJECTDIR}/_ext/678348748/uip-fw.o ${OBJECTDIR}/_ext/678348748/uip-neighbor.o ${OBJECTDIR}/_ext/678348748/uip-split.o ${OBJECTDIR}/_ext/678348748/uip_arp.o ${OBJECTDIR}/_ext/678348748/uiplib.o ${OBJECTDIR}/umalloc.o ${OBJECTDIR}/_ext/678348748/uip.o ${OBJECTDIR}/_ext/43898991/RF24Client_c.o ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.o ${OBJECTDIR}/_ext/43898991/RF24Server_c.o ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.o ${OBJECTDIR}/_ext/1478480717/RF24Network_c.o ${OBJECTDIR}/_ext/381377385/RF24_c.o
 
 # Source Files
-SOURCEFILES=InteractiveServer_Mesh.c pic_main.c serial.c ../../../RF24_c/utility/XC8/spi.c ../../utility/psock.c ../../utility/timer.c ../../utility/uip-fw.c ../../utility/uip-neighbor.c ../../utility/uip-split.c ../../utility/uip_arp.c ../../utility/uiplib.c umalloc.c ../../utility/uip.c ../../RF24Client_cg.c ../../RF24Ethernet_cg.c ../../RF24Server_cg.c ../../../RF24Mesh_c/RF24Mesh_cg.c ../../../RF24Network_c/RF24Network_cg.c ../../../RF24_c/RF24_cg.c
+SOURCEFILES=InteractiveServer_Mesh.c pic_main.c serial.c ../../../RF24_c/utility/XC8/spi.c ../../utility/psock.c ../../utility/timer.c ../../utility/uip-fw.c ../../utility/uip-neighbor.c ../../utility/uip-split.c ../../utility/uip_arp.c ../../utility/uiplib.c umalloc.c ../../utility/uip.c ../../RF24Client_c.c ../../RF24Ethernet_c.c ../../RF24Server_c.c ../../../RF24Mesh_c/RF24Mesh_c.c ../../../RF24Network_c/RF24Network_c.c ../../../RF24_c/RF24_c.c
 
 
 CFLAGS=
@@ -151,35 +151,35 @@ ${OBJECTDIR}/_ext/678348748/uip.o: ../../utility/uip.c  nbproject/Makefile-${CND
 	${RM} ${OBJECTDIR}/_ext/678348748/uip.o 
 	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../utility/uip.c  -o${OBJECTDIR}/_ext/678348748/uip.o
 	
-${OBJECTDIR}/_ext/43898991/RF24Client_cg.o: ../../RF24Client_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/43898991/RF24Client_c.o: ../../RF24Client_c.c  nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} ${OBJECTDIR}/_ext/43898991 
-	${RM} ${OBJECTDIR}/_ext/43898991/RF24Client_cg.o 
-	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../RF24Client_cg.c  -o${OBJECTDIR}/_ext/43898991/RF24Client_cg.o
+	${RM} ${OBJECTDIR}/_ext/43898991/RF24Client_c.o 
+	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../RF24Client_c.c  -o${OBJECTDIR}/_ext/43898991/RF24Client_c.o
 	
-${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.o: ../../RF24Ethernet_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.o: ../../RF24Ethernet_c.c  nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} ${OBJECTDIR}/_ext/43898991 
-	${RM} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.o 
-	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../RF24Ethernet_cg.c  -o${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.o
+	${RM} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.o 
+	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../RF24Ethernet_c.c  -o${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.o
 	
-${OBJECTDIR}/_ext/43898991/RF24Server_cg.o: ../../RF24Server_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/43898991/RF24Server_c.o: ../../RF24Server_c.c  nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} ${OBJECTDIR}/_ext/43898991 
-	${RM} ${OBJECTDIR}/_ext/43898991/RF24Server_cg.o 
-	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../RF24Server_cg.c  -o${OBJECTDIR}/_ext/43898991/RF24Server_cg.o
+	${RM} ${OBJECTDIR}/_ext/43898991/RF24Server_c.o 
+	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../RF24Server_c.c  -o${OBJECTDIR}/_ext/43898991/RF24Server_c.o
 	
-${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.o: ../../../RF24Mesh_c/RF24Mesh_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/720915382/RF24Mesh_c.o: ../../../RF24Mesh_c/RF24Mesh_c.c  nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} ${OBJECTDIR}/_ext/720915382 
-	${RM} ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.o 
-	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../../RF24Mesh_c/RF24Mesh_cg.c  -o${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.o
+	${RM} ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.o 
+	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../../RF24Mesh_c/RF24Mesh_c.c  -o${OBJECTDIR}/_ext/720915382/RF24Mesh_c.o
 	
-${OBJECTDIR}/_ext/1478480717/RF24Network_cg.o: ../../../RF24Network_c/RF24Network_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/1478480717/RF24Network_c.o: ../../../RF24Network_c/RF24Network_c.c  nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} ${OBJECTDIR}/_ext/1478480717 
-	${RM} ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.o 
-	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../../RF24Network_c/RF24Network_cg.c  -o${OBJECTDIR}/_ext/1478480717/RF24Network_cg.o
+	${RM} ${OBJECTDIR}/_ext/1478480717/RF24Network_c.o 
+	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../../RF24Network_c/RF24Network_c.c  -o${OBJECTDIR}/_ext/1478480717/RF24Network_c.o
 	
-${OBJECTDIR}/_ext/381377385/RF24_cg.o: ../../../RF24_c/RF24_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/381377385/RF24_c.o: ../../../RF24_c/RF24_c.c  nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} ${OBJECTDIR}/_ext/381377385 
-	${RM} ${OBJECTDIR}/_ext/381377385/RF24_cg.o 
-	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../../RF24_c/RF24_cg.c  -o${OBJECTDIR}/_ext/381377385/RF24_cg.o
+	${RM} ${OBJECTDIR}/_ext/381377385/RF24_c.o 
+	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../../RF24_c/RF24_c.c  -o${OBJECTDIR}/_ext/381377385/RF24_c.o
 	
 else
 ${OBJECTDIR}/InteractiveServer_Mesh.o: InteractiveServer_Mesh.c  nbproject/Makefile-${CND_CONF}.mk
@@ -247,35 +247,35 @@ ${OBJECTDIR}/_ext/678348748/uip.o: ../../utility/uip.c  nbproject/Makefile-${CND
 	${RM} ${OBJECTDIR}/_ext/678348748/uip.o 
 	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../utility/uip.c  -o${OBJECTDIR}/_ext/678348748/uip.o
 	
-${OBJECTDIR}/_ext/43898991/RF24Client_cg.o: ../../RF24Client_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/43898991/RF24Client_c.o: ../../RF24Client_c.c  nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} ${OBJECTDIR}/_ext/43898991 
-	${RM} ${OBJECTDIR}/_ext/43898991/RF24Client_cg.o 
-	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../RF24Client_cg.c  -o${OBJECTDIR}/_ext/43898991/RF24Client_cg.o
+	${RM} ${OBJECTDIR}/_ext/43898991/RF24Client_c.o 
+	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../RF24Client_c.c  -o${OBJECTDIR}/_ext/43898991/RF24Client_c.o
 	
-${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.o: ../../RF24Ethernet_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.o: ../../RF24Ethernet_c.c  nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} ${OBJECTDIR}/_ext/43898991 
-	${RM} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.o 
-	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../RF24Ethernet_cg.c  -o${OBJECTDIR}/_ext/43898991/RF24Ethernet_cg.o
+	${RM} ${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.o 
+	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../RF24Ethernet_c.c  -o${OBJECTDIR}/_ext/43898991/RF24Ethernet_c.o
 	
-${OBJECTDIR}/_ext/43898991/RF24Server_cg.o: ../../RF24Server_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/43898991/RF24Server_c.o: ../../RF24Server_c.c  nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} ${OBJECTDIR}/_ext/43898991 
-	${RM} ${OBJECTDIR}/_ext/43898991/RF24Server_cg.o 
-	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../RF24Server_cg.c  -o${OBJECTDIR}/_ext/43898991/RF24Server_cg.o
+	${RM} ${OBJECTDIR}/_ext/43898991/RF24Server_c.o 
+	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../RF24Server_c.c  -o${OBJECTDIR}/_ext/43898991/RF24Server_c.o
 	
-${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.o: ../../../RF24Mesh_c/RF24Mesh_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/720915382/RF24Mesh_c.o: ../../../RF24Mesh_c/RF24Mesh_c.c  nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} ${OBJECTDIR}/_ext/720915382 
-	${RM} ${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.o 
-	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../../RF24Mesh_c/RF24Mesh_cg.c  -o${OBJECTDIR}/_ext/720915382/RF24Mesh_cg.o
+	${RM} ${OBJECTDIR}/_ext/720915382/RF24Mesh_c.o 
+	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../../RF24Mesh_c/RF24Mesh_c.c  -o${OBJECTDIR}/_ext/720915382/RF24Mesh_c.o
 	
-${OBJECTDIR}/_ext/1478480717/RF24Network_cg.o: ../../../RF24Network_c/RF24Network_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/1478480717/RF24Network_c.o: ../../../RF24Network_c/RF24Network_c.c  nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} ${OBJECTDIR}/_ext/1478480717 
-	${RM} ${OBJECTDIR}/_ext/1478480717/RF24Network_cg.o 
-	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../../RF24Network_c/RF24Network_cg.c  -o${OBJECTDIR}/_ext/1478480717/RF24Network_cg.o
+	${RM} ${OBJECTDIR}/_ext/1478480717/RF24Network_c.o 
+	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../../RF24Network_c/RF24Network_c.c  -o${OBJECTDIR}/_ext/1478480717/RF24Network_c.o
 	
-${OBJECTDIR}/_ext/381377385/RF24_cg.o: ../../../RF24_c/RF24_cg.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/381377385/RF24_c.o: ../../../RF24_c/RF24_c.c  nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} ${OBJECTDIR}/_ext/381377385 
-	${RM} ${OBJECTDIR}/_ext/381377385/RF24_cg.o 
-	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../../RF24_c/RF24_cg.c  -o${OBJECTDIR}/_ext/381377385/RF24_cg.o
+	${RM} ${OBJECTDIR}/_ext/381377385/RF24_c.o 
+	${MP_CC} --use-non-free -I"../../" -I"../../../RF24_c" -I"../../../RF24_c/utility/XC8" -I"../../../RF24Mesh_c" -I"../../../RF24Network_c" -I"../../utility"  -Wl,-s,18f4620_g.lkr  --debug -c -mpic16 -p18f4620 ../../../RF24_c/RF24_c.c  -o${OBJECTDIR}/_ext/381377385/RF24_c.o
 	
 endif
 

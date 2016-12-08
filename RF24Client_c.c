@@ -213,9 +213,9 @@ test2:
 	
 	memcpy(u->myData+u->out_pos,buf+total_written,payloadSize);	
 	u->packets_out = 1;
-	u->out_pos+=payloadSize;
+	u->out_pos=u->out_pos+payloadSize;
 
-	total_written += payloadSize;
+	total_written = total_written +payloadSize;
 	
 	if( total_written < size ){	
 		size_t remain = size-total_written;
@@ -446,7 +446,7 @@ int RF24EC_available(void) {
   //if (cli){	
 	return RF24EC__available(cli.data);
   //}
-  return 0;
+  //return 0;
 }
 
 /*************************************************************/
@@ -466,9 +466,9 @@ int RF24EC_read_b( uint8_t *buf, size_t size) {
 
     size = rf24_min(cli.data->dataCnt,size);
 	memcpy(buf,&cli.data->myDataIn[cli.data->dataPos],size);
-	cli.data->dataCnt -= size;
+	cli.data->dataCnt= cli.data->dataCnt -size;
 	
-	cli.data->dataPos+=size;
+	cli.data->dataPos=cli.data->dataPos+size;
 	
 	if(!cli.data->dataCnt) {
       
@@ -526,19 +526,19 @@ void RF24EC_flush(void) {
 }
 
 /*************************************************************/
-bool RF24EC_findUntil( char * target,char * terminator)
+bool RF24EC_findUntil(const char * target,const char * terminator)
 {
 return RF24EC_findUntil_f(target, strlen(target), terminator, strlen(terminator));
 }
        
 /*************************************************************/
-bool RF24EC_find(char * target)
+bool RF24EC_find(const char * target)
 {
   return RF24EC_findUntil_f( target, strlen(target), NULL, 0);
 }
 /*************************************************************/
 
-bool RF24EC_findUntil_f(char *target, size_t targetLen, char *terminator, size_t termLen)
+bool RF24EC_findUntil_f(const char *target, size_t targetLen,const  char *terminator, size_t termLen)
 {
   if (terminator == NULL) {
     MultiTarget t[1];

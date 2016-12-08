@@ -34,7 +34,7 @@ extern "C" {
  * Class declaration for RF24Ethernet
  */
 
-#ifndef __XC8
+#if !defined(__XC8) && !defined(__SDCC_pic16)
 #include <Arduino.h>
 #endif
 #include "uip-conf.h"

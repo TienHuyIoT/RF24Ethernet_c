@@ -96,7 +96,7 @@ static const char main_html_p2[] PROGMEM =
 */
 void sendPage(const char* _pointer, size_t size ){
   for(int i=0; i<size;i++){
-    char c = pgm_read_byte(_pointer++);
+    uint8_t c = pgm_read_byte(_pointer++);
     RF24EC_write(&c,1);
   }
 }
@@ -114,22 +114,15 @@ void main_page(void) {
   html_pointer = main_html_p1;
   sendPage(html_pointer,sizeof(main_html_p1));
   
-  // Include some variables, print them into the page manually
-  const char *lState = led_state ? "ON" : "OFF";
-  const char *lColor = led_state ? "darkseagreen 1" : "lightpink";
-  
-  char bf[OUTPUT_BUFFER_SIZE];
   
   if(!led_state){
-    sprintf_P(bf,PSTR("<tr><td bgcolor=%s>\n"),lColor);
-    RF24EC_write_s(bf);
-    sprintf_P(bf,PSTR("LED is %s</td></tr>\n"), lState);
+    RF24EC_write_s("<tr><td bgcolor=lightpink>\n");
+    RF24EC_write_s("LED is OFF</td></tr>\n");
   }else{
-    sprintf_P(bf,PSTR("<tr><td> </td><td bgcolor=%s>\n"),lColor);
-    RF24EC_write_s(bf);
-    sprintf_P(bf,PSTR("LED is %s</td></tr>\n"), lState);  
+    RF24EC_write_s("<tr><td> </td><td bgcolor=darkseagreen>\n");
+    RF24EC_write_s("LED is ON</td></tr>\n");
   }
-  RF24EC_write_s(bf);
+
   
   // Send the 2nd half of the page
   static const char* html_pointer2 = main_html_p2;
@@ -161,31 +154,21 @@ void stats_page(void) {
   seconds %= 60;
   minutes %= 60;
   hours %= 24;
-  
-  char buffer[45];
-  
-  strncpy_P(buffer, PSTR("HTTP/1.1 200 OK\nContent-Type: text/html\n"),45);
-  RF24EC_write_s(buffer);
-  strncpy_P(buffer, PSTR("Connection: close\n\n<!DOCTYPE HTML>\n<html>\n"),45);
-  RF24EC_write_s(buffer);
-  strncpy_P(buffer, PSTR("<head><style>body{background-color:linen;}\n"),45);
-  RF24EC_write_s(buffer);
-  strncpy_P(buffer, PSTR("td{border: 1px solid black;}</style></head>\n"),45);
-  RF24EC_write_s(buffer);
-  strncpy_P(buffer, PSTR("<body><table><tr><td> Uptime</td><td>\n"),45);
-  RF24EC_write_s(buffer);
-  sprintf_P(buffer, PSTR("%u days, %lu hours %lu minutes %lu"),days,hours,minutes,seconds);
-  RF24EC_write_s(buffer);
-  strncpy_P(buffer, PSTR("seconds</td></tr><tr><td>UIP Buffer Size"),45);
-  RF24EC_write_s(buffer);
-  sprintf_P(buffer, PSTR("</td><td>%u bytes</td></tr><tr><td>User "),UIP_BUFSIZE);
-  RF24EC_write_s(buffer);
-  sprintf_P(buffer, PSTR("Output<br>Buffer Size</td><td>%u bytes"),OUTPUT_BUFFER_SIZE);
-  RF24EC_write_s(buffer);
-  strncpy_P(buffer, PSTR("</td></tr></table><br><br>"),45);
-  RF24EC_write_s(buffer);
-  strncpy_P(buffer, PSTR("<a href='/'>Home</a></body></html>"),45);
-  RF24EC_write_s(buffer);
+    
+  RF24EC_write_s("HTTP/1.1 200 OK\nContent-Type: text/html\n");
+  RF24EC_write_s("Connection: close\n\n<!DOCTYPE HTML>\n<html>\n");
+  RF24EC_write_s("<head><style>body{background-color:linen;}\n");
+  RF24EC_write_s("td{border: 1px solid black;}</style></head>\n");
+  RF24EC_write_s("<body><table><tr><td> Uptime</td><td>\n");
+  RF24EC_write_s(itoa_(days));RF24EC_write_s(" days, ");
+  RF24EC_write_s(itoa_(hours));RF24EC_write_s(" hours ");
+  RF24EC_write_s(itoa_(minutes));RF24EC_write_s(" minutes ");
+  RF24EC_write_s(itoa_(seconds));
+  RF24EC_write_s(" seconds</td></tr><tr><td>UIP Buffer Size");
+  RF24EC_write_s("</td><td>");RF24EC_write_s(itoa_(UIP_BUFSIZE));RF24EC_write_s(" bytes</td></tr><tr><td>User ");
+  RF24EC_write_s("Output<br>Buffer Size</td><td>");RF24EC_write_s(itoa_(OUTPUT_BUFFER_SIZE));RF24EC_write_s(" bytes");
+  RF24EC_write_s("</td></tr></table><br><br>");
+  RF24EC_write_s("<a href='/'>Home</a></body></html>");
 }
 
 /***************************************************************/
@@ -193,6 +176,7 @@ void stats_page(void) {
 /**
 * An example of a very basic HTML page
 */
+/*
   static const char html_page[] PROGMEM = 
     "HTTP/1.1 200 OK\n"
     "Content-Type: text/html\n"
@@ -203,4 +187,4 @@ void stats_page(void) {
     "<b>Hello From PIC18F!</b>"
     "</body>"
     "</html>";
-    
+  */  

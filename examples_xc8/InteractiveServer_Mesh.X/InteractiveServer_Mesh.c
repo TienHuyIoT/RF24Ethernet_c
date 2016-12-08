@@ -23,10 +23,9 @@
 #include <RF24Network_c.h>
 //#include <printf.h>
 #include <RF24Ethernet_c.h>
-#include "HTML.h"
 #include <RF24Mesh_c.h>
 #include"serial.h"
-
+#include "HTML.h"
 
 /*** Configure the radio CE & CS pins ***/
 //RF24 radio;
@@ -34,20 +33,17 @@
 //RF24Mesh mesh;
 //RF24EthernetClass RF24Ethernet;
 
-#if defined (ARDUINO_ARCH_ESP8266)
-  #define LED_PIN BUILTIN_LED
-#else
-  #define LED_PIN 33 
-#endif
+  #define LED_PIN PORTBbits.RB0
+  #define LED_PIN_T TRISBbits.TRISB0
 
 // Configure the server to listen on port 1000
-EthernetServer server;
+//EthernetServer server;
 
 /**********************************************************/
 static unsigned short generate_tcp_stats();
 
 void setup() {
-  RF24_init(36,35);
+  RF24_init();//pins are defined in xc8_config.h
   RF24N_init();
   RF24M_init();
   RF24E_init();
@@ -56,15 +52,15 @@ void setup() {
   Serial_begin(115200);
   //printf_begin();
   Serial_println("start");
-  pinMode(LED_PIN, OUTPUT);
+  LED_PIN_T=OUTPUT;
   
-  IPAddress myIP[4]={10,10,2,4};
+  IPAddress myIP={10,10,2,4};
   
   RF24E_begin_i(myIP);
   RF24M_begin( MESH_DEFAULT_CHANNEL, RF24_1MBPS, MESH_RENEWAL_TIMEOUT);
 
   //Set IP of the RPi (gateway)
-  IPAddress gwIP[4]={10,10,2,2};
+  IPAddress gwIP={10,10,2,2};
  
   
   RF24E_set_gateway(gwIP);
@@ -110,12 +106,12 @@ void loop() {
         if (strcmp(buf, "ON") == 0) { // If the user requested http://ip-of-node:1000/ON
           led_state = 1;
           pageReq = 1;
-          digitalWrite(LED_PIN, led_state);
+          LED_PIN=led_state;
           
         }else if (strcmp(buf, "OF") == 0) { // If the user requested http://ip-of-node:1000/OF
           led_state = 0;
           pageReq = 1;
-          digitalWrite(LED_PIN, led_state);
+          LED_PIN=led_state;
           
         }else if (strcmp(buf, "ST") == 0) { // If the user requested http://ip-of-node:1000/ST
           pageReq = 2;
@@ -185,7 +181,7 @@ static unsigned short generate_tcp_stats()
       Serial_print(F(":"));
       Serial_println(itoa_(htons(conn->rport)));
       Serial_print(F("Outstanding "));
-      Serial_println((uip_outstanding(conn)) ? '*' : ' ');
+      Serial_println((uip_outstanding(conn)) ? "*" : " " );
 
     }
   }

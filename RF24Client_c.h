@@ -62,13 +62,13 @@ typedef struct {
  */
 typedef struct {
   uint8_t state;
-  bool packets_in;
-  bool packets_out;
+  uint8_t packets_in;
+  uint8_t packets_out;
   uint16_t out_pos;
 #if UIP_CLIENT_TIMER >= 0
   unsigned long timer;
 #endif
- bool windowOpened;
+ uint8_t windowOpened;
  uint32_t restartTime;
  uint32_t restartInterval;
  uint32_t connAbortTime;
@@ -76,8 +76,8 @@ typedef struct {
  uint8_t myDataIn[OUTPUT_BUFFER_SIZE]; 
  uint16_t dataPos;
  uint16_t dataCnt;
- bool hold;
- bool sent;
+ uint8_t hold;
+ uint8_t sent;
 } uip_userdata_t;
 
 typedef enum{
@@ -201,11 +201,11 @@ typedef struct{
    
 
    
-    bool RF24EC_findUntil( char * target,char * terminator);
-    bool RF24EC_findUntil_f(char *target, size_t targetLen, char *terminate, size_t termLen);  
+    bool RF24EC_findUntil(const char * target,const char * terminator);
+    bool RF24EC_findUntil_f(const char *target, size_t targetLen,const char *terminate, size_t termLen);  
  
        
-    bool RF24EC_find(char * target);
+    bool RF24EC_find(const char * target);
 
     int RF24EC_peekNextDigit(LookaheadMode_ lookahead, bool detectDecimal); // returns the next numeric digit in the stream or -1 if timeout
     //long RF24EC_parseInt(RF24Client* cli, LookaheadMode lookahead = SKIP_ALL, char ignore = NO_IGNORE_CHAR);

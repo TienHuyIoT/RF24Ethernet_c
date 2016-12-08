@@ -42,6 +42,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-/examples_xc8/InteractiveServer_Mesh.X/nbproject/private/
-/examples_xc8/InteractiveServer_Mesh.X/build/default/
-/examples_xc8/InteractiveServer_Mesh.X/dist/default/
+/examples_xc8/InteractiveServer_Mesh.X/debug/
+/examples_xc8/InteractiveServer_Mesh.X/build/
+/examples_xc8/InteractiveServer_Mesh.X/dist/
