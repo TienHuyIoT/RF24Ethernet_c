@@ -83,7 +83,7 @@
 
 
 #include <RF24Network_c.h>
-#include <RF24_c.h>
+#include <RF24.h>
 //#include <SPI.h>
 //#include <printf.h>
 #include <RF24Ethernet_c.h>

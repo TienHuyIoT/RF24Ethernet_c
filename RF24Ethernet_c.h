@@ -44,7 +44,7 @@ extern "C" {
 
 
 #include "RF24Ethernet_c_config.h"
-#include <RF24_c.h>
+#include <RF24.h>
 #include <RF24Network_c.h>
 #if !defined (RF24_TAP) // Using RF24Mesh
 #include <RF24Mesh_c.h>

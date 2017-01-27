@@ -45,3 +45,4 @@ Temporary Items
 /examples_xc8/InteractiveServer_Mesh.X/debug/
 /examples_xc8/InteractiveServer_Mesh.X/build/
 /examples_xc8/InteractiveServer_Mesh.X/dist/
+*.o
