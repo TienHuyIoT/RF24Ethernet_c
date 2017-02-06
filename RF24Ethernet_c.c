@@ -304,7 +304,7 @@ void RF24E_tick(void) {
 
 int RF24E_network_send(void)
 {
-		RF24NetworkHeader headerOut;
+		RF24NetworkHeader_ headerOut;
 		RF24NH_init(&headerOut,00,EXTERNAL_DATA_TYPE);
 		//while(millis() - RF24Ethernet.lastRadio < 1){}
 

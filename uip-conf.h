@@ -48,7 +48,7 @@
 #include <inttypes.h>
 #endif
 
-#include "RF24Network_c_config.h"
+#include "RF24Network_config.h"
 /************* TMRh20: User Configuration *******************/
 /**
 @defgroup UipConfiguration

@@ -20,11 +20,11 @@
  */
 
 #include <RF24.h>
-#include <RF24Network_c.h>
+#include <RF24Network.h>
 //#include <printf.h>
 #include <RF24Ethernet_c.h>
 #include "HTML.h"
-#include <RF24Mesh_c.h>
+#include <RF24Mesh.h>
 
 /*** Configure the radio CE & CS pins ***/
 
