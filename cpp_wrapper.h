@@ -165,14 +165,15 @@ class RF24EthernetClass {//: public Print {
 extern RF24EthernetClass RF24Ethernet;
  
  
+/*
 #include "Print.h"
 #include "Client.h"
 #include "Server.h"
+*/
 
 
 
-
-class RF24Client : public Client {
+class RF24Client{ // : public Client {
 
 public:
 
@@ -256,7 +257,13 @@ public:
         size_t write(const uint8_t *buf, size_t size){
           return RF24EC_write( buf, size) ; 
         };
-    
+        
+	
+	size_t write(const char * str){
+          return RF24EC_write_s(str) ; 
+        };
+        
+
 	/**
 	* Indicates whether data is available to be read by the client.
 	* @return Returns the number of bytes available to be read
@@ -296,7 +303,7 @@ public:
           return RF24EC_flush(); 
         };
     
-	using Print::write;	
+	//using Print::write;	
 		
         operator bool(){
           RF24E_tick();
@@ -304,11 +311,32 @@ public:
         };
         //virtual bool operator==(const EthernetClient& rhs){ cli.getData() && rhs.getData() && (cli.getData() == rhs.getData()) 
         //virtual bool operator!=(const EthernetClient& rhs) { return !this->operator==(rhs); };
-       
+   
+
+    bool findUntil(const char * target,const char * terminator)
+    {
+      return RF24EC_findUntil( target, terminator);
+    }
+    
+    bool find(const char * target)
+    {
+       return RF24EC_find(target);
+    }
+    
+    long parseInt( LookaheadMode_ lookahead = SKIP_ALL_, char ignore = NO_IGNORE_CHAR)
+    {
+      return RF24EC_parseInt( lookahead, ignore );
+    }
+
+    void println(void)
+    {
+      write("\r\n");
+    }
+
 };
 
 
-class RF24Server : public Server {
+class RF24Server { //: public Server {
 
 public:
   RF24Server(uint16_t port){
@@ -326,8 +354,14 @@ public:
   size_t write(const uint8_t *buf, size_t size){
     return RF24ES_write(buf, size) ; 
   };
+  
+  
+  size_t write(const char * str){
+    return RF24ES_write_s(str) ; 
+  };
+  
 
-  using Print::write;
+  //using Print::write;
 
 };
 
