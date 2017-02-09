@@ -31,12 +31,12 @@
       <itemPath>../../clock-arch.c</itemPath>
       <itemPath>umalloc.c</itemPath>
       <itemPath>../../utility/uip.c</itemPath>
-      <itemPath>../../RF24Client_c.c</itemPath>
-      <itemPath>../../RF24Ethernet_c.c</itemPath>
-      <itemPath>../../RF24Server_c.c</itemPath>
       <itemPath>../../../RF24_c/RF24.c</itemPath>
       <itemPath>../../../RF24Network_c/RF24Network.c</itemPath>
       <itemPath>../../../RF24Mesh_c/RF24Mesh.c</itemPath>
+      <itemPath>../../RF24Client.c</itemPath>
+      <itemPath>../../RF24Ethernet.c</itemPath>
+      <itemPath>../../RF24Server.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

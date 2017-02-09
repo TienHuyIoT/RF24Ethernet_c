@@ -72,48 +72,51 @@
  * 
  * **************************************************************************
  * 
- * Example: 
- * 
- * RF24Ethernet Simple Server(Mesh) Example, using RF24Mesh for address allocation
+ * RF24Ethernet simple web client example
  *
- * This example demonstrates how to send out an HTTP response to a browser.
+ * RF24Ethernet uses the fine uIP stack by Adam Dunkels <adam@sics.se>
  *
- *      Documentation: http://tmrh20.github.io/RF24Ethernet/
+ * In order to minimize memory use and program space:
+ * 1. Open the RF24Network library folder
+ * 2. Edit the RF24Networl_config.h file
+ * 3. Un-comment #define DISABLE_USER_PAYLOADS
+ *
+ * This example connects to google and downloads the index page
  */
 
 
-#include <RF24Network.h>
+
 #include <RF24.h>
-//#include <SPI.h>
+#include <RF24Mesh.h>
+#include <RF24Network.h>
 //#include <printf.h>
 #include <RF24Ethernet.h>
-#include "RF24Mesh.h"
+#if !defined __arm__ && !defined __ARDUINO_X86__
+  #include <EEPROM.h>
+#endif
 
-/** Configure the radio CE & CS pins **/
-//RF24 radio;
-//RF24Network network;
-//RF24Mesh mesh;
+/*** Configure the radio CE & CS pins ***/
+//RF24_ radio;
+//RF24Network_ network;
+//RF24Mesh_ mesh;
 //RF24EthernetClass RF24Ethernet;
 
-// Set up the server to listen on port 1000
-//EthernetServer server;
+
+EthernetClient client;
 
 void setup() {
-RF24_init(7,8);
-RF24N_init();
-RF24M_init();
-RF24E_init();
-RF24ES_init(1000);
+  RF24_init(7,8);
+  RF24N_init();
+  RF24M_init();
+  RF24E_init();
   
-  // Set up the speed of our serial link.
   Serial.begin(115200);
-  //printf_begin();
-  Serial.println(F("start"));
+ // printf_begin();
+  Serial.println("Start");
   
-  // Set the IP address we'll be using. The last octet of the IP must be equal
-  // to the designated mesh nodeID
+  // Set the IP address we'll be using. The last octet mast match the nodeID (9)
   IPAddress_ myIP={10,10,2,4};
-  
+   
   RF24E_begin_i(myIP);
   RF24M_begin(MESH_DEFAULT_CHANNEL, RF24_1MBPS, MESH_RENEWAL_TIMEOUT);
   
@@ -121,12 +124,11 @@ RF24ES_init(1000);
   // the world, you'll need a gateway set up.
   IPAddress_ gwIP={10,10,2,2};
   
-  RF24E_set_gateway(gwIP);
-
-  // Listen for incoming connections on TCP port 1000.  Each incoming
-  // connection will result in the uip_callback() function being called.
-  RF24ES_begin();
+  RF24E_set_gateway(gwIP);  
 }
+
+uint32_t counter = 0;
+uint32_t reqTimer = 0;
 
 uint32_t mesh_timer = 0;
 
@@ -137,30 +139,58 @@ void loop() {
   if(millis()-mesh_timer > 30000){ //Every 30 seconds, test mesh connectivity
     mesh_timer = millis();
     if( ! RF24M_checkConnection() ){
-        Serial.println("*** RENEW ***");
         //refresh the network address        
         RF24M_renewAddress(MESH_RENEWAL_TIMEOUT);
-        
-     }else{
-
-        Serial.println("*** MESH OK ***");
      }
   }
 
-  RF24ES_available();
-  if(RF24EC_valid())  
-  {
-     while( RF24EC_waitAvailable(750) > 0){
-        Serial.print((char)RF24EC_read());
-     }
-    // Send an HTML response to the client. Default max size/characters per write is 90
-    RF24EC_write_s("HTTP/1.1 200 OK\n Content-Type: text/html\n Connection: close \nRefresh: 5 \n\n");
-    RF24EC_write_s("<!DOCTYPE HTML>\n <html> HELLO FROM ARDUINO!</html>");
-    RF24EC_stop(); 
+size_t size;
 
-    Serial.println(F("********"));       
+if(size = RF24EC_available() > 0){
+    char c = RF24EC_read();
+    Serial.print(c);
+    // Sends a line-break every 150 characters, comment out if not connecting to google
+    //if(counter > 150){ Serial.println(""); counter=0;}
+    counter++;
+}
+
+  // if the server's disconnected, stop the client:
+  if (!RF24EC_connected()) {
+    Serial.println();
+    Serial.println(F("Disconnect. Waiting for disconnect timeout"));
+    RF24EC_stop();
+  
+    // Wait 5 seconds between requests
+    reqTimer = millis();
+    while(millis() - reqTimer < 5000 && ! RF24EC_available() ){ }    
+    connect();
+  
   }
- 
   // We can do other things in the loop, but be aware that the loop will
   // briefly pause while IP data is being processed.
 }
+
+void connect(){
+    Serial.println(F("connecting"));
+    IPAddress_ goog={74,125,224,87};
+    
+    IPAddress_ pizza={94,199,58,243};
+    
+    if (RF24EC_connect(pizza, 80)) {
+      Serial.println(F("connected"));
+      
+      // Make an HTTP request:
+      RF24EC_write_s("GET /asciiart/pizza.txt HTTP/1.1\n");
+      //client.write("GET / HTTP/1.1\n");
+      
+      RF24EC_write_s("Host: fiikus.net\n");
+      //client.write("Host: www.google.ca\n");
+      
+      RF24EC_write_s("Connection: close\n\n");   
+    
+    }else{
+      // if you didn't get a connection to the server:
+      Serial.println(F("connection failed"));
+    }
+}
+

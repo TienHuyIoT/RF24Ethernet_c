@@ -90,21 +90,16 @@
 #include "RF24Mesh.h"
 
 /** Configure the radio CE & CS pins **/
-//RF24 radio;
-//RF24Network network;
-//RF24Mesh mesh;
-//RF24EthernetClass RF24Ethernet;
+RF24 radio(7,8);
+RF24Network network(radio);
+RF24Mesh mesh(radio,network);
+RF24EthernetClass RF24Ethernet(radio,network,mesh);
+
 
 // Set up the server to listen on port 1000
-//EthernetServer server;
+EthernetServer server = EthernetServer(1000);
 
 void setup() {
-RF24_init(7,8);
-RF24N_init();
-RF24M_init();
-RF24E_init();
-RF24ES_init(1000);
-  
   // Set up the speed of our serial link.
   Serial.begin(115200);
   //printf_begin();
@@ -112,20 +107,18 @@ RF24ES_init(1000);
   
   // Set the IP address we'll be using. The last octet of the IP must be equal
   // to the designated mesh nodeID
-  IPAddress_ myIP={10,10,2,4};
-  
-  RF24E_begin_i(myIP);
-  RF24M_begin(MESH_DEFAULT_CHANNEL, RF24_1MBPS, MESH_RENEWAL_TIMEOUT);
+  IPAddress myIP(10,10,2,4);
+  Ethernet.begin(myIP);
+  mesh.begin();
   
   // If you'll be making outgoing connections from the Arduino to the rest of
   // the world, you'll need a gateway set up.
-  IPAddress_ gwIP={10,10,2,2};
-  
-  RF24E_set_gateway(gwIP);
+  IPAddress gwIP(10,10,2,2);
+  Ethernet.set_gateway(gwIP);
 
   // Listen for incoming connections on TCP port 1000.  Each incoming
   // connection will result in the uip_callback() function being called.
-  RF24ES_begin();
+  server.begin();
 }
 
 uint32_t mesh_timer = 0;
@@ -136,27 +129,26 @@ void loop() {
   // enable address renewal
   if(millis()-mesh_timer > 30000){ //Every 30 seconds, test mesh connectivity
     mesh_timer = millis();
-    if( ! RF24M_checkConnection() ){
+    if( ! mesh.checkConnection() ){
         Serial.println("*** RENEW ***");
         //refresh the network address        
-        RF24M_renewAddress(MESH_RENEWAL_TIMEOUT);
+        mesh.renewAddress();
         
      }else{
 
         Serial.println("*** MESH OK ***");
      }
   }
-
-  RF24ES_available();
-  if(RF24EC_valid())  
+  
+  if(EthernetClient client = server.available())  
   {
-     while( RF24EC_waitAvailable(750) > 0){
-        Serial.print((char)RF24EC_read());
+     while( client.waitAvailable() > 0){
+        Serial.print((char)client.read());
      }
     // Send an HTML response to the client. Default max size/characters per write is 90
-    RF24EC_write_s("HTTP/1.1 200 OK\n Content-Type: text/html\n Connection: close \nRefresh: 5 \n\n");
-    RF24EC_write_s("<!DOCTYPE HTML>\n <html> HELLO FROM ARDUINO!</html>");
-    RF24EC_stop(); 
+    client.write( "HTTP/1.1 200 OK\n Content-Type: text/html\n Connection: close \nRefresh: 5 \n\n");
+    client.write( "<!DOCTYPE HTML>\n <html> HELLO FROM ARDUINO!</html>");
+    client.stop(); 
 
     Serial.println(F("********"));       
   }

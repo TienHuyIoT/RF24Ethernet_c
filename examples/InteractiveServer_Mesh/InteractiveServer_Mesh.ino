@@ -12,30 +12,39 @@
  * 1. Open the RF24Network library folder
  * 2. Edit the RF24Networl_config.h file
  * 3. Un-comment #define DISABLE_USER_PAYLOADS
- * 4. See the Getting_Started_SimpleServer_Minimal example
+ *
+ *
+ * This example uses RF24Mesh. 
+ * Set #define UIP_CONF_LLH_LEN 0 in uip_conf.h if used with a TUN(RF24Mesh) or SLIP interface 
+ * 
  */
 
 
-#include <RF24Network.h>
+//#include <SPI.h>
 #include <RF24.h>
-#include <SPI.h>
+#include <RF24Network.h>
 //#include <printf.h>
 #include <RF24Ethernet.h>
-#include <avr/pgmspace.h>
 #include "HTML.h"
 #include "RF24Mesh.h"
-#include "EEPROM.h"
+
 /*** Configure the radio CE & CS pins ***/
 RF24 radio(7, 8);
 RF24Network network(radio);
-RF24EthernetClass RF24Ethernet(radio, network);
 RF24Mesh mesh(radio,network);
-#define LED_PIN A3 //Analog pin A3
+RF24EthernetClass RF24Ethernet(radio, network,mesh);
+
+#if defined (ARDUINO_ARCH_ESP8266)
+  #define LED_PIN BUILTIN_LED
+#else
+  #define LED_PIN A3 //Analog pin A3
+#endif
 
 // Configure the server to listen on port 1000
 EthernetServer server = EthernetServer(1000);
 
 /**********************************************************/
+static unsigned short generate_tcp_stats();
 
 void setup() {
 
@@ -43,27 +52,35 @@ void setup() {
   //printf_begin();
   Serial.println("start");
   pinMode(LED_PIN, OUTPUT);
-
-//  uint16_t myRF24NetworkAddress = 01;
-//  Ethernet.setMac(myRF24NetworkAddress);
-  mesh.setNodeID(7);
-  mesh.begin();
-  Serial.println(mesh.currentAddress(),HEX);
-  Ethernet.setMac(mesh.currentAddress());
   
-  IPAddress myIP(10, 10, 3,7);
+  IPAddress myIP(10, 10, 2, 4);
   Ethernet.begin(myIP);
+  mesh.begin();
 
-  IPAddress gwIP(10, 10, 3,1);
+  //Set IP of the RPi (gateway)
+  IPAddress gwIP(10, 10, 2, 2);
   Ethernet.set_gateway(gwIP);
 
   server.begin();
+
 }
 
 
 /********************************************************/
 
+uint32_t mesh_timer = 0;
+
 void loop() {
+
+  // Optional: If the node needs to move around physically, or using failover nodes etc.,
+  // enable address renewal
+  if(millis()-mesh_timer > 30000){ //Every 30 seconds, test mesh connectivity
+    mesh_timer = millis();
+    if( ! mesh.checkConnection() ){
+        //refresh the network address        
+        mesh.renewAddress();
+     }
+  }
 
   size_t size;
 
@@ -77,6 +94,7 @@ void loop() {
       if (size >= 7) {
         client.findUntil("/", "/");
         char buf[3] = {"  "};
+        if(client.available() >= 2){
         buf[0] = client.read();  // Read in the first two characters from the request
         buf[1] = client.read();
 
@@ -90,20 +108,21 @@ void loop() {
           pageReq = 1;
           digitalWrite(LED_PIN, led_state);
           
-        }else if (strcmp(buf, "ST") == 0) { // If the user requested http://ip-of-node:1000/OF
+        }else if (strcmp(buf, "ST") == 0) { // If the user requested http://ip-of-node:1000/ST
           pageReq = 2;
           
-        }else if (strcmp(buf, "CR") == 0) { // If the user requested http://ip-of-node:1000/OF
+        }else if (strcmp(buf, "CR") == 0) { // If the user requested http://ip-of-node:1000/CR
           pageReq = 3;
           
         }else if(buf[0] == ' '){
           pageReq = 4; 
         }
       }
-      // Empty the rest of the data from the client
-      while (client.waitAvailable()) {
-        client.flush();
       }
+      // Empty the rest of the data from the client
+      //while (client.waitAvailable()) {
+        client.flush();
+      //}
     }
     
     /**
@@ -140,9 +159,8 @@ static unsigned short generate_tcp_stats()
   for (uint8_t i = 0; i < UIP_CONF_MAX_CONNECTIONS; i++) {
     conn = &uip_conns[i];
 
-    // If there is an open connection to one of the listening ports, print the info
-    // This logic seems to be backwards?
-    if (uip_stopped(conn)) {
+    // If the application state is active for an available connection, print the info
+    if (conn->appstate) {
       Serial.print(F("Connection no "));
       Serial.println(i);
       Serial.print(F("Local Port "));

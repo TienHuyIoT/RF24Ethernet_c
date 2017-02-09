@@ -19,12 +19,12 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
   */
 
-#include "RF24Ethernet_c.h"
+#include "RF24Ethernet.h"
 
 
-static RF24EthernetClass ec;
+static RF24EthernetClass_ ec;
 
-IPAddress RF24E__dnsServerAddress;
+IPAddress_ RF24E__dnsServerAddress;
 //DhcpClass* RF24E__dhcp(NULL);
 
 /*************************************************************/
@@ -83,23 +83,23 @@ void RF24E_setChannel(uint8_t channel){
 
 /*******************************************************/
 
-void RF24E_begin_i(IPAddress ip)
+void RF24E_begin_i(IPAddress_ ip)
 {
-IPAddress dns = ip;
+IPAddress_ dns = ip;
 dns.bytes[3] = 1;
 RF24E_begin_id(ip, dns);
 }
 
-void RF24E_begin_id(IPAddress ip, IPAddress dns)
+void RF24E_begin_id(IPAddress_ ip, IPAddress_ dns)
 {
-IPAddress gateway = ip;
+IPAddress_ gateway = ip;
 gateway.bytes[3] = 1;
 RF24E_begin_idg(ip, dns, gateway);
 }
 
-void RF24E_begin_idg(IPAddress ip, IPAddress dns, IPAddress gateway)
+void RF24E_begin_idg(IPAddress_ ip, IPAddress_ dns, IPAddress_ gateway)
 {
-IPAddress subnet;
+IPAddress_ subnet;
 subnet.bytes[0]=255;
 subnet.bytes[1]=255;
 subnet.bytes[2]=255;
@@ -107,7 +107,7 @@ subnet.bytes[3]=0;
 RF24E_begin_idgs(ip, dns, gateway, subnet);
 }
 
-void RF24E_begin_idgs(IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet)
+void RF24E_begin_idgs(IPAddress_ ip, IPAddress_ dns, IPAddress_ gateway, IPAddress_ subnet)
 {
 //init(mac);
 RF24E_configure(ip,dns,gateway,subnet);
@@ -115,7 +115,7 @@ RF24E_configure(ip,dns,gateway,subnet);
 
 /*******************************************************/
 
-void RF24E_configure(IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet) {
+void RF24E_configure(IPAddress_ ip, IPAddress_ dns, IPAddress_ gateway, IPAddress_ subnet) {
 
   #if !defined (RF24_TAP) // Using RF24Mesh
     RF24M_setNodeID(ip.bytes[3]);
@@ -149,7 +149,7 @@ ec._dnsServerAddress = dns;
 
 /*******************************************************/
 
-void RF24E_set_gateway(IPAddress gwIP)
+void RF24E_set_gateway(IPAddress_ gwIP)
 {
   uip_ipaddr_t ipaddr;
   uip_ip_addr(ipaddr, gwIP);
@@ -166,8 +166,8 @@ void RF24E_listen(uint16_t port)
 
 /*******************************************************/
  
-IPAddress RF24E_localIP(void) {
-IPAddress ret;
+IPAddress_ RF24E_localIP(void) {
+IPAddress_ ret;
 uip_ipaddr_t a;
 uip_gethostaddr(a);
 
@@ -181,8 +181,8 @@ return ret;
 
 /*******************************************************/
 
-IPAddress RF24E_subnetMask(void) {
-IPAddress ret;
+IPAddress_ RF24E_subnetMask(void) {
+IPAddress_ ret;
 uip_ipaddr_t a;
 uip_getnetmask(a);
 ret.bytes[0]=a[0] & 0xFF;
@@ -194,8 +194,8 @@ return ret;
 
 /*******************************************************/
 
-IPAddress RF24E_gatewayIP(void) {
-IPAddress ret;
+IPAddress_ RF24E_gatewayIP(void) {
+IPAddress_ ret;
 uip_ipaddr_t a;
 uip_getdraddr(a);
 ret.bytes[0]=a[0] & 0xFF;
@@ -207,7 +207,7 @@ return ret;
 
 /*******************************************************/
 
-IPAddress RF24E_dnsServerIP(void) {
+IPAddress_ RF24E_dnsServerIP(void) {
 return ec._dnsServerAddress;
 }
 

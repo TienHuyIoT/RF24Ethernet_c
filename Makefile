@@ -7,11 +7,11 @@ INCLUDE+= -I../RF24_c -I../RF24Network_c -I../RF24Mesh_c -I.
 FLAGS= -Os -DF_CPU=16000000UL -mmcu=atmega328p -Wall -DARDUINO
 
 all:
-	${CC} ${FLAGS} ${INCLUDE} -c  RF24Ethernet_c.c
-	${CC} ${FLAGS} ${INCLUDE} -c  RF24Client_c.c
-	${CC} ${FLAGS} ${INCLUDE} -c  RF24Server_c.c  
-	${CC} ${FLAGS} ${INCLUDE} -c  RF24Udp_c.c
-	${CC} ${FLAGS} ${INCLUDE} -c  Dns_c.c
+	${CC} ${FLAGS} ${INCLUDE} -c  RF24Ethernet.c
+	${CC} ${FLAGS} ${INCLUDE} -c  RF24Client.c
+	${CC} ${FLAGS} ${INCLUDE} -c  RF24Server.c  
+	${CC} ${FLAGS} ${INCLUDE} -c  RF24Udp.c
+	${CC} ${FLAGS} ${INCLUDE} -c  Dns.c
 
 clean:
 	rm -Rf *.o

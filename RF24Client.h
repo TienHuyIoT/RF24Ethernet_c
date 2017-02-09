@@ -99,7 +99,7 @@ typedef struct{
 	//friend class RF24Server;
 	//friend void serialip_appcall(void);
 	//friend void uip_log(char* msg);
-}RF24Client;
+}RF24Client_;
 
 
 	/**
@@ -113,7 +113,7 @@ typedef struct{
 	/**
 	* Establish a connection to a specified IP address and port
 	*/
-	int RF24EC_connect(IPAddress ip, uint16_t port);
+	int RF24EC_connect(IPAddress_ ip, uint16_t port);
     
 	/**
 	* Establish a connection to a given hostname and port
@@ -220,6 +220,7 @@ typedef struct{
     int RF24EC_findMulti(MultiTarget *targets, int tCount);
 
 		
+      uip_userdata_t* RF24EC_getData(void);
 //    operator bool();
 //    virtual bool operator==(const EthernetClient&);
 //    virtual bool operator!=(const EthernetClient& rhs) { return !this->operator==(rhs); };

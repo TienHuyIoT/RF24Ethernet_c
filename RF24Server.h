@@ -24,12 +24,12 @@ extern "C" {
 #endif
 
 //#include "Server.h"
-#include "RF24Client_c.h"
+#include "RF24Client.h"
 #include "ethernet_comp.h"
 
 typedef struct{
   uint16_t _port;
-}RF24Server;
+}RF24Server_;
 
   void RF24ES_init(uint16_t);
   void RF24ES_available(void);

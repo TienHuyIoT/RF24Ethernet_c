@@ -18,13 +18,13 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
   */
-#include "RF24Ethernet_c.h"
-#include "RF24Server_c.h"
+#include "RF24Ethernet.h"
+#include "RF24Server.h"
 
 //#include "uip-conf.h"
 
 
-static RF24Server srv;
+static RF24Server_ srv;
 
 /*************************************************************/
 

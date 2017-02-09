@@ -29,7 +29,7 @@
 
 #include <RF24Network.h>
 #include <RF24.h>
-#include <SPI.h>
+//#include <SPI.h>
 #include <printf.h>
 #include <RF24Ethernet.h>
 #include "HTML.h"

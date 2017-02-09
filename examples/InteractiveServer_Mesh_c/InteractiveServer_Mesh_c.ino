@@ -22,7 +22,7 @@
 #include <RF24.h>
 #include <RF24Network.h>
 //#include <printf.h>
-#include <RF24Ethernet_c.h>
+#include <RF24Ethernet.h>
 #include "HTML.h"
 #include <RF24Mesh.h>
 
@@ -51,13 +51,13 @@ void setup() {
   Serial.println("start");
   pinMode(LED_PIN, OUTPUT);
   
-  IPAddress myIP= {10,10,2,4};
+  IPAddress_ myIP= {10,10,2,4};
 
   RF24E_begin_i(myIP);
   RF24M_begin( MESH_DEFAULT_CHANNEL, RF24_1MBPS, MESH_RENEWAL_TIMEOUT);
 
   //Set IP of the RPi (gateway)
-  IPAddress gwIP={10,10,2,2};
+  IPAddress_ gwIP={10,10,2,2};
 
   RF24E_set_gateway(gwIP);
 

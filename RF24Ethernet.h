@@ -43,7 +43,7 @@ extern "C" {
 #include "utility/uip_arp.h"
 
 
-#include "RF24Ethernet_c_config.h"
+#include "RF24Ethernet_config.h"
 #include <RF24.h>
 #include <RF24Network.h>
 #if !defined (RF24_TAP) // Using RF24Mesh
@@ -54,14 +54,14 @@ extern "C" {
 typedef union {
 	uint8_t bytes[4];  // IPv4 address
 	uint32_t dword;
-} IPAddress;
+} IPAddress_;
 
 #include "ethernet_comp.h"
-#include "RF24Client_c.h"
-#include "RF24Server_c.h"
+#include "RF24Client.h"
+#include "RF24Server.h"
 
 #if UIP_CONF_UDP > 0
-#include "RF24Udp_c.h"
+#include "RF24Udp.h"
 #include "Dns_c.h"
 #endif
 
@@ -115,7 +115,7 @@ typedef struct {
 typedef struct{ 
 	
         
-	IPAddress _dnsServerAddress;
+	IPAddress_ _dnsServerAddress;
 		
 	uint8_t RF24_Channel;
 
@@ -123,7 +123,7 @@ typedef struct{
 	#if defined RF24_TAP
 	struct timer arp_timer;
 	#endif
-}RF24EthernetClass;
+}RF24EthernetClass_;
 
 
 
@@ -154,16 +154,16 @@ typedef struct{
 		* Configure the IP address and subnet mask of the node. This is independent of the RF24Network layer, so the IP 
 		* and subnet only have to conform to standard IP routing rules within your network
 		*/
-		void RF24E_begin_i(IPAddress ip);
-		void RF24E_begin_id(IPAddress ip, IPAddress dns);
-		void RF24E_begin_idg(IPAddress ip, IPAddress dns, IPAddress gateway);
-		void RF24E_begin_idgs(IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet);		
+		void RF24E_begin_i(IPAddress_ ip);
+		void RF24E_begin_id(IPAddress_ ip, IPAddress_ dns);
+		void RF24E_begin_idg(IPAddress_ ip, IPAddress_ dns, IPAddress_ gateway);
+		void RF24E_begin_idgs(IPAddress_ ip, IPAddress_ dns, IPAddress_ gateway, IPAddress_ subnet);		
 		
 		
 		/**
 		* Configure the gateway IP address. This is generally going to be your master node with RF24Network address 00.
 		*/
-		void RF24E_set_gateway(IPAddress gwIP);
+		void RF24E_set_gateway(IPAddress_ gwIP);
 		
 		/**
 		* Listen to a specified port - This will likely be changed to closer match the Arduino Ethernet API with server.begin();
@@ -190,23 +190,23 @@ typedef struct{
 	
 	/** Returns the local IP address
 	*/
-	IPAddress RF24E_localIP(void);
+	IPAddress_ RF24E_localIP(void);
 	/** Returns the subnet mask
 	*/
-	IPAddress RF24E_subnetMask(void);
+	IPAddress_ RF24E_subnetMask(void);
 	/** Returns the gateway IP address
 	*/
-	IPAddress RF24E_gatewayIP(void);
+	IPAddress_ RF24E_gatewayIP(void);
 	/** Returns the DNS server IP address
 	*/
-	IPAddress RF24E_dnsServerIP(void);
+	IPAddress_ RF24E_dnsServerIP(void);
 
 	/** Keeps the TCP/IP stack running & processing incoming data
 	*/
 	void RF24E_update(void);
     //uint8_t *key;
 
-	void RF24E_configure(IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet);
+	void RF24E_configure(IPAddress_ ip, IPAddress_ dns, IPAddress_ gateway, IPAddress_ subnet);
 	// tick() must be called at regular intervals to process the incoming serial
 	// data and issue IP events to the sketch.  It does not return until all IP
 	// events have been processed.
@@ -216,6 +216,12 @@ typedef struct{
 #ifdef __cplusplus
 }
 #endif
+
+
+#ifdef __cplusplus
+#include"cpp_wrapper.h" 
+#endif
+
 
 #endif
 

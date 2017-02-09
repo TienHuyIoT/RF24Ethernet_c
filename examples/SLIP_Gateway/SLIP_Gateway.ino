@@ -35,7 +35,7 @@
  * The requested URL is used as input, to determine whether to turn the LED off or on
  */
 
-#include <SPI.h>
+//#include <SPI.h>
 #include <RF24.h>
 #include <RF24Network.h>
 #include <RF24Mesh.h>
@@ -143,7 +143,7 @@ void loop() {
 
 void networkToSLIP(){
   
-    RF24NetworkFrame *frame = network.frag_ptr;
+    RF24NetworkFrame_ *frame = RF24N_getFrag_ptr();
     size_t size = frame->message_size;
     uint8_t *pointer = frame->message_buffer;
     slipdev_send(pointer, size);

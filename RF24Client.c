@@ -19,13 +19,13 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
   */
-#include "RF24Ethernet_c.h"
+#include "RF24Ethernet.h"
 
 #define UIP_TCP_PHYH_LEN UIP_LLH_LEN+UIP_IPTCPH_LEN
 
 uip_userdata_t all_data[UIP_CONNS];
 
-static RF24Client cli;
+static RF24Client_ cli;
 
 /*************************************************************/
 
@@ -49,7 +49,7 @@ uint8_t RF24EC_connected(void){
 
 /*************************************************************/
 
-int RF24EC_connect( IPAddress ip, uint16_t port) {
+int RF24EC_connect( IPAddress_ ip, uint16_t port) {
 
 #if UIP_ACTIVE_OPEN > 0
  
@@ -158,6 +158,11 @@ void RF24EC_stop(void) {
 //}
 
 /*************************************************************/
+      
+uip_userdata_t* RF24EC_getData(void)
+{
+  return cli.data;
+};
 
 //RF24EC_operator bool() {
 //  RF24E_tick(&RF24Ethernet);
